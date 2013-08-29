@@ -60,3 +60,11 @@
 
 (use-package gh
   :ensure t)
+
+(use-package slime
+  :config 
+  (progn
+    (setq inferior-lisp-program "sbcl"))
+  :ensure t)
+
+
