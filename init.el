@@ -1,19 +1,22 @@
 ;; things to get rid off
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(setq ring-bell-function #'ignore)
+(setq ring-bell-function #'ignore
+      inhibit-startup-screen t)
 
 ;; common lisp
 (require 'cl-lib)
 
 ;; package
 (push "~/.emacs.d/use-package/" load-path)
+(push "~/.emacs.d/" load-path)
 (require 'use-package)
-(require 'package)
+(load-library "~/.emacs.d/package.el")
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
 (package-refresh-contents)
+(package-initialize)
 
 
 ;; temporary until I fix ample-theme
@@ -44,6 +47,7 @@
   :ensure t)
 
 (use-package ample-theme
+  :config (ample-theme)
   :ensure t)
 
 (use-package switch-window
@@ -62,6 +66,7 @@
   :ensure t)
 
 (use-package slime
+  :defer t
   :config 
   (progn
     (setq inferior-lisp-program "sbcl"))
