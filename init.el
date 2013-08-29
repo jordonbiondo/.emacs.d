@@ -57,3 +57,6 @@
 (use-package magit
   :bind ("C-x m" . magit-status)
   :ensure t)
+
+(use-package gh
+  :ensure t)
