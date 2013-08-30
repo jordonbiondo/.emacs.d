@@ -20,19 +20,6 @@
 (package-refresh-contents)
 (package-initialize)
 
-
-;; temporary until I fix ample-theme
-(defun plist-to-alist (the-plist)
-  (defun get-tuple-from-plist (the-plist)
-    (when the-plist
-      (cons (car the-plist) (cadr the-plist))))
-
-  (let ((alist '()))
-    (while the-plist
-      (add-to-list 'alist (get-tuple-from-plist the-plist))
-      (setq the-plist (cddr the-plist)))
-  alist))
-
 (use-package ido
   :init 
   (progn (ido-everywhere)
@@ -42,38 +29,51 @@
   :bind ("C-c <SPC>" . ace-jump-mode)
   :ensure t)
 
+
 (use-package multiple-cursors
   :ensure t)
 
-(use-package color-theme
-  :ensure t)
 
 (use-package ample-theme
   :config (ample-theme)
   :ensure t)
 
+
 (use-package switch-window
   :ensure t)
+
 
 (use-package smex
   :bind (("M-x" . smex)
 	 ("C-c M-x" . execute-extended-command))
   :ensure t)
 
+
 (use-package magit
   :bind ("C-x m" . magit-status)
   :ensure t)
 
+
 (use-package gh
   :ensure t)
+
 
 (use-package powerline
   :config (powerline-default-theme)
   :ensure t)
 
-(use-package auto-complete
-  :config (global-auto-complete-mode)
+(use-package rainbow-mode
   :ensure t)
+
+(use-package header2
+  :ensure t)
+
+(use-package auto-complete
+  :config (progn
+	    (require 'auto-complete-config)
+	    (ac-config-default))
+  :ensure t)
+
 
 (use-package slime
   :defer t
@@ -82,4 +82,19 @@
     (setq inferior-lisp-program "sbcl"))
   :ensure t)
 
+
+(use-package org-bullets
+  :defer t
+  :config 
+  (progn
+    (setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
+    (autoload 'org-bullets-mode "org-bullets-mode" nil t)
+    (add-hook 'org-mode-hook 'org-bullets-mode))
+  :ensure t)
+
+  
+
+
+;; personal
+(push "~/.emacs.d/jorbi/" load-path)
 
