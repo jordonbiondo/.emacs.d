@@ -82,6 +82,18 @@
     (setq inferior-lisp-program "sbcl"))
   :ensure t)
 
+(use-package org
+  :defer t
+  :init 
+  (mapcar* 
+   (lambda (pair) (set-face-attribute 
+	      (car pair) nil :height 
+	      (round (*  (face-attribute 'default :height) (cdr pair)))))
+   '((org-level-1 . 2.0) 
+     (org-level-2 . 1.6) 
+     (org-level-3 . 1.4) 
+     (org-level-4 . 1.2) 
+     (org-level-5 . 1.1))))
 
 (use-package org-bullets
   :defer t
@@ -102,5 +114,6 @@
 
 ;; personal
 (push "~/.emacs.d/jorbi/" load-path)
+(push "/usr/local/bin/" exec-path)
 (use-package jordon-mode
   :config (jordon-dev-mode t))
