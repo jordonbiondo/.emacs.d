@@ -1,3 +1,4 @@
 *.elc
 *.*~
 elpa/*
+/ac-comphist.dat

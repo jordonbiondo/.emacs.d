@@ -14,7 +14,9 @@
 (push "~/.emacs.d/" load-path)
 (require 'use-package)
 (load-library "~/.emacs.d/package.el")
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(mapc (lambda(p) (push p package-archives)) 
+      '(("marmalade" . "http://marmalade-repo.org/packages/") 
+	("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-refresh-contents)
 (package-initialize)
 
@@ -63,6 +65,14 @@
   :ensure t)
 
 (use-package gh
+  :ensure t)
+
+(use-package powerline
+  :config (powerline-default-theme)
+  :ensure t)
+
+(use-package auto-complete
+  :config (global-auto-complete-mode)
   :ensure t)
 
 (use-package slime
