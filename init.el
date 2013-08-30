@@ -93,8 +93,14 @@
   :ensure t)
 
   
+(use-package paredit
+  :ensure t)
 
+(use-package rainbow-delimiters
+  :config (rainbow-delimiters-mode t)
+  :ensure t)
 
 ;; personal
 (push "~/.emacs.d/jorbi/" load-path)
-
+(use-package jordon-mode
+  :config (jordon-dev-mode t))
