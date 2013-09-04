@@ -13,7 +13,8 @@
 (push "~/.emacs.d/use-package/" load-path)
 (push "~/.emacs.d/" load-path)
 (require 'use-package)
-(load-library "~/.emacs.d/package.el")
+(require 'package)
+;;(load-library "~/.emacs.d/package.el")
 (mapc (lambda(p) (push p package-archives)) 
       '(("marmalade" . "http://marmalade-repo.org/packages/") 
 	("melpa" . "http://melpa.milkbox.net/packages/")))
@@ -35,7 +36,7 @@
 
 
 (use-package ample-theme
-  :config (ample-theme)
+  ;;:config (ample-theme)
   :ensure t)
 
 
@@ -68,23 +69,58 @@
 (use-package header2
   :ensure t)
 
+(use-package undo-tree
+  :init (global-undo-tree-mode 1)
+  :ensure t)
+
+(use-package google-this
+  :ensure t)
+
+(use-package web-mode
+  :mode ("\\.html$" . web-mode)
+  :ensure t)
+
 (use-package auto-complete
   :config (progn
 	    (require 'auto-complete-config)
 	    (ac-config-default))
   :ensure t)
 
-
 (use-package slime
-  :defer t
   :config 
   (progn
-    (setq inferior-lisp-program "sbcl"))
+    (setq inferior-lisp-program "sbcl")
+    (slime-setup))
   :ensure t)
+
+(use-package js2-refactor
+  :ensure t)
+
+
+(use-package exec-path-from-shell
+  :init (exec-path-from-shell-initialize)
+  :ensure t)
+
+(use-package ac-slime
+  :ensure t)
+
+(use-package js2-mode
+  :mode ("\\.js$" . js2-mode)
+  :init (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
+  :ensure t)
+
+(use-package ac-js2
+  :ensure t)
+
+
+(use-package slime-js
+  :ensure t)
+
+
 
 (use-package org
   :defer t
-  :init 
+  :config
   (mapcar* 
    (lambda (pair) (set-face-attribute 
 	      (car pair) nil :height 
