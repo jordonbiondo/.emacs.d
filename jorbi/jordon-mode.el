@@ -5,6 +5,8 @@
   (set-default-font "-apple-Inconsolata-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
   (define-keys jordon-dev-mode-map
     ("C-," 'previous-multiframe-window)
+    ("C-\\" 'jorbi/toggle-comment-line)
+    ("C-x l" 'ibuffer)
     ("C-<tab>" 'jorbi/indent-repeat)
     ("C-." 'next-multiframe-window)))
 

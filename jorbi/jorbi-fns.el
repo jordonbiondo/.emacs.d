@@ -6,21 +6,9 @@
   (forward-line 1))
 
 
-(defun jorbi/lisp-toggle-line-comment()
+(defun jorbi/toggle-comment-line()
   (interactive)
-  (let ((comment-regexp (format ";+" comment-start))
-	(not-comment-regexp (format "[^;]" comment-start)))
-    (save-excursion
-      (goto-char (point-at-bol))
-      (back-to-indentation)
-      (if (looking-at comment-regexp)
-	  (delete-region (point) 
-			 (progn 
-			   (1- (search-forward-regexp not-comment-regexp))
-			   (point)))
-	(insert ";; ")))))
-
-
+  (comment-or-uncomment-region (point-at-bol) (point-at-eol)))
 
 
 (provide 'jorbi-fns)
