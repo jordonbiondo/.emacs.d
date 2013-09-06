@@ -10,5 +10,8 @@
   (interactive)
   (comment-or-uncomment-region (point-at-bol) (point-at-eol)))
 
+(defun jorbi/shell-named(name)
+  (interactive "sShell Name: ")
+  (shell (generate-new-buffer-name name)))
 
 (provide 'jorbi-fns)
