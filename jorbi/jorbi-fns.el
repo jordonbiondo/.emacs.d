@@ -14,4 +14,13 @@
   (interactive "sShell Name: ")
   (shell (generate-new-buffer-name name)))
 
+(defun jorbi/c-doc-comment()
+  "Insert a c style doc comment on the current line."
+  (interactive)
+  (goto-char (point-at-bol))
+  (indent-region (point) (progn (insert "/**\n* \n*/\n") (point)))
+  (forward-line -2)
+  (goto-char (point-at-eol)))
+
+			   
 (provide 'jorbi-fns)
