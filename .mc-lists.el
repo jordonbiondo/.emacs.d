@@ -4,6 +4,8 @@
 (setq mc/cmds-to-run-for-all
       '(
 	c-electric-paren
+	c-electric-semi&comma
+	org-cycle
 	org-force-self-insert
 	org-self-insert-command
 	python-indent-dedent-line-backspace
