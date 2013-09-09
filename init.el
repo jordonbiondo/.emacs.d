@@ -32,6 +32,7 @@
 
 
 (use-package multiple-cursors
+  :bind(("C-s-." . mc/mark-next-like-this))
   :ensure t)
 
 
@@ -167,3 +168,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(font-lock-add-keywords 
+ 'c-mode
+ '(("\\([A-Z_][A-Z_]+\\)" . font-lock-constant-face)))
+    
