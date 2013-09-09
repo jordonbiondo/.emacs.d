@@ -22,6 +22,9 @@
   (forward-line -2)
   (goto-char (point-at-eol)))
 
+(defun jorbi/date()
+  (interactive)
+  (shell-command "date" (current-buffer)))
 
 (defun scons/compile(&rest args)
   (interactive "sscons: ")
@@ -38,5 +41,9 @@
 (defun scons/clean()
   (interactive)
   (scons/compile "-c"))
+
+(defun scons/clean-compile()
+  (interactive)
+  (scons/compile "-c" "&&" "scons"))
 
 (provide 'jorbi-fns)
