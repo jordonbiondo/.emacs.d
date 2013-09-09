@@ -8,7 +8,9 @@
     ("C-\\" 'jorbi/toggle-comment-line)
     ("C-x l" 'ibuffer)
     ("C-<tab>" 'jorbi/indent-repeat)
+    ("C-M-k" 'jorbi/c-doc-comment)
     ("C-." 'next-multiframe-window)))
+
 
 
 (provide 'jordon-mode)
