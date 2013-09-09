@@ -6,3 +6,5 @@ url/*
 
 /eshell/history
 /.DS_Store
+/.emacs.desktop
+/.emacs.desktop.lock
