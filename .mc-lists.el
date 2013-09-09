@@ -3,8 +3,10 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-paren
 	org-force-self-insert
 	org-self-insert-command
+	python-indent-dedent-line-backspace
 	))
 
 (setq mc/cmds-to-run-once
