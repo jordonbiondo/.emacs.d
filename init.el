@@ -35,11 +35,10 @@
   :bind(("C-s-." . mc/mark-next-like-this))
   :ensure t)
 
-
 (use-package ample-theme
-  ;;:config (ample-theme)
+  :if (not window-system)
+  :defer t
   :ensure t)
-
 
 (use-package switch-window
   :ensure t)
@@ -149,7 +148,7 @@
   :ensure t)
 
 (use-package rainbow-delimiters
-  :config (rainbow-delimiters-mode t)
+  :config (global-rainbow-delimiters-mode t)
   :ensure t)
 
 ;; personal
@@ -164,7 +163,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
  '(js2-basic-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -180,7 +178,6 @@
 (setq compilation-scroll-output t)
 
 (setq org-confirm-elisp-link-function nil)
-
 (add-to-list 'ac-modes 'slime-repl-mode)
 (add-to-list 'ac-modes 'js2-mode)
 (add-to-list 'ac-modes 'js-mode)
