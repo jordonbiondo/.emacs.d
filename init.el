@@ -61,6 +61,7 @@
 
 
 (use-package powerline
+  :if window-system
   :config (powerline-default-theme)
   :ensure t)
 
@@ -107,7 +108,9 @@
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
-  :init (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
+  :init (progn
+	  (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
+	  (setq js2-basic-offset 2))
   :ensure t)
 
 (use-package ac-js2
@@ -161,7 +164,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default))))
+ '(custom-safe-themes (quote ("84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
+ '(js2-basic-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -171,5 +175,20 @@
 
 (font-lock-add-keywords 
  'c-mode
- '(("\\([A-Z_][A-Z_]+\\)" . font-lock-constant-face)))
+ '(("\\([A-Z_][A-Z_0-9]+\\)" . font-lock-constant-face)))
     
+(setq compilation-scroll-output t)
+
+(setq org-confirm-elisp-link-function nil)
+
+(add-to-list 'ac-modes 'slime-repl-mode)
+(add-to-list 'ac-modes 'js2-mode)
+(add-to-list 'ac-modes 'js-mode)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+
+(setq slime-protocol-version 'ignore
+      slime-net-coding-system 'utf-8-unix
+      slime-complete-symbol*-fancy t
+      slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+(slime-setup '(slime-repl slime-js))
