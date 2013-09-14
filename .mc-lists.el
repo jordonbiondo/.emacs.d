@@ -5,6 +5,10 @@
       '(
 	c-electric-paren
 	c-electric-semi&comma
+	c-indent-line-or-region
+	dabbrev-expand
+	indent-for-tab-command
+	jorbi/toggle-comment-line
 	org-cycle
 	org-force-self-insert
 	org-self-insert-command
