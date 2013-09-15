@@ -173,7 +173,7 @@
 
 (font-lock-add-keywords 
  'c-mode
- '(("\\([A-Z_][A-Z_0-9]+\\)" . font-lock-constant-face)))
+ '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face)))
     
 (setq compilation-scroll-output t)
 
