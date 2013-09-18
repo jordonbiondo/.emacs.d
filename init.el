@@ -163,7 +163,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-basic-offset 2))
+ '(custom-safe-themes (quote ("24036220fd216ccc1b2e07c8dadbfd82a7df8e06c06a8c0d273c9bf57b1c8896" "84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
+ '(js2-basic-offset 2)
+ '(quake-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -174,7 +176,33 @@
 (font-lock-add-keywords 
  'c-mode
  '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face)))
-    
+(font-lock-add-keywords
+ 'c-mode
+ '(("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face)))
+
+(defun my-pdf-compile()
+  (interactive)
+  (with-temp-buffer 
+    (let ((max-mini-window-height 0)) 
+      (set-process-sentinel (start-process "pdflatex-creation" (current-buffer) 
+					   "pdflatex" "-interaction=nonstopmode" "*.tex")
+			    (lambda (string state)
+			      (message "%s %s" string state))))))
+(defun pdflatex()
+  (interactive)
+  (with-temp-buffer 
+    (delete-region (point-min) (point-max))
+    (let ((max-mini-window-height 0))
+      (if (zerop (shell-command "yes x | pdflatex *.tex" (current-buffer)))
+	  (shell-command "open *.pdf" (current-buffer))
+	(message (propertize "pdf creation failed" 
+			     'face '(:foreground "red")))))))
+
+
+(defun my-align-after-commas (beg end)
+  (interactive "r")
+  (align-regexp beg end ",\\(\\s-*\\)" 1 1 t))
+
 (setq compilation-scroll-output t)
 
 (setq org-confirm-elisp-link-function nil)
@@ -189,3 +217,17 @@
       slime-complete-symbol*-fancy t
       slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 (slime-setup '(slime-repl slime-js))
+
+
+(defun c-maybe-insert-semicolon()
+  (interactive)
+  (if (looking-at ";$")
+      (forward-char 1)
+    (call-interactively 'self-insert-command)))
+(define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)
+
+
+(setq erc-hide-list '("JOIN" "PART" "QUIT")
+      erc-nick "jordonbiondo"
+      erc-port 6665
+      erc-server "irc.freenode.net")
