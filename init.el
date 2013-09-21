@@ -160,9 +160,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("24036220fd216ccc1b2e07c8dadbfd82a7df8e06c06a8c0d273c9bf57b1c8896" "84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
+ '(custom-safe-themes (quote ("ff30d16dea6131f88fe7488689e3f02ee357f2ab4f649dd8964d067d34b203cc" "24036220fd216ccc1b2e07c8dadbfd82a7df8e06c06a8c0d273c9bf57b1c8896" "84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
+ '(ido-everywhere t)
+ '(jordon-dev-mode t)
  '(js2-basic-offset 2)
- '(quake-mode t))
+ '(quake-mode t)
+ '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -262,3 +265,27 @@ Use `winstack-push' and
       (progn (set-window-configuration (pop winstack-stack))
 	     (message "popped"))
     (message "End of window stack")))
+
+(eval-after-load "powerline"
+  '(progn (defun powerline-jordon-theme ()
+	    "Setup a nano-like mode-line."
+	    (interactive)
+	    (setq-default mode-line-format
+			  '("%e"
+			    (:eval
+			     (let* ((active (powerline-selected-window-active))
+				    (lhs (list (powerline-raw (format " |%s|" mode-name
+								      nil 'l))))
+				    (rhs (list (if (not (buffer-file-name))
+						   "(⌐■_■)  "
+						 (if (buffer-modified-p) 
+						     (powerline-raw "(╯°□°)" nil 'r)
+						   (powerline-raw "(╯°u°)" nil 'r)))))
+				    (center (list (powerline-raw "%b" nil))))
+			       (concat (powerline-render lhs)
+				       (powerline-fill-center nil (/ (powerline-width center) 2.0))
+				       (powerline-render center)
+				       (powerline-fill nil (powerline-width rhs))
+				       (powerline-render rhs)))))))
+	  (powerline-jordon-theme)))
+	  
