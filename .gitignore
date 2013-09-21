@@ -10,3 +10,4 @@ url/*
 /.emacs.desktop.lock
 /eshell/lastdir
 /texput.log
+/x.log
