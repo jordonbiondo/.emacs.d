@@ -115,11 +115,8 @@
 (use-package ac-js2
   :ensure t)
 
-
 (use-package slime-js
   :ensure t)
-
-
 
 (use-package org
   :defer t
@@ -203,6 +200,10 @@
   (interactive "r")
   (align-regexp beg end ",\\(\\s-*\\)" 1 1 t))
 
+(defun align-after-thing (beg end)
+  (interactive "r")
+  (align-regexp beg end (format "%s\\(\\s-*\\)" (read-string "Align After: "))1 1 t))
+
 (setq compilation-scroll-output t)
 
 (setq org-confirm-elisp-link-function nil)
@@ -231,3 +232,33 @@
       erc-nick "jordonbiondo"
       erc-port 6665
       erc-server "irc.freenode.net")
+
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+
+;;---------------------------------------------------------------------------
+;; win config stack
+;;---------------------------------------------------------------------------
+(defvar winstack-stack '()
+  "A Stack holding window configurations.
+Use `winstack-push' and
+`winstack-pop' to modify it.")
+
+(defun winstack-push()
+  "Push the current window configuration onto `winstack-stack'."
+  (interactive)
+  (if (and (window-configuration-p (first winstack-stack))
+	   (compare-window-configurations (first winstack-stack) (current-window-configuration)))
+      (message "Current config already pushed")
+    (progn (push (current-window-configuration) winstack-stack)
+	   (message (concat "pushed " (number-to-string
+				       (length (window-list (selected-frame)))) " frame config")))))
+
+(defun winstack-pop()
+  "Pop the last window configuration off `winstack-stack' and apply it."
+  (interactive)
+  (if (first winstack-stack)
+      (progn (set-window-configuration (pop winstack-stack))
+	     (message "popped"))
+    (message "End of window stack")))
