@@ -8,6 +8,8 @@
     ("C-\\" 'jorbi/toggle-comment-line)
     ("C-x l" 'ibuffer)
     ("C-<tab>" 'jorbi/indent-repeat)
+    ("C-c f u" 'winstack-push)
+    ("C-c f o" 'winstack-pop)
     ("C-M-k" 'jorbi/c-doc-comment)
     ("C-." 'next-multiframe-window)))
 
