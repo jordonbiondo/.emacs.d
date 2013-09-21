@@ -8,3 +8,5 @@ url/*
 /.DS_Store
 /.emacs.desktop
 /.emacs.desktop.lock
+/eshell/lastdir
+/texput.log

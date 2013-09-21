@@ -11,6 +11,7 @@
 	jorbi/toggle-comment-line
 	org-cycle
 	org-force-self-insert
+	org-metaleft
 	org-self-insert-command
 	python-indent-dedent-line-backspace
 	))
