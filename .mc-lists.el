@@ -3,8 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-colon
+	c-electric-delete-forward
 	c-electric-paren
 	c-electric-semi&comma
+	c-electric-star
 	c-indent-line-or-region
 	dabbrev-expand
 	indent-for-tab-command
