@@ -277,10 +277,10 @@ Use `winstack-push' and
 				    (lhs (list (powerline-raw (format " |%s|" mode-name
 								      nil 'l))))
 				    (rhs (list (if (not (buffer-file-name))
-						   "(⌐■_■)  "
+						   "(⌐■_■)   "
 						 (if (buffer-modified-p) 
-						     (powerline-raw "(╯°□°)" nil 'r)
-						   (powerline-raw "(╯°u°)" nil 'r)))))
+						     (powerline-raw "(╯°□°) <( SAVE! )" nil 'r)
+						   (powerline-raw   "(╯°u°)           " nil 'r)))))
 				    (center (list (powerline-raw "%b" nil))))
 			       (concat (powerline-render lhs)
 				       (powerline-fill-center nil (/ (powerline-width center) 2.0))
