@@ -32,7 +32,7 @@
 
 
 (use-package multiple-cursors
-  :bind(("C-s-." . mc/mark-next-like-this))
+  :bind (((if window-system "C-s-." "C-c m") . mc/mark-next-like-this))
   :ensure t)
 
 (use-package ample-theme
