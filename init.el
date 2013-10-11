@@ -105,6 +105,12 @@
 (use-package ac-slime
   :ensure t)
 
+(use-package rust-mode
+  :mode ("\\.rs$" . rust-mode)
+  :init (progn (autoload 'org-bullets-mode "org-bullets-mode" nil t))
+  :defer t
+  :ensure t)
+
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :init (progn
