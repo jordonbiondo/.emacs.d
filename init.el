@@ -250,25 +250,46 @@ Use `winstack-push' and
     (message "End of window stack")))
 
 (eval-after-load "powerline"
-  '(progn (defun powerline-jordon-theme ()
-	    "Setup a nano-like mode-line."
-	    (interactive)
-	    (setq-default mode-line-format
-			  '("%e"
-			    (:eval
-			     (let* ((active (powerline-selected-window-active))
-				    (lhs (list (powerline-raw (format " |%s|" mode-name
-								      nil 'l))))
-				    (rhs (list (if (not (buffer-file-name))
-						   "(⌐■_■)   "
-						 (if (buffer-modified-p) 
-						     (powerline-raw "(╯°□°) <( SAVE! )" nil 'r)
-						   (powerline-raw   "(╯°u°)           " nil 'r)))))
-				    (center (list (powerline-raw "%b" nil))))
-			       (concat (powerline-render lhs)
-				       (powerline-fill-center nil (/ (powerline-width center) 2.0))
-				       (powerline-render center)
-				       (powerline-fill nil (powerline-width rhs))
-				       (powerline-render rhs)))))))
-	  (powerline-jordon-theme)))
-	  
+  '(progn 
+     (defun point-progress(length)
+       (interactive)
+       (let ((p-count (round (* (/ (float (point)) (float (point-max))) length))))
+	 (concat  (make-string p-count ?.) (make-string (- length p-count) ? ) "|")))
+
+     (defun powerline-jordon-theme ()
+       "Setup a nano-like mode-line."
+       (interactive)
+       (setq-default mode-line-format
+		     '("%e"
+		       (:eval
+			(let* ((active (powerline-selected-window-active))
+			       (lhs (list (powerline-raw (format " |%s|%s" mode-name
+								 (point-progress 10)
+								 nil 'l))))
+			       (rhs (list (if (not (buffer-file-name))
+					      "(-■_■)   "
+					    (if (buffer-modified-p) 
+						(powerline-raw "(╯°□°)╯<( SAVE! )" nil 'r)
+					      (powerline-raw   "( °u°)           " nil 'r)))))
+			       (center (list (powerline-raw "%b" nil))))
+			  (concat (powerline-render lhs)
+				  (powerline-fill-center nil (/ (powerline-width center) 2.0))
+				  (powerline-render center)
+				  (powerline-fill nil (powerline-width rhs))
+				  (powerline-render rhs)))))))
+     (powerline-jordon-theme)))
+
+(require 'org-latex)
+(setq org-export-latex-listings 'minted)
+(add-to-list 'org-export-latex-packages-alist '("" "minted"))
+(setq org-src-fontify-natively t)
+(put 'erase-buffer 'disabled nil)
+
+
+(defun osx-copy-region(beg end)
+  "very unsafe"
+  (interactive "r")
+  (shell-command (concat "echo \"" (buffer-substring beg end) "\" | pbcopy")))
+
+
+
