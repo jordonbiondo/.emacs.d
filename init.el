@@ -186,29 +186,6 @@
  'c-mode
  '(("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face)))
 
-(defun my-pdf-compile()
-  (interactive)
-  (with-temp-buffer 
-    (let ((max-mini-window-height 0)) 
-      (set-process-sentinel (start-process "pdflatex-creation" (current-buffer) 
-					   "pdflatex" "-interaction=nonstopmode" "*.tex")
-			    (lambda (string state)
-			      (message "%s %s" string state))))))
-(defun pdflatex()
-  (interactive)
-  (with-temp-buffer 
-    (delete-region (point-min) (point-max))
-    (let ((max-mini-window-height 0))
-      (if (zerop (shell-command "yes x | pdflatex *.tex" (current-buffer)))
-	  (shell-command "open *.pdf" (current-buffer))
-	(message (propertize "pdf creation failed" 
-			     'face '(:foreground "red")))))))
-
-
-(defun my-align-after-commas (beg end)
-  (interactive "r")
-  (align-regexp beg end ",\\(\\s-*\\)" 1 1 t))
-
 (defun align-after-thing (beg end)
   (interactive "r")
   (align-regexp beg end (format "%s\\(\\s-*\\)" (read-string "Align After: "))1 1 t))
