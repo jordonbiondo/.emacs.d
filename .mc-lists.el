@@ -16,6 +16,7 @@
 	org-force-self-insert
 	org-metaleft
 	org-self-insert-command
+	org-yank
 	python-indent-dedent-line-backspace
 	))
 
