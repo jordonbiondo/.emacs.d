@@ -83,6 +83,13 @@
   :bind (((if window-system "C-s-." "C-c m") . mc/mark-next-like-this))
   :ensure t)
 
+(use-package python
+  :mode ("\\<SConstruct\\>$" . python-mode)
+  :config (progn 
+	    (use-package elpy
+	      :config (elpy-enable)
+	      :ensure t)))
+
 
 (use-package ample-theme
   :if (not window-system)
