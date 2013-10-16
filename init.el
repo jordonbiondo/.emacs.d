@@ -157,7 +157,8 @@
 
 
 (use-package auto-indent-mode
-  :init (auto-indent-mode t)
+  :init (progn
+	  (add-hook 'prog-mode-hook 'auto-indent-mode))
   :ensure t)
 
 
