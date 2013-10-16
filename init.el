@@ -393,5 +393,15 @@ Use `winstack-push' and
     (delete-region (point-min) (point-max))
     (call-interactively 'comint-send-input)))
 
+
+(defun eval-and-replace-sexp()
+  "Evaluate sexp behind point and replace it with the result."
+  (interactive)
+  (insert
+   (let ((expr (read (buffer-substring (point) (save-excursion (backward-sexp) (point))))))
+     (delete-region (point) (save-excursion (backward-sexp) (point)))
+     (format "%s" (save-excursion (eval expr))))))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
