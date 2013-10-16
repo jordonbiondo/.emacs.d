@@ -242,6 +242,11 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+(use-package autoinsert
+  :init (progn (auto-insert-mode t)
+	       (setq auto-insert-prompt "insert %s? ")))
+
+
 (use-package ido
   :init
   (progn (ido-everywhere t)
