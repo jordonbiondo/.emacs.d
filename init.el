@@ -154,7 +154,7 @@
 
 
 (use-package auto-indent-mode
-  :init (auto-insert-mode t)
+  :init (auto-indent-mode t)
   :ensure t)
 
 
