@@ -1,5 +1,5 @@
 ;;; init.el --- Jordon Biondo's emacs configuration
-;; 
+;;
 ;; Filename: init.el
 ;; Description: Jordon Biondo's emacs configuration
 ;; Author: Jordon Biondo
@@ -10,34 +10,34 @@
 ;;           By: Jordon Biondo
 ;;     Update #: 2
 ;; URL: www.github.com/jordonbiondo/.emacs.d
-;; Keywords: 
-;; Compatibility: 
-;; 
+;; Keywords:
+;; Compatibility:
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;;; Commentary: 
-;; 
-;; 
-;; 
+;;
+;;; Commentary:
+;;
+;;
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Code:
 
 (tool-bar-mode -1)
@@ -54,8 +54,8 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(mapc (lambda(p) (push p load-path)) 
-      '("~/.emacs.d/use-package/" 
+(mapc (lambda(p) (push p load-path))
+      '("~/.emacs.d/use-package/"
 	"~/.emacs.d/"))
 
 (require 'use-package)
@@ -85,7 +85,7 @@
 
 (use-package python
   :mode ("\\<SConstruct\\>$" . python-mode)
-  :config (progn 
+  :config (progn
 	    (use-package elpy
 	      :config (elpy-enable)
 	      :ensure t)))
@@ -97,9 +97,9 @@
   :ensure t)
 
 
-(use-package switch-window 
+(use-package switch-window
   :ensure t)
-  
+
 
 (use-package smex
   :bind (("M-x" . smex)
@@ -112,16 +112,16 @@
   :ensure t)
 
 
-(use-package gh 
+(use-package gh
   :ensure t)
 
 
 (use-package powerline
   :config (progn
 	    (defun jordon-point-progress (length)
-	      (let ((p-count (round (* (/ (float (point)) 
+	      (let ((p-count (round (* (/ (float (point))
 					  (float (point-max))) length))))
-		(concat  (make-string p-count ?.) 
+		(concat  (make-string p-count ?.)
 			 (make-string (- length p-count) ? ) "|")))
 	    (defun powerline-jordon-theme ()
 	      "Setup a nano-like mode-line."
@@ -130,7 +130,7 @@
 			    '("%e"
 			      (:eval
 			       (let* ((active (powerline-selected-window-active))
-				      (lhs (list (powerline-raw 
+				      (lhs (list (powerline-raw
 						  (format " |%s|%s" mode-name
 							  (jordon-point-progress 10)
 							  nil 'l))))
@@ -145,10 +145,10 @@
 					 (powerline-render center)
 					 (powerline-fill nil (powerline-width rhs))
 					 (powerline-render rhs)))))))
-	      (powerline-jordon-theme))
+	    (powerline-jordon-theme))
   :ensure t)
 
-  
+
 (use-package rainbow-mode
   :ensure t)
 
@@ -185,7 +185,7 @@
   :config
   (progn
     (use-package ac-slime :ensure t)
-    
+
     (setq inferior-lisp-program "sbcl")
     (slime-setup)
     (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -250,14 +250,14 @@
 		       erc-port 6665
 		       erc-server "irc.freenode.net")))
 
-		
+
 (use-package ediff
   :defer t
   :config (progn
 	    (setq ediff-split-window-function 'split-window-horizontally)
 	    (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
 
- 
+
 (use-package compile
   :defer t
   :config (progn (setq compilation-scroll-output t)))
@@ -279,15 +279,15 @@
 	    (setq org-confirm-elisp-link-function nil)
 
 	    (use-package org-latex
-	      :config (progn 
+	      :config (progn
 			(setq org-export-latex-listings 'minted)
 			(add-to-list 'org-export-latex-packages-alist '("" "minted"))
 			(setq org-src-fontify-natively t)
 			(put 'erase-buffer 'disabled nil)))
-	    
+
 	    (use-package org-bullets
 	      :config (progn
-			
+
 			(setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
 			(autoload 'org-bullets-mode "org-bullets-mode" nil t)
 			(add-hook 'org-mode-hook 'org-bullets-mode))
