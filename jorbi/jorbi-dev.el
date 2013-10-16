@@ -19,13 +19,10 @@ Example:
 
 (defmacro defdev (name &rest body)
   "Setup variables and modes for a developer with a username of NAME.
-
 Defines:
   const NAME which will be true if the environment variable USER == NAME
   function NAME-do: evaluates BODY like `progn' but only when the user is NAME
-
   variable NAME-mode-map: a keymap for NAME-mode
-
   minor-mode NAME-mode: for user specific settings and keybindings"
   `(progn
      (defconst ,(intern name) (equal (or (getenv "USER") (getenv "USERNAME")) ,name)
