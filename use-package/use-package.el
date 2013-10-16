@@ -147,6 +147,12 @@
 ;; value of `use-package-verbose'. Other good candidates for `:idle' are
 ;; `yasnippet', `auto-complete' and `autopair'.
 ;;
+;; Finally, you may wish to use `:pre-load'. This form runs before everything
+;; else whenever the `use-package' form evals; the package in question will
+;; never have been required. This can be useful, if you wish for instance, to
+;; pull files from a git repository, or mount a file system. Like :init,
+;; keeping this form as simple as possible makes sense.
+;;
 ;; The `:bind' keyword takes either a cons or a list of conses:
 ;;
 ;;   (use-package hi-lock
@@ -292,9 +298,6 @@
 (require 'bytecomp)
 (require 'diminish nil t)
 
-(eval-when-compile
-  (require 'cl))
-
 (declare-function package-installed-p 'package)
 (declare-function el-get-read-recipe 'el-get)
 
@@ -318,18 +321,18 @@
   :group 'use-package)
 
 (defmacro with-elapsed-timer (text &rest forms)
-  `(let ((now ,(if use-package-verbose
-                   '(current-time))))
-     ,(if use-package-verbose
-          `(message "%s..." ,text))
-     (prog1
-         ,@forms
-       ,(when use-package-verbose
-          `(let ((elapsed
-                  (float-time (time-subtract (current-time) now))))
-             (if (> elapsed ,use-package-minimum-reported-time)
-                 (message "%s...done (%.3fs)" ,text elapsed)
-               (message "%s...done" ,text)))))))
+  (let ((body `(progn ,@forms)))
+    (if use-package-verbose
+        (let ((nowvar (make-symbol "now")))
+          `(let ((,nowvar (current-time)))
+             (message "%s..." ,text)
+             (prog1 ,body
+               (let ((elapsed
+                      (float-time (time-subtract (current-time) ,nowvar))))
+                 (if (> elapsed ,use-package-minimum-reported-time)
+                     (message "%s...done (%.3fs)" ,text elapsed)
+                   (message "%s...done" ,text))))))
+      body)))
 
 (put 'with-elapsed-timer 'lisp-indent-function 1)
 
@@ -438,6 +441,10 @@ Return the list of recognized keywords."
           (error "Unrecognized keyword: %s" keyword))))
     (plist-keys args)))
 
+(defun plist-get-value (plist prop)
+  "Return the value of PROP in PLIST as if it was backquoted."
+  (eval (list '\` (plist-get plist prop))))
+
 (defmacro use-package (name &rest args)
 "Use a package with configuration options.
 
@@ -450,6 +457,9 @@ For full documentation. please see commentary.
 :bind Perform key bindings, and define autoload for bound
       commands.
 :commands Define autoloads for given commands.
+:pre-load Code to run when `use-package' form evals and before
+       anything else. Unlike :init this form runs before the
+       package is required or autoloads added.
 :mode Form to be added to `auto-mode-alist'.
 :interpreter Form to be added to `interpreter-mode-alist'.
 :defer Defer loading of package -- automatic
@@ -465,22 +475,23 @@ For full documentation. please see commentary.
   (use-package-validate-keywords args) ; error if any bad keyword, ignore result
   (let* ((commands (plist-get args :commands))
          (pre-init-body (plist-get args :pre-init))
+         (pre-load-body (plist-get args :pre-load))
          (init-body (plist-get args :init))
          (config-body (plist-get args :config))
-         (diminish-var (plist-get args :diminish))
-         (defines (plist-get args :defines))
+         (diminish-var (plist-get-value args :diminish))
+         (defines (plist-get-value args :defines))
          (idle-body (plist-get args :idle))
-         (keybindings )
-         (mode-alist )
-         (interpreter-alist )
+         (keybindings-alist (plist-get-value args :bind))
+         (mode-alist (plist-get-value args :mode))
+         (interpreter-alist (plist-get-value args :interpreter))
          (predicate (plist-get args :if))
-         (pkg-load-path (plist-get args :load-path))
+         (pkg-load-path (plist-get-value args :load-path))
          (defines-eval (if (null defines)
                            nil
                          (if (listp defines)
                              (mapcar (lambda (var) `(defvar ,var)) defines)
                            `((defvar ,defines)))))
-         (requires (plist-get args :requires))
+         (requires (plist-get-value args :requires))
          (requires-test (if (null requires)
                             t
                           (if (listp requires)
@@ -492,6 +503,7 @@ For full documentation. please see commentary.
 
     ;; force this immediately -- one off cost
     (unless (plist-get args :disabled)
+
       (let* ((ensure (plist-get args :ensure))
              (package-name
               (or (and (eq ensure t)
@@ -530,6 +542,7 @@ For full documentation. please see commentary.
       (when idle-body
         (setq init-body
               `(progn
+                 (require 'use-package)
                  (use-package-init-on-idle (lambda () ,idle-body))
                    ,init-body)))
 
@@ -553,21 +566,22 @@ For full documentation. please see commentary.
                  #'(lambda (binding)
                      `(bind-key ,(car binding)
                                 (quote ,(cdr binding))))
-                 (plist-get args :bind))
+                 keybindings-alist)
 
         (funcall init-for-commands
                  #'(lambda (mode)
                      `(add-to-list 'auto-mode-alist
                                    (quote ,mode)))
-                 (plist-get args :mode))
+                 mode-alist)
 
         (funcall init-for-commands
                  #'(lambda (interpreter)
                      `(add-to-list 'interpreter-mode-alist
                                    (quote ,interpreter)))
-                 (plist-get args :interpreter)))
+                 interpreter-alist))
 
       `(progn
+         ,pre-load-body
          ,@(mapcar
             #'(lambda (path)
                 `(add-to-list 'load-path
@@ -637,13 +651,12 @@ For full documentation. please see commentary.
                    ,@form
                    ,init-body
                    ,(unless (null config-body)
-                      `(eval-after-load ,name-string
+                      `(eval-after-load ,(if (stringp name) name `',name)
                          `(,(lambda ()
                               (if ,requires-test
-                                  ,(macroexpand-all
-                                    `(with-elapsed-timer
-                                         ,(format "Configuring package %s" name-string)
-                                       ,config-body)))))))
+                                  (with-elapsed-timer
+                                      ,(format "Configuring package %s" name-string)
+                                    ,config-body))))))
                    t))
             `(if (and ,(or predicate t)
                       ,requires-test)
@@ -661,9 +674,9 @@ For full documentation. please see commentary.
 (put 'use-package 'lisp-indent-function 1)
 
 (defconst use-package-font-lock-keywords
-  '(("(\\(use-package\\)\\_>[\n[:space:]]+\\(\\(?:\\s_\\|\\sw\\)+\\)"
+  '(("(\\(use-package\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
      (1 font-lock-keyword-face)
-     (2 font-lock-constant-face))))
+     (2 font-lock-constant-face nil t))))
 
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
 
