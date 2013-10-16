@@ -93,7 +93,10 @@
 
 (use-package ample-theme
   :ensure t)
+
+(use-package cmake-mode
   :defer t
+  :mode ("\\.cmake$" . cmake-mode)
   :ensure t)
 
 
