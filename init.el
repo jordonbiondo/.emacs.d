@@ -92,7 +92,7 @@
 
 
 (use-package ample-theme
-  :if (not window-system)
+  :ensure t)
   :defer t
   :ensure t)
 
