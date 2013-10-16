@@ -319,9 +319,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("b0b82b03081179909454a8a83182f099f2bc0efbc7eb888d5eb584f6d20be969" "daf27f1321e2e1a0262c8c2e723bf8f8c49598d2b190a52d547f19a5b2417a4d" "b03765e46b3cda80bec9735b5b5624d33928447039e51f92c6fffa60e2b9e03e" "94d66281c0398118afd3fdb921d8b813401a36748ce4541e7ad6b1533a557a9f" "ff30d16dea6131f88fe7488689e3f02ee357f2ab4f649dd8964d067d34b203cc" "24036220fd216ccc1b2e07c8dadbfd82a7df8e06c06a8c0d273c9bf57b1c8896" "84f201d2ef04c89597d0398f094fa81c1fd077f4b211a91df57787cfaabff48d" "fa29856e364e2b46254503f913637ef6561faadae62668609cc671ecfcf1c3d2" default)))
+ '(custom-safe-themes t)
  '(ido-everywhere t)
  '(jordon-dev-mode t)
  '(js2-basic-offset 2)
