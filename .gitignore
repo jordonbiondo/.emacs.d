@@ -12,3 +12,4 @@ url/*
 /texput.log
 /x.log
 /tramp
+/clang-complete
