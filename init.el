@@ -182,7 +182,23 @@
 	    (add-to-list 'ac-modes 'slime-repl-mode)
 	    (add-to-list 'ac-modes 'js2-mode)
 	    (add-to-list 'ac-modes 'js-mode)
-	    (ac-config-default))
+	    (ac-config-default)
+	    (global-auto-complete-mode t)
+	    
+	    (use-package auto-complete-clang-async
+	      :config (if (file-exists-p "~/.emacs.d/clang-complete")
+			  (progn
+			    (defun ac-cc-mode-setup ()
+			      (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
+			      (setq ac-sources '(ac-source-clang-async))
+			      (ac-clang-launch-completion-process))
+			    
+			    (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+			    (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+			    (global-auto-complete-mode t))
+			(message "no clang-complete found"))
+	      :if (file-exists-p "~/.emacs.d/clang-complete")
+	      :ensure t))
   :ensure t)
 
 
