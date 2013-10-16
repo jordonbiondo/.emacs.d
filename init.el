@@ -153,6 +153,11 @@
   :ensure t)
 
 
+(use-package auto-indent-mode
+  :init (auto-insert-mode t)
+  :ensure t)
+
+
 (use-package header2
   :ensure t)
 
