@@ -211,6 +211,22 @@
   :ensure t)
 
 
+(use-package js2-mode
+  :mode ("\\.js$" . js2-mode)
+  :init (progn
+          (setq js2-basic-offset 2))
+  :config (progn
+            (use-package ac-js2 :ensure t)
+            (use-package js2-refactor :ensure t)
+            (use-package slime-js
+	      :defer
+              :config (progn
+                        (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
+                        (slime-setup '(slime-repl slime-js)))
+              :ensure t))
+  :ensure t)
+
+
 (use-package slime
   :config
   (progn
@@ -223,8 +239,7 @@
     (setq slime-protocol-version 'ignore
 	  slime-net-coding-system 'utf-8-unix
 	  slime-complete-symbol*-fancy t
-	  slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-    (slime-setup '(slime-repl slime-js)))
+	  slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
   :ensure t)
 
 
@@ -242,18 +257,6 @@
   :ensure t)
 
 
-(use-package js2-mode
-  :mode ("\\.js$" . js2-mode)
-  :init (progn
-	  (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
-	  (setq js2-basic-offset 2)
-
-	  (use-package js2-refactor :ensure t)
-	  (use-package slime-js :ensure t)
-	  (use-package ac-js2 :ensure t))
-  :ensure t)
-
-
 (use-package paredit
   :ensure t)
 
@@ -262,9 +265,28 @@
   :config (global-rainbow-delimiters-mode t)
   :ensure t)
 
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(use-package cc-mode
+  :config (progn
+            
+            (font-lock-add-keywords
+             'c-mode
+             '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
+               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
+            
+            (defun c-maybe-insert-semicolon()
+              "Insert a semicolon a the end of a line only if there isn't one."
+              (interactive)
+              (if (looking-at ";$")
+                  (forward-char 1)
+                (call-interactively 'self-insert-command)))
+            
+            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
 
 
 (use-package autoinsert
@@ -358,22 +380,10 @@
  ;; If there is more than one, they won't work right.
  )
 
-(font-lock-add-keywords
- 'c-mode
- '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
-   ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
 
 (defun align-after-thing (beg end)
   (interactive "r")
   (align-regexp beg end (format "%s\\(\\s-*\\)" (read-string "Align After: "))1 1 t))
-
-
-(defun c-maybe-insert-semicolon()
-  (interactive)
-  (if (looking-at ";$")
-      (forward-char 1)
-    (call-interactively 'self-insert-command)))
-(define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)
 
 
 ;;---------------------------------------------------------------------------
