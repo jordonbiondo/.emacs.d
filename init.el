@@ -177,6 +177,11 @@
 
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
+  :config (progn
+	    (use-package skewer-mode
+	      :config (progn (skewer-setup)
+			     (add-hook 'web-mode-hook 'skewer-mode))
+	      :ensure t))
   :ensure t)
 
 
