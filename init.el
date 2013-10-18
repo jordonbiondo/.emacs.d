@@ -219,7 +219,7 @@
             (use-package ac-js2 :ensure t)
             (use-package js2-refactor :ensure t)
             (use-package slime-js
-	      :defer
+	      :defer t
               :config (progn
                         (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
                         (slime-setup '(slime-repl slime-js)))
