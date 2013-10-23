@@ -3,7 +3,8 @@
 elpa/*
 /ac-comphist.dat
 url/*
-
+.#*
+\#*
 /eshell/history
 /.DS_Store
 /.emacs.desktop
