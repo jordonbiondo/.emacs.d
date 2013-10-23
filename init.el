@@ -40,14 +40,17 @@
 ;;
 ;;; Code:
 
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(setq ring-bell-function #'ignore inhibit-startup-screen t)
+(mapcar (lambda(mode) (if (fboundp mode) (apply mode '(-1))))
+	'(tool-bar-mode
+	  menu-bar-mode
+	  scroll-bar-mode))
 
 ;; common lisp
 (require 'cl-lib)
 
+(setq ring-bell-function #'ignore
+      inhibit-startup-screen t
+      user-mail-address "biondoj@mail.gvsu.edu")
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up package.el and use-package for init
