@@ -275,6 +275,17 @@
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package lisp-mode
+  :config 
+  (mapcar (lambda (mode-hook) 
+	    (add-hook mode-hook 'prettify-symbols-mode)
+	    (add-hook mode-hook
+		      (lambda () (mapc (lambda (pair) (push pair prettify-symbols-alist))
+				  '(("<=" . ?≤)
+				    (">=" . ?≥)
+				    ("sqrt" . ?√))))))
+	  '(emacs-lisp-mode-hook lisp-interaction-mode-hook lisp-mode-hook)))
+
 
 (use-package cc-mode
   :config (progn
