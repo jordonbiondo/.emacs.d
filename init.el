@@ -115,6 +115,8 @@
 
 (use-package magit
   :bind ("C-x m" . magit-status)
+  :config (when (eq system-type 'darwin)
+	    (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
   :ensure t)
 
 
