@@ -1,3 +1,7 @@
+(defmacro add-keywords (mode &rest keywords)
+  "Add KEYWORDS to font-lock for MODE."
+  (declare (indent defun))
+  `(font-lock-add-keywords ',mode ',keywords))
 
 (defun jorbi/indent-repeat()
   "Indent the current line and move to the next."
