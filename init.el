@@ -361,6 +361,7 @@
 
 (push "~/.emacs.d/jorbi/" load-path)
 (push "/usr/local/bin/" exec-path)
+(use-package jorbi-fns)
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
