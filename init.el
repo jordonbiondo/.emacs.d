@@ -198,7 +198,7 @@
 	    (add-to-list 'ac-modes 'js-mode)
 	    (ac-config-default)
 	    (global-auto-complete-mode t)
-	    
+
 	    (use-package auto-complete-clang-async
 	      :config (if (file-exists-p "~/.emacs.d/clang-complete")
 			  (progn
@@ -206,7 +206,7 @@
 			      (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
 			      (setq ac-sources '(ac-source-clang-async))
 			      (ac-clang-launch-completion-process))
-			    
+
 			    (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
 			    (add-hook 'auto-complete-mode-hook 'ac-common-setup)
 			    (global-auto-complete-mode t))
@@ -276,8 +276,8 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package lisp-mode
-  :config 
-  (mapcar (lambda (mode-hook) 
+  :config
+  (mapcar (lambda (mode-hook)
 	    (add-hook mode-hook 'prettify-symbols-mode)
 	    (add-hook mode-hook
 		      (lambda () (mapc (lambda (pair) (push pair prettify-symbols-alist))
@@ -289,19 +289,19 @@
 
 (use-package cc-mode
   :config (progn
-            
+
             (font-lock-add-keywords
              'c-mode
              '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
                ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
-            
+
             (defun c-maybe-insert-semicolon()
               "Insert a semicolon a the end of a line only if there isn't one."
               (interactive)
               (if (looking-at ";$")
                   (forward-char 1)
                 (call-interactively 'self-insert-command)))
-            
+
             (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
 
 
