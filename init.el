@@ -45,9 +45,6 @@
 	  menu-bar-mode
 	  scroll-bar-mode))
 
-;; common lisp
-(require 'cl-lib)
-
 (setq ring-bell-function #'ignore
       inhibit-startup-screen t
       user-mail-address "biondoj@mail.gvsu.edu")
@@ -63,6 +60,9 @@
 
 (require 'use-package)
 (require 'package)
+
+;; common lisp
+(use-package cl-lib)
 
 ;;(load-library "~/.emacs.d/package.el")
 (mapc (lambda(p) (push p package-archives))
