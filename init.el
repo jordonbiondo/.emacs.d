@@ -239,7 +239,14 @@
               :config (progn
                         (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
                         (slime-setup '(slime-repl slime-js)))
-              :ensure t))
+              :ensure t)
+	    
+	    (add-hook 'js2-mode-hook
+		      (prettify-symbols-mode)
+		      (mapc (lambda (pair) (push pair prettify-symbols-alist))
+			    '(("<=" . ?≤)
+			      (">=" . ?≥)
+			      ("function" . "fn")))))
   :ensure t)
 
 
