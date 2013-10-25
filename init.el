@@ -77,6 +77,10 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+(use-package ample-theme
+  :ensure t)
+
+
 (use-package ace-jump-mode
   :bind ("C-c <SPC>" . ace-jump-mode)
   :ensure t)
@@ -93,9 +97,6 @@
 	      :config (elpy-enable)
 	      :ensure t)))
 
-
-(use-package ample-theme
-  :ensure t)
 
 (use-package cmake-mode
   :defer t
