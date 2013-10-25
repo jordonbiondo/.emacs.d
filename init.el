@@ -180,6 +180,10 @@
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
+  :bind (("C-c j" . undo-tree-undo)
+	 ("C-c k" . undo-tree-redo)
+	 ("C-c l" . undo-tree-switch-branch)
+	 ("C-c ;" . undo-tree-visualize))
   :ensure t)
 
 
