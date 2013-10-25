@@ -90,6 +90,12 @@
   :bind (((if window-system "C-s-." "C-c m") . mc/mark-next-like-this))
   :ensure t)
 
+
+(use-package expand-region
+  :bind ("C-c e" . er/expand-region)
+  :ensure t)
+
+
 (use-package python
   :mode ("\\<SConstruct\\>$" . python-mode)
   :config (progn
