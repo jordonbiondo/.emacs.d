@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	ac-clang-async-autocomplete-autotrigger
 	c-electric-colon
 	c-electric-delete-forward
 	c-electric-paren
@@ -17,10 +18,15 @@
 	org-metaleft
 	org-self-insert-command
 	org-yank
+	paredit-backward-kill-word
+	paredit-semicolon
 	python-indent-dedent-line-backspace
+	slime-space
 	))
 
 (setq mc/cmds-to-run-once
       '(
+	abort-recursive-edit
+	eval-defun
 	smex
 	))
