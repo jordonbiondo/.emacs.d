@@ -4,11 +4,11 @@
 ;; Description: Jordon Biondo's emacs configuration
 ;; Author: Jordon Biondo
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
-;; Version: 2.0.2
+;; Version: 2.0.3
 ;; Package-Requires: ()
-;; Last-Updated: Wed Oct 16 18:28:40 2013 (-0400)
+;; Last-Updated: Sun Oct 27 13:09:28 2013 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 12
+;;     Update #: 13
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
 ;; Compatibility:
