@@ -126,6 +126,9 @@
 	    (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
   :ensure t)
 
+(use-package w3m
+  :defer t
+  :ensure t)
 
 (use-package gh
   :ensure t)
