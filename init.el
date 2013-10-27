@@ -481,5 +481,22 @@ Use `winstack-push' and
      (format "%s" (save-excursion (eval expr))))))
 
 
+;; color theme making helpers
+(defun dump-face-as-theme-spec(face)
+  (insert (format "`(%s  ((t (:foreground %s :background %s%s%s))))"
+                  (face-name face)
+                  (let ((f (face-foreground face nil t))) (if (stringp f) (concat "\"" f "\"") f))
+                  (let ((f (face-background face nil t))) (if (stringp f) (concat "\"" f "\"") f))
+                  (if (face-underline-p face nil t) (format " :underline t") "")
+                  (if (face-bold-p face nil t) (format " :bold t") ""))))
+
+(defun dump-face-at-point-as-spec()
+  (interactive)
+  (let ((face (symbol-at-point)))
+    (when (facep face)
+      (delete-region (progn (beginning-of-thing 'symbol) (point))
+                     (progn (end-of-thing 'symbol) (point)))
+      (dump-face-as-theme-spec face))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
