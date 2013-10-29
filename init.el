@@ -87,7 +87,7 @@
 
 
 (use-package multiple-cursors
-  :bind (((if window-system "C-s-." "C-c m") . mc/mark-next-like-this))
+  :bind (("C-c m" . mc/mark-next-like-this))
   :ensure t)
 
 

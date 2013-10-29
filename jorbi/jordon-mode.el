@@ -10,8 +10,8 @@
     ("C-c f u" 'winstack-push)
     ("C-c f o" 'winstack-pop)
     ("C-M-k" 'jorbi/c-doc-comment)
-    ((if window-system "C-," "C-c i") 'previous-multiframe-window)
-    ((if window-system "C-." "C-c o") 'next-multiframe-window)))
+    ("C-c i" 'previous-multiframe-window)
+    ("C-c o" 'next-multiframe-window)))
 
 
 (provide 'jordon-mode)
