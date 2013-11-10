@@ -391,8 +391,12 @@
 
 (push "~/.emacs.d/jorbi/" load-path)
 (push "/usr/local/bin/" exec-path)
+
 (use-package jorbi-fns)
+
 (use-package jordon-mode
+  :if (or (equal (getenv "USER") "jordon")
+	  (equal (getenv "USERNAME") "jordon"))
   :config (jordon-dev-mode t))
 
 (custom-set-variables
