@@ -48,8 +48,8 @@
 	  scroll-bar-mode))
 
 (setq ring-bell-function #'ignore
-      inhibit-startup-screen t
-      user-mail-address "biondoj@mail.gvsu.edu")
+      inhibit-startup-screen t)
+
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up package.el and use-package for init
