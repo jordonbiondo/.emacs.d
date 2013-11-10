@@ -242,14 +242,7 @@
               :config (progn
                         (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
                         (slime-setup '(slime-repl slime-js)))
-              :ensure t)
-	    
-	    (add-hook 'js2-mode-hook
-		      (prettify-symbols-mode)
-		      (mapc (lambda (pair) (push pair prettify-symbols-alist))
-			    '(("<=" . ?≤)
-			      (">=" . ?≥)
-			      ("function" . "fn")))))
+              :ensure t))
   :ensure t)
 
 
@@ -304,16 +297,8 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package lisp-mode
-  :config
-  (mapcar (lambda (mode-hook)
-	    (add-hook mode-hook 'prettify-symbols-mode)
-	    (add-hook mode-hook
-		      (lambda () (mapc (lambda (pair) (push pair prettify-symbols-alist))
-				  '(("<=" . ?≤)
-				    (">=" . ?≥)
-				    ("sqrt" . ?√))))))
-	  '(emacs-lisp-mode-hook lisp-interaction-mode-hook lisp-mode-hook)))
-
+  :config (progn))
+  
 
 (use-package cc-mode
   :config (progn
