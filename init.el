@@ -39,6 +39,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
+(defvar jordonp (or (equal (getenv "USER") "jordon")
+		    (equal (getenv "USERNAME" "jordon"))))
 
 (mapcar (lambda(mode) (if (fboundp mode) (apply mode '(-1))))
 	'(tool-bar-mode
