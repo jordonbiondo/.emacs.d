@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
 	ac-clang-async-autocomplete-autotrigger
+	c-electric-brace
 	c-electric-colon
 	c-electric-delete-forward
 	c-electric-paren
@@ -23,6 +24,7 @@
 	paredit-semicolon
 	python-indent-dedent-line-backspace
 	slime-space
+	yas-expand
 	))
 
 (setq mc/cmds-to-run-once
