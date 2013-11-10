@@ -133,6 +133,8 @@
 (use-package gh
   :ensure t)
 
+(use-package helm
+  :ensure t)
 
 (use-package powerline
   :config (progn
