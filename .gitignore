@@ -15,3 +15,5 @@ url/*
 /tramp
 /clang-complete
 skewer-cache
+/games/snake-scores
+/games/snake-scores.lockfile
