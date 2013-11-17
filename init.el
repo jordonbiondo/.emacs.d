@@ -207,6 +207,11 @@
 	      :ensure t))
   :ensure t)
 
+(use-package flycheck
+  :config (progn
+	    (add-hook 'c-mode-hook 'flycheck-mode)
+	    (add-hook 'c++-mode-hook 'flycheck-mode))
+  :ensure t)
 
 (use-package auto-complete
   :config (progn
