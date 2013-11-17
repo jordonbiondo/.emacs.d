@@ -366,8 +366,12 @@
 	       (org-level-4 . 1.2)
 	       (org-level-5 . 1.1)))
 
-	    (setq org-confirm-elisp-link-function nil)
-
+	    (setq org-confirm-elisp-link-function	nil
+		  org-export-html-postamble		nil
+		  org-export-html-date-format-string "%d %B %Y"
+		  org-export-html-preamble-format `(("en" "%a : %d")))
+		  
+	    
 	    (use-package org-latex
 	      :config (progn
 			(setq org-export-latex-listings 'minted)
