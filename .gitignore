@@ -17,3 +17,4 @@ url/*
 skewer-cache
 /games/snake-scores
 /games/snake-scores.lockfile
+/request/curl-cookie-jar
