@@ -305,6 +305,10 @@
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package ispell
+  :bind (("C-c s w" . ispell-word)
+         ("C-c s b" . ispell-buffer)))
+
 (use-package lisp-mode
   :config (progn))
   
