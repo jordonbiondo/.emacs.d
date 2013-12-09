@@ -254,6 +254,11 @@
 	    (setq jabber-account-list `("jordonb@chat.facebook.com")))
   :ensure t)
 
+(use-package enh-ruby-mode
+  :config (progn
+	    (require 'auto-complete)
+	    (add-to-list 'ac-modes 'enh-ruby-mode))
+  :ensure t)
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :init (progn
