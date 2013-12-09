@@ -531,3 +531,4 @@ Use `winstack-push' and
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
+(put 'erc-remove-text-properties-region 'disabled nil)
