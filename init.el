@@ -259,6 +259,11 @@
 	    (require 'auto-complete)
 	    (add-to-list 'ac-modes 'enh-ruby-mode))
   :ensure t)
+
+(use-package rsense
+  :ensure t)
+
+
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :init (progn
