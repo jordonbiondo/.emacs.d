@@ -249,6 +249,10 @@
 	      :ensure t))
   :ensure t)
 
+(use-package jabber
+  :config (progn
+	    (setq jabber-account-list `("jordonb@chat.facebook.com")))
+  :ensure t)
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
