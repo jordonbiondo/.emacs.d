@@ -493,8 +493,8 @@ Use `winstack-push' and
                   (face-name face)
                   (let ((f (face-foreground face nil t))) (if (stringp f) (concat "\"" f "\"") f))
                   (let ((f (face-background face nil t))) (if (stringp f) (concat "\"" f "\"") f))
-                  (if (face-underline-p face nil t) (format " :underline t") "")
-                  (if (face-bold-p face nil t) (format " :bold t") ""))))
+                  (if (face-underline-p face nil) (format " :underline t") "")
+                  (if (face-bold-p face nil) (format " :bold t") ""))))
 
 (defun dump-face-at-point-as-spec()
   (interactive)
