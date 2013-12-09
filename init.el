@@ -135,6 +135,17 @@
 (use-package gh
   :ensure t)
 
+(use-package oddmuse
+  :config (add-hook 'oddmuse-mode-hook
+                    (lambda ()
+                      (unless (string-match "question" oddmuse-post)
+                        (when (string-match "EmacsWiki" oddmuse-wiki)
+                          (setq oddmuse-post (concat "uihnscuskc=1;" oddmuse-post)))
+                        (when (string-match "OddmuseWiki" oddmuse-wiki)
+                          (setq oddmuse-post (concat "ham=1;" oddmuse-post))))))
+  :ensure t)
+
+
 (use-package helm
   :ensure t)
 
