@@ -186,6 +186,13 @@
   :ensure t)
 
 
+(use-package key-chord
+  :config (progn
+	    (setq key-chord-two-keys-delay .05
+		  key-chord-one-key-delay .075))
+  :ensure t)
+
+
 (use-package auto-indent-mode
   :init (progn
 	  (add-hook 'prog-mode-hook 'auto-indent-mode))
