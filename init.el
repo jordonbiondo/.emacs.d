@@ -60,11 +60,15 @@
       '("~/.emacs.d/use-package/"
 	"~/.emacs.d/"))
 
+
+;; package setup
 (require 'use-package)
 (require 'package)
 
+
 ;; common lisp
 (use-package cl-lib)
+
 
 ;;(load-library "~/.emacs.d/package.el")
 (mapc (lambda(p) (push p package-archives))
@@ -73,6 +77,19 @@
 (package-refresh-contents)
 (package-initialize)
 
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; personal custom stuff
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(push "~/.emacs.d/jorbi/" load-path)
+(push "/usr/local/bin/" exec-path)
+
+(use-package jorbi-fns)
+
+(use-package jordon-mode
+  :config (jordon-dev-mode t))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hosted packages
@@ -429,20 +446,6 @@
 	      :ensure t)))
 
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; personal custom stuff
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(push "~/.emacs.d/jorbi/" load-path)
-(push "/usr/local/bin/" exec-path)
-
-(use-package jorbi-fns)
-
-(use-package jordon-mode
-  :if (or (equal (getenv "USER") "jordon")
-	  (equal (getenv "USERNAME") "jordon"))
-  :config (jordon-dev-mode t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
