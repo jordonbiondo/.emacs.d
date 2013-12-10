@@ -99,6 +99,11 @@
 (use-package ample-theme
   :ensure t)
 
+(use-package s ;; string lib
+  :ensure t)
+
+(use-package dash ;; list lib
+  :ensure t) 
 
 (use-package ace-jump-mode
   :bind ("C-c <SPC>" . ace-jump-mode)
