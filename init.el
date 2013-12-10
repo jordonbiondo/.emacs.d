@@ -215,8 +215,8 @@
 	    (key-chord-mode t)
 	    
 	    ;; short waits
-	    (setq key-chord-two-keys-delay .05
-		  key-chord-one-key-delay .075)
+	    (setq key-chord-two-keys-delay .025
+		  key-chord-one-key-delay .035)
 	    
 	    ;; jordon-dev-mode chords
 	    (dolist (binding
