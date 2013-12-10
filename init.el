@@ -238,10 +238,13 @@
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
-  :bind (("C-c j" . undo-tree-undo)
-	 ("C-c k" . undo-tree-redo)
-	 ("C-c l" . undo-tree-switch-branch)
-	 ("C-c ;" . undo-tree-visualize))
+  :config (progn
+	    (dolist (binding
+                     `(("hj" . undo-tree-undo)
+		       ("hk" . undo-tree-redo)
+		       ("hl" . undo-tree-switch-branch)
+		       ("h;" . undo-tree-visualize)))
+              (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
   :ensure t)
 
 
