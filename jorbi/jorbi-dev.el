@@ -10,10 +10,11 @@ Example:
   (declare (indent defun))
   (let ((statement '(progn)))
     (mapc
-     (lambda(pair) (setq statement
-  		 (append statement
-				 `((define-key ,keymap (kbd ,(first pair)) ,(second pair)))))) pairs)
-
+     (lambda(pair)
+       (setq statement
+	     (append statement
+		     `((define-key ,keymap (kbd ,(cl-first pair)) 
+			 ,(cl-second pair)))))) pairs)
     statement))
 
 
