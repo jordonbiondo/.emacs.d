@@ -205,8 +205,18 @@
 
 (use-package key-chord
   :config (progn
+	    
+	    (key-chord-mode t)
+	    
+	    ;; short waits
 	    (setq key-chord-two-keys-delay .05
-		  key-chord-one-key-delay .075))
+		  key-chord-one-key-delay .075)
+	    
+	    ;; jordon-dev-mode chords
+	    (dolist (binding
+		     `((" i" . previous-multiframe-window)
+		       (" o" . next-multiframe-window)))
+	      (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
   :ensure t)
 
 
