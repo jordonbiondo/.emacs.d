@@ -50,4 +50,39 @@
   (interactive)
   (scons/compile "-c" "&&" "scons"))
 
+(defun enabled-minor-modes (buffer)
+  "Returns a list of minor mode specs containing the modes enabled in BUFFER.
+This function returns a lot of modes you probably do not care about. 
+
+Function `enabled-important-minor-modes' is what you are probably looking for."
+  (with-current-buffer buffer
+    (let (minor-modes)
+      (dolist (x minor-mode-alist)
+        (setq x (car x))
+        (unless (memq x minor-mode-list)
+          (push x minor-mode-list)))
+      (dolist (mode minor-mode-list)
+        (let ((fmode (or (get mode :minor-mode-function) mode)))
+          (and (boundp mode) (symbol-value mode)
+               (fboundp fmode)
+               (let ((pretty-minor-mode
+                      (if (string-match "\\(\\(-minor\\)?-mode\\)?\\'"
+                                        (symbol-name fmode))
+                          (capitalize
+                           (substring (symbol-name fmode)
+                                      0 (match-beginning 0)))
+                        fmode)))
+                 (push (list fmode pretty-minor-mode
+                             (format-mode-line (assq mode minor-mode-alist)))
+                       minor-modes)))))
+      (sort minor-modes
+            (lambda (a b) (string-lessp (cadr a) (cadr b)))))))
+
+(defun enabled-important-minor-modes (buffer)
+  (remove-if (lambda (mode-spec) (equal "" (third mode-spec)))
+             (enabled-minor-modes buffer)))
+
+(defun enabled-important-minor-lighters (buffer)
+  (mapcar 's-trim (mapcar 'third (enabled-important-minor-modes buffer))))
+
 (provide 'jorbi-fns)

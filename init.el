@@ -99,6 +99,11 @@
 (use-package ample-theme
   :ensure t)
 
+(use-package s ;; string lib
+  :ensure t)
+
+(use-package dash ;; list lib
+  :ensure t) 
 
 (use-package ace-jump-mode
   :bind ("C-c <SPC>" . ace-jump-mode)
@@ -181,7 +186,8 @@
 			      (:eval
 			       (let* ((active (powerline-selected-window-active))
 				      (lhs (list (powerline-raw
-						  (format " |%s|%s" mode-name
+						  (format " |%s| %d minors |%s" mode-name
+							  (length (enabled-important-minor-modes (current-buffer)))
 							  (jordon-point-progress 10)
 							  nil 'l))))
 				      (rhs (list (if (not (buffer-file-name))
@@ -209,8 +215,8 @@
 	    (key-chord-mode t)
 	    
 	    ;; short waits
-	    (setq key-chord-two-keys-delay .05
-		  key-chord-one-key-delay .075)
+	    (setq key-chord-two-keys-delay .025
+		  key-chord-one-key-delay .035)
 	    
 	    ;; jordon-dev-mode chords
 	    (dolist (binding
@@ -232,10 +238,13 @@
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
-  :bind (("C-c j" . undo-tree-undo)
-	 ("C-c k" . undo-tree-redo)
-	 ("C-c l" . undo-tree-switch-branch)
-	 ("C-c ;" . undo-tree-visualize))
+  :config (progn
+	    (dolist (binding
+                     `(("hj" . undo-tree-undo)
+		       ("hk" . undo-tree-redo)
+		       ("hl" . undo-tree-switch-branch)
+		       ("h;" . undo-tree-visualize)))
+              (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
   :ensure t)
 
 
