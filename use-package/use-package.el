@@ -78,10 +78,16 @@
 ;;
 ;; Similar to `:bind', you can use `:mode' and `:interpreter' to establish a
 ;; deferred binding within `auto-mode-alist' and `interpreter-mode-alist'.
-;; The specifier to either keyword can be a single cons or a list:
+;; The specifier to either keyword can be a single cons, or a list, or just
+;; a string:
 ;;
-;;   (use-package python-mode
-;;     :mode ("\\.py$" . python-mode)
+;;   (use-package ruby-mode
+;;     :mode "\\.rb\\'"
+;;     :interpreter "ruby")
+;;
+;;   ;; The package is "python" but the mode is "python-mode":
+;;   (use-package python
+;;     :mode ("\\.py\\'" . python-mode)
 ;;     :interpreter ("python" . python-mode))
 ;;
 ;; If you aren't using `:commands', `:bind', `:mode', or `:interpreter' (all
@@ -254,43 +260,6 @@
 ;;
 ;; (use-package tex-site
 ;;  :ensure auctex)
-;;
-;; * For el-get users
-;;
-;; You can use `use-package' as a way to create source definitions for el-get.
-;; All that's needed is to add a `:type' keyword to your declaration.  When
-;; this is present, certain keywords get translated to what el-get expects in
-;; the `el-get-sources' list:
-;;
-;;   :config   -> :after
-;;   :requires -> :depends
-;;
-;; A `:name' will be added also, if one is not provided explicitly, which will
-;; be the same as the name of the package.
-;;
-;; But why would you want to use `use-package' when you have el-get?  My
-;; answer is that I'd like to use el-get to install and update some packages,
-;; but I don't want it managing configuration.  Just loading el-get -- without
-;; call (el-get 'sync) -- takes a quarter second on my machine.  That's 25% of
-;; my load time!  `use-package' is designed for performance, so I only want to
-;; load el-get when it's time to install or update on of my used packages.
-;;
-;; Here is the `use-package' declaration I use for setting up el-get, but only
-;; when I want to install or update:
-;;
-;;   (defvar el-get-sources nil)
-;;
-;;   (use-package el-get
-;;     :commands (el-get
-;;                el-get-install
-;;                el-get-update
-;;                el-get-list-packages)
-;;     :config
-;;     (defun el-get-read-status-file ()
-;;       (mapcar #'(lambda (entry)
-;;                   (cons (plist-get entry :symbol)
-;;                         `(status "installed" recipe ,entry)))
-;;               el-get-sources)))
 
 ;;; Code:
 
@@ -298,20 +267,15 @@
 (require 'bytecomp)
 (require 'diminish nil t)
 
-(declare-function package-installed-p 'package)
-(declare-function el-get-read-recipe 'el-get)
+(when (fboundp 'declare-function)
+  (declare-function package-installed-p 'package))
 
 (defgroup use-package nil
   "A use-package declaration for simplifying your `.emacs'."
   :group 'startup)
 
-(defcustom use-package-verbose t
+(defcustom use-package-verbose nil
   "Whether to report about loading and configuration details."
-  :type 'boolean
-  :group 'use-package)
-
-(defcustom use-package-debug nil
-  "Whether to report more information, mostly regarding el-get."
   :type 'boolean
   :group 'use-package)
 
@@ -335,28 +299,6 @@
       body)))
 
 (put 'with-elapsed-timer 'lisp-indent-function 1)
-
-(defun use-package-discover-el-get-type (args)
-  (let* ((pkg-name (plist-get args :name))
-         (git-config  (expand-file-name
-                       (concat pkg-name "/.git/config")
-                       (if (boundp 'user-site-lisp-directory)
-                           user-site-lisp-directory
-                         user-emacs-directory))))
-
-    (catch 'found
-      ;; Look for a readable .git/config with at least one defined remote.
-      (if (file-readable-p git-config)
-          (with-temp-buffer
-            (insert-file-contents-literally git-config)
-            (while (re-search-forward "\\[remote" nil t)
-              (if (re-search-forward "url = \\(.+\\)"
-                                     (save-excursion
-                                       (re-search-forward "\\[remote" nil t)
-                                       (point)) t)
-                  (nconc args (list :type 'git
-                                    :url (match-string 1))))))))
-    args))
 
 (defvar use-package-idle-timer nil)
 (defvar use-package-idle-forms nil)
@@ -409,6 +351,7 @@
      :config
      :defer
      :defines
+     :demand
      :diminish
      :disabled
      :ensure
@@ -419,6 +362,7 @@
      :load-path
      :mode
      :pre-init
+     :pre-load
      :requires
   )
   "Keywords recognized by `use-package'.")
@@ -446,7 +390,7 @@ Return the list of recognized keywords."
   (eval (list '\` (plist-get plist prop))))
 
 (defmacro use-package (name &rest args)
-"Use a package with configuration options.
+  "Use a package with configuration options.
 
 For full documentation. please see commentary.
 
@@ -464,6 +408,7 @@ For full documentation. please see commentary.
 :interpreter Form to be added to `interpreter-mode-alist'.
 :defer Defer loading of package -- automatic
        if :commands, :bind, :mode or :interpreter are used.
+:demand Prevent deferred loading in all cases.
 :config Runs if and when package loads.
 :if Conditional loading.
 :disabled Ignore everything.
@@ -482,8 +427,12 @@ For full documentation. please see commentary.
          (defines (plist-get-value args :defines))
          (idle-body (plist-get args :idle))
          (keybindings-alist (plist-get-value args :bind))
-         (mode-alist (plist-get-value args :mode))
-         (interpreter-alist (plist-get-value args :interpreter))
+         (mode (plist-get-value args :mode))
+         (mode-alist
+          (if (stringp mode) (cons mode name) mode))
+         (interpreter (plist-get-value args :interpreter))
+         (interpreter-alist
+          (if (stringp interpreter) (cons interpreter name) interpreter))
          (predicate (plist-get args :if))
          (pkg-load-path (plist-get-value args :load-path))
          (defines-eval (if (null defines)
@@ -528,7 +477,7 @@ For full documentation. please see commentary.
                          `((diminish (quote ,diminish-var))))
                         ((and (consp diminish-var) (stringp (cdr diminish-var)))
                          `((diminish (quote ,(car diminish-var)) ,(cdr diminish-var))))
-                        (t ; list of symbols or (symbol . "string") pairs
+                        (t      ; list of symbols or (symbol . "string") pairs
                          (mapcar (lambda (var)
                                    (if (listp var)
                                        `(diminish (quote ,(car var)) ,(cdr var))
@@ -544,7 +493,7 @@ For full documentation. please see commentary.
               `(progn
                  (require 'use-package)
                  (use-package-init-on-idle (lambda () ,idle-body))
-                   ,init-body)))
+                 ,init-body)))
 
 
       (let ((init-for-commands
@@ -597,49 +546,13 @@ For full documentation. please see commentary.
 
          (eval-when-compile
            (when (bound-and-true-p byte-compile-current-file)
-            ,@defines-eval
-            ,(if (stringp name)
-                 `(load ,name t)
-               `(require ',name nil t))))
+             ,@defines-eval
+             ,(if (stringp name)
+                  `(load ,name t)
+                `(require ',name nil t))))
 
-         ,(when (boundp 'el-get-sources)
-            (require 'el-get)
-
-            (let ((recipe (ignore-errors
-                            (el-get-read-recipe name-symbol))))
-              (if (null recipe)
-                  (if use-package-debug
-                      (message "No el-get recipe found for package `%s'"
-                               name-symbol))
-                (setq args
-                      (mapcar #'(lambda (arg)
-                                  (cond
-                                   ((eq arg :config)
-                                    :after)
-                                   ((eq arg :requires)
-                                    :depends)
-                                   (t
-                                    arg)))
-                              args))
-
-                (nconc args (list :symbol (intern name-string)))
-
-                (let ((elem args))
-                  (while elem
-                    (unless (plist-get recipe (car elem))
-                      (plist-put recipe (car elem) (cadr elem)))
-                    (setq elem (cddr elem))))
-
-                (unless (plist-get recipe :name)
-                  (nconc recipe (list :name name-string)))
-
-                (unless (plist-get recipe :type)
-                  (setq recipe (use-package-discover-el-get-type recipe)))
-
-                (ignore
-                 (setq el-get-sources (cons recipe el-get-sources))))))
-
-         ,(if (or commands (plist-get args :defer))
+         ,(if (and (or commands (plist-get args :defer))
+                   (not (plist-get args :demand)))
               (let (form)
                 (mapc #'(lambda (command)
                           (push `(autoload (function ,command)
@@ -671,7 +584,7 @@ For full documentation. please see commentary.
                      ,config-body
                      t))))))))
 
-(put 'use-package 'lisp-indent-function 1)
+(put 'use-package 'lisp-indent-function 'defun)
 
 (defconst use-package-font-lock-keywords
   '(("(\\(use-package\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
