@@ -518,9 +518,9 @@ Use `winstack-push' and
 
 
 (defun osx-copy-region(beg end)
-  "very unsafe"
+  "no longer very unsafe!"
   (interactive "r")
-  (shell-command (concat "echo \"" (buffer-substring beg end) "\" | pbcopy")))
+  (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
 
 
 (defun shell-clear()
