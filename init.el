@@ -382,21 +382,20 @@
   
 
 (use-package cc-mode
+  :init (defun c-maybe-insert-semicolon()
+          "Insert a semicolon a the end of a line only if there isn't one."
+          (interactive)
+          (if (looking-at ";$")
+              (forward-char 1)
+            (call-interactively 'self-insert-command)))
+  :bind (";" . c-maybe-insert-semicolon)
   :config (progn
-
             (font-lock-add-keywords
              'c-mode
              '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
-               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
-
-            (defun c-maybe-insert-semicolon()
-              "Insert a semicolon a the end of a line only if there isn't one."
-              (interactive)
-              (if (looking-at ";$")
-                  (forward-char 1)
-                (call-interactively 'self-insert-command)))
-
-            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
+               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources)
+	    ))
+	    
 
 
 (use-package autoinsert
