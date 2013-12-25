@@ -95,6 +95,8 @@
 ;; hosted packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package commander
+  :ensure t)
 
 (use-package ample-theme
   :ensure t)
