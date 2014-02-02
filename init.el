@@ -308,6 +308,9 @@
 (use-package rsense
   :ensure t)
 
+(use-package d-mode
+  :if (executable-find "dmd")
+  :ensure t)
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
