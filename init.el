@@ -230,7 +230,7 @@
 
 (use-package auto-indent-mode
   :init (progn
-	  (add-hook 'prog-mode-hook 'auto-indent-mode))
+	  (add-hook 'cc-mode-hook 'auto-indent-mode))
   :ensure t)
 
 
