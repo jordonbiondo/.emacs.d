@@ -15,3 +15,5 @@ url/*
 /tramp
 /clang-complete
 skewer-cache
+
+jabber-history/*
