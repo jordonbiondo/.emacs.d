@@ -535,10 +535,10 @@
           slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
   :ensure t)
 
-
-(use-package exec-path-from-shell
-  :init (exec-path-from-shell-initialize)
-  :ensure t)
+(when (OSX)
+  (use-package exec-path-from-shell
+    :init (exec-path-from-shell-initialize)
+    :ensure t))
 
 
 (use-package rust-mode
