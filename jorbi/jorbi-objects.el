@@ -61,6 +61,14 @@
 
 (<<! (new object) :str)
 
+(listp t)
+nil
+(listp nil)
+t
+
+
+
+
 
 (defproto point2D
   ({ :x 0 :y 0
@@ -74,15 +82,24 @@
 			     :x (+ (<< this :x ) (<< other :x ))
 			     :y (+ (<< this :y ) (<< other :y ))))
      
-     :++ (lambda (other) (new point2D
-			      :x (- (<< this :x ) (<< other :x ))
-			      :y (- (<< this :y ) (<< other :y ))))
-     :foo 3
+     :- (lambda (other) (new point2D
+			     :x (- (<< this :x ) (<< other :x ))
+			     :y (- (<< this :y ) (<< other :y ))))
      }))
 
 
+(let ((a (new point2D :x 9 :y 3) )
+      (b (new point2D :x 10 :y 4)))
+  (setq a (<<! a :+ b))
+  (>> a :x (1+ (<< a :x )))
+  (<<! (<<! a :- b ) :str))
 
-(<<! (<<! (new point2D :x 9 :y 3) :- (new point2D :x 10 :y 4)) :str)
+
+
+
+
+ 
+
 
 (<<! (new point2D :x 9 :y 3) :++ ({ :x 3 :y 4 }))
 ;; (<<! (new point3D 3 9) :length)

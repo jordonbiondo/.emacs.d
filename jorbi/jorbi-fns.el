@@ -1,3 +1,8 @@
+(defun indent-buffer () 
+  "Indent the whole buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
 (defmacro add-keywords (mode &rest keywords)
   "Add KEYWORDS to font-lock for MODE."
   (declare (indent defun))
