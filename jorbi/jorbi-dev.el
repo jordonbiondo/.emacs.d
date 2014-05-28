@@ -39,7 +39,7 @@ Defines:
        :keymap ,(intern (concat name "-dev-mode-map"))
        :global t
        (let ((dev/on-off (if ,(intern (concat name "-dev-mode")) t -1)))
-	 ,@body))
+         ,@body))
 
      (defmacro ,(intern (concat name "-do")) (&rest body)
        ,(concat "Execute body like `progn' if user is " name ".")

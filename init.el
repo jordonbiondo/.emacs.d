@@ -6,9 +6,9 @@
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
 ;; Version: 2.0.3
 ;; Package-Requires: ()
-;; Last-Updated: Sun Oct 27 13:09:28 2013 (-0400)
+;; Last-Updated: Tue May 27 21:47:30 2014 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 13
+;;     Update #: 24
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
 ;; Compatibility:
@@ -42,44 +42,62 @@
 
 (defvar jorbi/should-load-theme t)
 
-	       
+
+;; (defmacro ! (identifier &rest args)
+;;   (let* ((all (mapcar 'intern (split-string (symbol-name identifier) "\\." t)))
+;;          (first (car all))
+;;          (last (car (last all))))
+;;     (assert (not (and args (= 1 (length all)))) t "Error, attempting to call method on hash, rather than hash key.")
+;;     (if args
+;;         `(<<! (reduce (lambda (a b) (<< a b))  (cons ,first ',(butlast (cdr all)))) ',last ,@args)
+;;       `(reduce (lambda (a b) (<< a b))  (cons ,first ',(cdr all))))))
+
+
+;; (let ((a ({ 'b ({ 'c 3 'd 4 }) 'x ({ 'name "bob"
+;;          'y
+;;          (lambda (x) (concat (<< 'name) ": \"" x  " yay!\""))})})))
+;;   (! a.x.y "Foobar"))
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Initial setup
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defvar jordonp (or (equal (getenv "USER") "jordon")
-		    (equal (getenv "USERNAME") "jordon")))
+                    (equal (getenv "USERNAME") "jordon")))
 
-
-(mapcar (lambda(mode) (if (fboundp mode) (apply mode '(-1))))
-	'(tool-bar-mode
-	  menu-bar-mode
-	  scroll-bar-mode))
+(mapc (lambda(mode) (when (fboundp mode) (apply mode '(-1))))
+      '(tool-bar-mode
+        menu-bar-mode
+        scroll-bar-mode))
 
 (setq ring-bell-function #'ignore
-      inhibit-startup-screen t)
-
+      inhibit-startup-screen t
+      indent-tabs-mode nil)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up package.el and use-package for init
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
 (mapc (lambda(p) (push p load-path))
       '("~/.emacs.d/use-package/"
-	"~/.emacs.d/"))
+        "~/.emacs.d/other/quake-mode/"
+        "~/.emacs.d/other/"
+        "~/.emacs.d/jorbi/"
+        "~/.emacs.d/"))
 
-
-;; package setup
 (require 'use-package)
+(font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
+(font-lock-add-keywords 'lisp-interaction-mode use-package-font-lock-keywords)
 (require 'package)
-
 
 ;; common lisp
 (use-package cl-lib)
 
-
-
 ;;(load-library "~/.emacs.d/package.el")
 (mapc (lambda(p) (push p package-archives))
       '(;;("marmalade" . "http://marmalade-repo.org/packages/")
-	("melpa" . "http://melpa.milkbox.net/packages/")))
+        ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-refresh-contents)
 (package-initialize)
 
@@ -112,7 +130,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-	       
+
 ;;(use-package ample-theme
 ;;  :defer (not jorbi/should-load-theme)
 ;;  :if jorbi/should-load-theme
@@ -122,7 +140,29 @@
   :ensure t)
 
 (use-package dash ;; list lib
-  :ensure t) 
+  :ensure t)
+
+(use-package jabber
+  :config (progn
+            (setq jabber-roster-line-format " %a %c %-25n %S"
+                  jabber-use-sasl nil
+                  jabber-history-enabled t
+                  jabber-use-global-history nil
+                  jabber-backlog-number 40
+                  jabber-backlog-days 30)
+            (add-hook 'jabber-chat-mode 'visual-line-mode)
+            (use-package jorbi-jabber
+              :config (progn
+                        (add-hook 'jabber-alert-message-hooks
+                                  'jorbi-jabber/toast-notification)
+                        (add-hook 'jabber-alert-message-hooks
+                                  'jorbi-jabber/send-mail-notification)))
+
+            (global-set-key (kbd "C-c u i") 'jabber-chat-with)
+            (global-set-key (kbd "C-c u u") 'jabber-display-roster)
+            (setq jabber-chat-buffer-format "Chat: %n"))
+
+  :ensure t)
 
 (use-package ace-jump-mode
   :bind ("C-c <SPC>" . ace-jump-mode)
@@ -130,7 +170,19 @@
 
 
 (use-package multiple-cursors
-  :bind (("C-c m" . mc/mark-next-like-this))
+  :config (progn (defun jorbi/mc/mark-until-line-change (&optional up)
+                   (interactive "P")
+                   (unless (save-excursion
+                             (let ((col (current-column)))
+                               (forward-line (if up -1 1))
+                               (move-to-column col))
+                             (looking-at "\\( +\\| *$\\)"))
+                     (when up (next-line -1)) (mc/mark-next-lines 1) (jorbi/mc/mark-until-line-change up)))
+
+                 (push 'jorbi/mc/mark-until-line-change mc/cmds-to-run-once))
+
+  :bind (("C-c m" . mc/mark-next-like-this)
+         ("C-c C-m" . jorbi/mc/mark-until-line-change))
   :ensure t)
 
 
@@ -142,9 +194,9 @@
 (use-package python
   :mode ("\\<SConstruct\\>$" . python-mode)
   :config (progn
-	    (use-package elpy
-	      :config (elpy-enable)
-	      :ensure t)))
+            (use-package elpy
+              :config (elpy-enable)
+              :ensure t)))
 
 
 (use-package cmake-mode
@@ -154,19 +206,23 @@
 
 
 (use-package switch-window
+  :config (setq switch-window-shortcut-style 'qwerty
+                switch-window-qwerty-shortcuts
+                '("a" "w" "e" "f" "j" "i" "o" ";" "s" "d" "k" "l"))
+
   :ensure t)
 
 
 (use-package smex
   :bind (("M-x" . smex)
-	 ("C-c M-x" . execute-extended-command))
+         ("C-c M-x" . execute-extended-command))
   :ensure t)
 
 
 (use-package magit
   :bind ("C-x m" . magit-status)
   :config (when (eq system-type 'darwin)
-	    (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
   :ensure t)
 
 (use-package w3m
@@ -176,111 +232,114 @@
 (use-package gh
   :ensure t)
 
-(use-package oddmuse
-  :config (add-hook 'oddmuse-mode-hook
-                    (lambda ()
-                      (unless (string-match "question" oddmuse-post)
-                        (when (string-match "EmacsWiki" oddmuse-wiki)
-                          (setq oddmuse-post (concat "uihnscuskc=1;" oddmuse-post)))
-                        (when (string-match "OddmuseWiki" oddmuse-wiki)
-                          (setq oddmuse-post (concat "ham=1;" oddmuse-post))))))
-  :ensure t)
-
-
 (use-package helm
   :ensure t)
 
 (use-package powerline
   :config (progn
-	    (defun jordon-point-progress (length)
-	      (let ((p-count (round (* (/ (float (point))
-					  (float (point-max))) length))))
-		(concat  (make-string p-count ?.)
-			 (make-string (- length p-count) ? ) "|")))
-	    (defun powerline-jordon-theme ()
-	      "Setup a nano-like mode-line."
-	      (interactive)
-	      (setq-default mode-line-format
-			    '("%e"
-			      (:eval
-			       (let* ((active (powerline-selected-window-active))
-				      (lhs (list (powerline-raw
-						  (format " |%s| %d minors |%s" mode-name
-							  (length (enabled-important-minor-modes (current-buffer)))
-							  (jordon-point-progress 10)
-							  nil 'l))))
-				      (rhs (list (if (not (buffer-file-name))
-						     "(-■_■)   "
-						   (if (buffer-modified-p)
-						       (powerline-raw "(╯°□°)╯<( SAVE! )" nil 'r)
-						     (powerline-raw   "( °u°)           " nil 'r)))))
-				      (center (list (powerline-raw "%b" nil))))
-				 (concat (powerline-render lhs)
-					 (powerline-fill-center nil (/ (powerline-width center) 2.0))
-					 (powerline-render center)
-					 (powerline-fill nil (powerline-width rhs))
-					 (powerline-render rhs)))))))
-	    (powerline-jordon-theme))
+            (defun jordon-point-progress (length)
+              (let ((p-count (round (* (/ (float (point))
+                                          (float (point-max))) length))))
+                (concat  (make-string p-count ?.)
+                         (make-string (- length p-count) ? ) "|")))
+            (defun powerline-jordon-theme ()
+              "Setup a nano-like mode-line."
+              (interactive)
+              (setq-default mode-line-format
+                            '("%e"
+                              (:eval
+                               (let* ((active (powerline-selected-window-active))
+                                      (lhs (list (powerline-raw
+                                                  (format " |%s| %d minors |%s" mode-name
+                                                          (length (enabled-important-minor-modes (current-buffer)))
+                                                          (jordon-point-progress 10)
+                                                          nil 'l))))
+                                      (rhs (list (if (not (buffer-file-name))
+                                                     "(-■_■)   "
+                                                   (if (buffer-modified-p)
+                                                       (powerline-raw "(╯°□°)╯<( SAVE! )" nil 'r)
+                                                     (powerline-raw   "( °u°)           " nil 'r)))))
+                                      (center (list (powerline-raw "%b" nil))))
+                                 (concat (powerline-render lhs)
+                                         (powerline-fill-center nil (/ (powerline-width center) 2.0))
+                                         (powerline-render center)
+                                         (powerline-fill nil (powerline-width rhs))
+                                         (powerline-render rhs)))))))
+            (powerline-jordon-theme))
+
   :ensure t)
 
+(use-package imenu-anywhere
+  :config (progn
+            (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
+              (pulse-momentary-highlight-one-line (point))))
+  :ensure t)
 
 (use-package rainbow-mode
   :ensure t)
 
-
 (use-package key-chord
   :config (progn
-	    
-	    (key-chord-mode t)
-	    (setq key-chord-two-keys-delay .020
-		  key-chord-one-key-delay .025)
-	    
-	    (dolist (binding
-		     `((" o" . next-multiframe-window)
-		       (" i" . previous-multiframe-window)
-		       (" f" . ido-find-file)
-		       (" l" . ibuffer)
 
-		       (" m" . magit)
+            (key-chord-mode t)
 
-		       (" e" . er/expand-region)
+            ;; short waits
+            (setq key-chord-two-keys-delay .020
+                  key-chord-one-key-delay .030)
 
-		       (" q" . quake-mode)
+            ;; jordon-dev-mode chords
+            (dolist (binding
+                     `((" i" . previous-multiframe-window)
+                       (" o" . next-multiframe-window)
+                       ("jf" . switch-window)
+                       (" l" . ibuffer)
 
-		       (" 0" . delete-window)
-		       (" 1" . delete-other-windows)
-		       (" 2" . split-window-below)
-		       (" 3" . split-window-right)
-		       (" =" . winstack-push)
-		       (" -" . winstack-pop)
+                       (" m" . magit-status)
 
-		       (" w" . whitespace-mode)
+                       (" e" . er/expand-region)
 
-		       ("ji" . undo-tree-undo)
-		       ("jo" . undo-tree-redo)
-		       ("jk" . undo-tree-switch-branch)
-		       ("j;" . undo-tree-visualize)
+                       (" q" . quake-mode)
 
-		       (" b" . ido-switch-buffer)
-		       (" s" . save-buffer)
+                       (" 0" . delete-window)
+                       (" 1" . delete-other-windows)
+                       (" 2" . split-window-below)
+                       (" 3" . split-window-right)
+                       (" =" . winstack-push)
+                       (" -" . winstack-pop)
 
-		       (" x" . shell)
+                       (" w" . whitespace-mode)
 
-		       (" \\". jorbi/toggle-comment)
+                       ("ji" . undo-tree-undo)
+                       ("jo" . undo-tree-redo)
+                       ("jk" . undo-tree-switch-branch)
+                       ("j;" . undo-tree-visualize)
 
-		       ("nw" . jabber-display-roster)
-		       ("ne" . jabber-chat-with)
+                       (" b" . ido-switch-buffer)
+                       (" f" . ido-find-file)
+                       (" s" . save-buffer)
 
-		       ("nv" . jorbi/find-init-file)
+                       (" x" . shell)
 
-		       (" r" . recompile)))
-	      (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
+                       (" \\". jorbi/toggle-comment)
+
+                       ("nw" . jabber-display-roster)
+                       ("ne" . jabber-chat-with)
+
+                       ("nv" . jorbi/find-init-file)
+
+                       ("io" . imenu-anywhere)
+
+                       (" r" . recompile)))
+              (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
+
   :ensure t)
-
 
 (use-package auto-indent-mode
   :init (progn
-	  (add-hook 'cc-mode-hook 'auto-indent-mode))
+          (add-hook 'prog-mode-hook 'auto-indent-mode)
+          (add-hook 'prog-mode-hook (defun indent-tabs-mode-off ()
+                                      (interactive)
+                                      (setq indent-tabs-mode nil))))
   :ensure t)
 
 
@@ -290,13 +349,10 @@
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
-  :config (progn
-	    (dolist (binding
-                     `(("hj" . undo-tree-undo)
-		       ("hk" . undo-tree-redo)
-		       ("hl" . undo-tree-switch-branch)
-		       ("h;" . undo-tree-visualize)))
-              (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
+  :bind (("C-c j" . undo-tree-undo)
+         ("C-c k" . undo-tree-redo)
+         ("C-c l" . undo-tree-switch-branch)
+         ("C-c ;" . undo-tree-visualize))
   :ensure t)
 
 
@@ -307,52 +363,135 @@
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
   :config (progn
-	    (use-package skewer-mode
-	      :config (progn (skewer-setup)
-			     (add-hook 'web-mode-hook 'skewer-mode))
-	      :ensure t))
+            (use-package skewer-mode
+              :config (progn (skewer-setup)
+                             (add-hook 'web-mode-hook 'skewer-mode))
+              :ensure t)
+
+            (defun web-indirect-this-thing()
+              (interactive)
+              (let ((beg 0) (end 0))
+                (save-excursion
+                  (setq beg (progn (web-mode-forward-sexp -1)
+                                   (call-interactively 'web-mode-tag-end)
+                                   (point)))
+                  (setq end (progn  (web-mode-forward-sexp 1)
+                                    (point))))
+                (indirect-region beg end))))
   :ensure t)
+
+
+
+(use-package edit-server
+  :config (edit-server-start)
+  :ensure t)
+
+;; (use-package d-mode
+;;   :init (progn (add-to-list 'exec-path "C:/D/dmd2/windows/bin")
+;;                (add-to-list 'exec-path "C:/Users/jordon.biondo/src/DCD"))
+;;   :config (progn (require 'ac-dcd)
+;;                  (add-to-list 'ac-modes 'd-mode)
+;;                  (defun ac-d-mode-setup ()
+;;                    (setq ac-sources (append '(ac-source-dcd) ac-sources))
+;;                    (global-auto-complete-mode t))
+;;                  (add-hook 'd-mode-hook 'ac-d-mode-setup))
+;;   :ensure t)
+
+(use-package csharp-mode
+  :init (add-to-list 'c-default-style
+                     (cons 'csharp-mode "c#"))
+  :config (progn
+            (add-hook 'csharp-mode-hook 'hs-minor-mode)
+            (add-hook 'csharp-mode-hook 'toggle-truncate-lines)
+            (add-hook 'csharp-mode-hook (lambda () (setq c-basic-offset 4
+                                                         indent-tabs-mode nil)))
+
+            (font-lock-add-keywords 'csharp-mode
+                                    '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
+
+  :ensure t)
+
+(use-package omnisharp
+  :bind (("M-i" . jorbi/omnisharp-go-to-definition-smart)
+         ("M-m" . omnisharp-find-usages))
+  :config (progn
+
+            (setq omnisharp-eldoc-support t)
+            (add-hook 'csharp-mode-hook 'eldoc-mode)
+
+            (defun jorbi/omnisharp-go-to-definition-smart (&optional force-ow)
+              (interactive "P")
+              (let* ((json-result (omnisharp-post-message-curl-as-json
+                                   (concat (omnisharp-get-host) "gotodefinition")
+                                   (omnisharp--get-common-params)))
+                     (filename (cdr (assoc 'FileName json-result))))
+                (if (null filename)
+                    (message "Cannot go to definition as none was returned by the API.")
+                  (omnisharp-go-to-file-line-and-column
+                   json-result
+                   (or force-ow (not (equal (omnisharp--convert-backslashes-to-forward-slashes filename)
+                                            (buffer-file-name)))))
+                  (pulse-momentary-highlight-one-line (point)))))
+
+            (defun jorbi/reload-csharp-buffers ()
+              "Restart csharp on all csharp buffers."
+              (interactive)
+              (dolist (b (buffer-list))
+                (with-current-buffer b
+                  (when (eql major-mode 'csharp-mode)
+                    (csharp-mode)))))
+
+            (use-package company
+              :config (progn
+                        (add-to-list 'company-backends 'company-omnisharp)
+                        (add-hook 'csharp-mode-hook 'company-mode))
+              :ensure t)
+            (add-hook 'csharp-mode-hook 'omnisharp-mode))
+  :ensure t)
+
+
+
 
 (use-package flycheck
   :config (progn
-	    (add-hook 'c-mode-hook 'flycheck-mode)
-	    (add-hook 'c++-mode-hook 'flycheck-mode))
+            (add-hook 'c-mode-hook 'flycheck-mode)
+            (add-hook 'c++-mode-hook 'flycheck-mode))
   :ensure t)
 
 (use-package auto-complete
   :config (progn
-	    (require 'auto-complete-config)
-	    (add-to-list 'ac-modes 'slime-repl-mode)
-	    (add-to-list 'ac-modes 'js2-mode)
-	    (add-to-list 'ac-modes 'js-mode)
-	    (ac-config-default)
-	    (global-auto-complete-mode t)
+            (require 'auto-complete-config)
+            (add-to-list 'ac-modes 'slime-repl-mode)
+            (add-to-list 'ac-modes 'js2-mode)
+            (add-to-list 'ac-modes 'js-mode)
+            (ac-config-default)
+            (global-auto-complete-mode t)
 
-	    (use-package auto-complete-clang-async
-	      :config (if (file-exists-p "~/.emacs.d/clang-complete")
-			  (progn
-			    (defun ac-cc-mode-setup ()
-			      (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
-			      (setq ac-sources '(ac-source-clang-async))
-			      (ac-clang-launch-completion-process))
+            (use-package auto-complete-clang-async
+              :config (if (file-exists-p "~/.emacs.d/clang-complete")
+                          (progn
+                            (defun ac-cc-mode-setup ()
+                              (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
+                              (setq ac-sources '(ac-source-clang-async))
+                              (ac-clang-launch-completion-process))
 
-			    (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-			    (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-			    (global-auto-complete-mode t))
-			(message "no clang-complete found"))
-	      :if (file-exists-p "~/.emacs.d/clang-complete")
-	      :ensure t))
+                            (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+                            (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+                            (global-auto-complete-mode t))
+                        (message "no clang-complete found"))
+              :if (file-exists-p "~/.emacs.d/clang-complete")
+              :ensure t))
   :ensure t)
 
 (use-package jabber
   :config (progn
-	    (setq jabber-account-list `("jordonb@chat.facebook.com")))
+            (setq jabber-account-list `("jordonb@chat.facebook.com")))
   :ensure t)
 
 (use-package enh-ruby-mode
   :config (progn
-	    (require 'auto-complete)
-	    (add-to-list 'ac-modes 'enh-ruby-mode))
+            (require 'auto-complete)
+            (add-to-list 'ac-modes 'enh-ruby-mode))
   :ensure t)
 
 (use-package rsense
@@ -370,7 +509,7 @@
             (use-package ac-js2 :ensure t)
             (use-package js2-refactor :ensure t)
             (use-package slime-js
-	      :defer t
+              :defer t
               :config (progn
                         (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
                         (slime-setup '(slime-repl slime-js)))
@@ -388,9 +527,9 @@
     (add-hook 'slime-mode-hook 'set-up-slime-ac)
     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
     (setq slime-protocol-version 'ignore
-	  slime-net-coding-system 'utf-8-unix
-	  slime-complete-symbol*-fancy t
-	  slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
+          slime-net-coding-system 'utf-8-unix
+          slime-complete-symbol*-fancy t
+          slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
   :ensure t)
 
 
@@ -402,13 +541,14 @@
 (use-package rust-mode
   :mode ("\\.rs$" . rust-mode)
   :config (progn
-	    ;; indent with 2 spaces
-	    (setq rust-indent-offset 2) )
+            ;; indent with 2 spaces
+            (setq rust-indent-offset 2) )
   :defer t
   :ensure t)
 
 
 (use-package paredit
+  :config (add-hook 'paredit-space-for-delimiter-predicates (lambda(&rest args) (not (equal major-mode 'csharp-mode))))
   :ensure t)
 
 
@@ -427,56 +567,70 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package pulse
+  :config (progn (setq pulse-iterations 7
+                       pulse-delay .01)))
+
+(use-package savehist
+  :config (savehist-mode t))
+
+
+(use-package hideshow
+  :config (progn)
+  :bind ("C-c h" . hs-toggle-hiding))
+
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
          ("C-c s b" . ispell-buffer)))
 
 (use-package lisp-mode
-  :config (progn))
-  
+  :config (progn
+            (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+            (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
+
 
 (use-package cc-mode
-  :init (defun c-maybe-insert-semicolon()
-          "Insert a semicolon a the end of a line only if there isn't one."
-          (interactive)
-          (if (looking-at ";$")
-              (forward-char 1)
-            (call-interactively 'self-insert-command)))
-  :bind (";" . c-maybe-insert-semicolon)
   :config (progn
             (font-lock-add-keywords
              'c-mode
              '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
-               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources)
-	    ))
-	    
+               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
+
+            (defun c-maybe-insert-semicolon()
+              "Insert a semicolon a the end of a line only if there isn't one."
+              (interactive)
+              (if (looking-at ";$")
+                  (forward-char 1)
+                (call-interactively 'self-insert-command)))
+
+            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
 
 
 (use-package autoinsert
   :init (progn (auto-insert-mode t)
-	       (setq auto-insert-prompt "insert %s? ")))
+               (setq auto-insert-prompt "insert %s? ")))
 
 
 (use-package ido
   :init
   (progn (ido-everywhere t)
-	 (ido-mode t)))
+         (ido-mode t)))
 
 
 (use-package erc
   :defer t
   :config (progn (setq erc-hide-list '("JOIN" "PART" "QUIT")
-		       erc-nick "jordonbiondo"
-		       erc-port 6665
-		       erc-server "irc.freenode.net")))
+                       erc-nick "jordonbiondo"
+                       erc-port 6665
+                       erc-server "irc.freenode.net")))
 
 
 (use-package ediff
   :defer t
   :config (progn
-	    (setq ediff-split-window-function 'split-window-horizontally)
-	    (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
+            (setq ediff-split-window-function 'split-window-horizontally)
+            (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
 
 
 (use-package compile
@@ -487,48 +641,63 @@
 (use-package org
   :defer t
   :config (progn
-	    (mapcar*
-	     (lambda (pair) (set-face-attribute
-			     (car pair) nil :height
-			     (round (*  (face-attribute 'default :height) (cdr pair)))))
-	     '((org-level-1 . 2.0)
-	       (org-level-2 . 1.6)
-	       (org-level-3 . 1.4)
-	       (org-level-4 . 1.2)
-	       (org-level-5 . 1.1)))
+            (mapcar*
+             (lambda (pair) (set-face-attribute
+                             (car pair) nil :height
+                             (round (*  (face-attribute 'default :height) (cdr pair)))))
+             '((org-level-1 . 2.0)
+               (org-level-2 . 1.6)
+               (org-level-3 . 1.4)
+               (org-level-4 . 1.2)
+               (org-level-5 . 1.1)))
 
-	    (setq org-confirm-elisp-link-function	nil
-		  org-export-html-postamble		nil
-		  org-export-html-date-format-string "%d %B %Y"
-		  org-export-html-preamble-format `(("en" "%a : %d")))
-		  
-	    
-	    (use-package org-latex
-	      :config (progn
-			(setq org-export-latex-listings 'minted)
-			(add-to-list 'org-export-latex-packages-alist '("" "minted"))
-			(setq org-src-fontify-natively t)
-			(put 'erase-buffer 'disabled nil)))
-
-	    (use-package org-bullets
-	      :config (progn
-
-			(setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
-			(autoload 'org-bullets-mode "org-bullets-mode" nil t)
-			(add-hook 'org-mode-hook 'org-bullets-mode))
-	      :ensure t)))
+            (setq org-confirm-elisp-link-function nil
+                  org-export-html-postamble  nil
+                  org-export-html-date-format-string "%d %B %Y"
+                  org-export-html-preamble-format `(("en" "%a : %d")))
 
 
+            (use-package org-latex
+              :config (progn
+                        (setq org-export-latex-listings 'minted)
+                        (add-to-list 'org-export-latex-packages-alist '("" "minted"))
+                        (setq org-src-fontify-natively t)
+                        (put 'erase-buffer 'disabled nil)))
+
+            (use-package org-bullets
+              :config (progn
+
+                        (setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
+                        (autoload 'org-bullets-mode "org-bullets-mode" nil t)
+                        (add-hook 'org-mode-hook 'org-bullets-mode))
+              :ensure t)))
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; personal custom stuff
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(push "~/.emacs.d/jorbi/" load-path)
+(push "/usr/local/bin/" exec-path)
+
+(use-package jorbi-fns
+  :config (add-hook 'before-save-hook 'jorbi/holy-buffer-cleanse))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom stuff
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ahk-syntax-directory "/Program Files (x86)/AutoHotkey/Extras/Editors/Syntax")
  '(custom-safe-themes t)
  '(ido-everywhere t)
  '(jordon-dev-mode t)
  '(js2-basic-offset 2)
+ '(send-mail-function (quote smtpmail-send-it))
  '(quake-mode t)
  '(winner-mode t))
 
@@ -540,9 +709,10 @@
  )
 
 
-(defun align-after-thing (beg end)
-  (interactive "r")
-  (align-regexp beg end (format "%s\\(\\s-*\\)" (read-string "Align After: "))1 1 t))
+(defun align-after-thing (beg end str)
+  "Inside region BEG END, Align text after STR."
+  (interactive "r\nsAlign After: ")
+  (align-regexp beg end (format "%s\\(\\s-*\\)" str)1 1 t))
 
 
 ;;---------------------------------------------------------------------------
@@ -557,18 +727,18 @@ Use `winstack-push' and
   "Push the current window configuration onto `winstack-stack'."
   (interactive)
   (if (and (window-configuration-p (first winstack-stack))
-	   (compare-window-configurations (first winstack-stack) (current-window-configuration)))
+           (compare-window-configurations (first winstack-stack) (current-window-configuration)))
       (message "Current config already pushed")
     (progn (push (current-window-configuration) winstack-stack)
-	   (message (concat "pushed " (number-to-string
-				       (length (window-list (selected-frame)))) " frame config")))))
+           (message (concat "pushed " (number-to-string
+                                       (length (window-list (selected-frame)))) " frame config")))))
 
 (defun winstack-pop()
   "Pop the last window configuration off `winstack-stack' and apply it."
   (interactive)
   (if (first winstack-stack)
       (progn (set-window-configuration (pop winstack-stack))
-	     (message "popped"))
+             (message "popped"))
     (message "End of window stack")))
 
 
@@ -614,4 +784,4 @@ Use `winstack-push' and
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
-(put 'erc-remove-text-properties-region 'disabled nil)
+
