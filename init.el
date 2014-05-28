@@ -676,15 +676,6 @@
               :ensure t)))
 
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; personal custom stuff
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(push "~/.emacs.d/jorbi/" load-path)
-(push "/usr/local/bin/" exec-path)
-
-(use-package jorbi-fns
-  :config (add-hook 'before-save-hook 'jorbi/holy-buffer-cleanse))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom stuff
