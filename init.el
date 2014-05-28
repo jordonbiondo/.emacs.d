@@ -234,42 +234,14 @@
 (use-package helm
   :ensure t)
 
-(use-package powerline
-  :config (progn
-            (defun jordon-point-progress (length)
-              (let ((p-count (round (* (/ (float (point))
-                                          (float (point-max))) length))))
-                (concat  (make-string p-count ?.)
-                         (make-string (- length p-count) ? ) "|")))
-            (defun powerline-jordon-theme ()
-              "Setup a nano-like mode-line."
-              (interactive)
-              (setq-default mode-line-format
-                            '("%e"
-                              (:eval
-                               (let* ((active (powerline-selected-window-active))
-                                      (lhs (list (powerline-raw
-                                                  (format " |%s| %d minors |%s" mode-name
-                                                          (length (enabled-important-minor-modes (current-buffer)))
-                                                          (jordon-point-progress 10)
-                                                          nil 'l))))
-                                      (rhs (list (if (not (buffer-file-name))
-                                                     "(-■_■)   "
-                                                   (if (buffer-modified-p)
-                                                       (powerline-raw "(╯°□°)╯<( SAVE! )" nil 'r)
-                                                     (powerline-raw   "( °u°)           " nil 'r)))))
-                                      (center (list (powerline-raw "%b" nil))))
-                                 (concat (powerline-render lhs)
-                                         (powerline-fill-center nil (/ (powerline-width center) 2.0))
-                                         (powerline-render center)
-                                         (powerline-fill nil (powerline-width rhs))
-                                         (powerline-render rhs)))))))
-            (powerline-jordon-theme))
 (use-package sublimity
   :config (use-package sublimity-scroll
             :config (sublimity-global-mode t))
   :ensure t)
 
+(use-package powerline
+  :config  (use-package jorbi-powerline
+             :config (setq-default mode-line-format jorbi/powerline-format))
   :ensure t)
 
 (use-package imenu-anywhere
