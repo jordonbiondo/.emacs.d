@@ -266,6 +266,10 @@
                                          (powerline-fill nil (powerline-width rhs))
                                          (powerline-render rhs)))))))
             (powerline-jordon-theme))
+(use-package sublimity
+  :config (use-package sublimity-scroll
+            :config (sublimity-global-mode t))
+  :ensure t)
 
   :ensure t)
 
