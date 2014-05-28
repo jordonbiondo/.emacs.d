@@ -12,7 +12,9 @@
 	c-electric-slash
 	c-electric-star
 	c-indent-line-or-region
+	c-maybe-insert-semicolon
 	dabbrev-expand
+	eval-print-last-sexp
 	indent-for-tab-command
 	jorbi/toggle-comment-line
 	org-cycle
