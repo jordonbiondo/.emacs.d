@@ -18,3 +18,10 @@ skewer-cache
 /games/snake-scores
 /games/snake-scores.lockfile
 /request/curl-cookie-jar
+/.litable-lists.el
+/semanticdb/!Applications!Xcode.app!Contents!Developer!Platforms!MacOSX.platform!Developer!SDKs!MacOSX10.8.sdk!usr!include!sys!semantic.cache
+/semanticdb/!Users!jordon!src!scratchpad!semantic.cache
+/srecode-map.el
+/timelog
+/timelog~
+/var/pcache/gh/gh-gist-api/jordonbiondo
