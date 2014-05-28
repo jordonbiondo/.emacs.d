@@ -1,3 +1,9 @@
+(defmacro Windows ()
+  `(equal system-type 'windows-nt))
+
+(defmacro OSX ()
+  `(equal system-type 'darwin))
+
 (defsubst seconds (n)
   "N seconds to time object."
   (seconds-to-time n))
