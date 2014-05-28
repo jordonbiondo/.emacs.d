@@ -131,11 +131,9 @@
 
 
 
-;;(use-package ample-theme
-;;  :defer (not jorbi/should-load-theme)
-;;  :if jorbi/should-load-theme
-;;  :ensure t)
-;;
+(use-package ample-theme
+  :ensure t)
+
 (use-package s ;; string lib
   :ensure t)
 
