@@ -39,8 +39,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
+
+(defvar jorbi/should-load-theme t)
+
+	       
 (defvar jordonp (or (equal (getenv "USER") "jordon")
 		    (equal (getenv "USERNAME") "jordon")))
+
 
 (mapcar (lambda(mode) (if (fboundp mode) (apply mode '(-1))))
 	'(tool-bar-mode
@@ -70,9 +75,10 @@
 (use-package cl-lib)
 
 
+
 ;;(load-library "~/.emacs.d/package.el")
 (mapc (lambda(p) (push p package-archives))
-      '(("marmalade" . "http://marmalade-repo.org/packages/")
+      '(;;("marmalade" . "http://marmalade-repo.org/packages/")
 	("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-refresh-contents)
 (package-initialize)
@@ -92,15 +98,26 @@
   :config (jordon-dev-mode t))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hosted packages
+;; Command Lines Args
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package commander
   :ensure t)
 
-(use-package ample-theme
-  :ensure t)
+;;(commander
+;; (option "--no-theme" "Do not load theme" (lambda (&rest args) )
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hosted packages
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+	       
+;;(use-package ample-theme
+;;  :defer (not jorbi/should-load-theme)
+;;  :if jorbi/should-load-theme
+;;  :ensure t)
+;;
 (use-package s ;; string lib
   :ensure t)
 
@@ -215,15 +232,48 @@
   :config (progn
 	    
 	    (key-chord-mode t)
+	    (setq key-chord-two-keys-delay .020
+		  key-chord-one-key-delay .025)
 	    
-	    ;; short waits
-	    (setq key-chord-two-keys-delay .025
-		  key-chord-one-key-delay .035)
-	    
-	    ;; jordon-dev-mode chords
 	    (dolist (binding
-		     `((" i" . previous-multiframe-window)
-		       (" o" . next-multiframe-window)))
+		     `((" o" . next-multiframe-window)
+		       (" i" . previous-multiframe-window)
+		       (" f" . ido-find-file)
+		       (" l" . ibuffer)
+
+		       (" m" . magit)
+
+		       (" e" . er/expand-region)
+
+		       (" q" . quake-mode)
+
+		       (" 0" . delete-window)
+		       (" 1" . delete-other-windows)
+		       (" 2" . split-window-below)
+		       (" 3" . split-window-right)
+		       (" =" . winstack-push)
+		       (" -" . winstack-pop)
+
+		       (" w" . whitespace-mode)
+
+		       ("ji" . undo-tree-undo)
+		       ("jo" . undo-tree-redo)
+		       ("jk" . undo-tree-switch-branch)
+		       ("j;" . undo-tree-visualize)
+
+		       (" b" . ido-switch-buffer)
+		       (" s" . save-buffer)
+
+		       (" x" . shell)
+
+		       (" \\". jorbi/toggle-comment)
+
+		       ("nw" . jabber-display-roster)
+		       ("ne" . jabber-chat-with)
+
+		       ("nv" . jorbi/find-init-file)
+
+		       (" r" . recompile)))
 	      (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
   :ensure t)
 
