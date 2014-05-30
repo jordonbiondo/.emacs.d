@@ -660,20 +660,8 @@
  ;; If there is more than one, they won't work right.
  '(ahk-syntax-directory "/Program Files (x86)/AutoHotkey/Extras/Editors/Syntax")
  '(custom-safe-themes t)
- '(ido-everywhere t)
- '(jordon-dev-mode t)
- '(js2-basic-offset 2)
  '(send-mail-function (quote smtpmail-send-it))
- '(quake-mode t)
- '(winner-mode t))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
+ '(quake-mode t))
 
 (defun align-after-thing (beg end str)
   "Inside region BEG END, Align text after STR."
@@ -709,7 +697,7 @@ Use `winstack-push' and
 
 
 (defun osx-copy-region(beg end)
-  "no longer very unsafe!"
+  "Stick the region on yer pastin' board."
   (interactive "r")
   (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
 
