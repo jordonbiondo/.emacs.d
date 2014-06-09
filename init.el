@@ -299,6 +299,8 @@
                        ("nw" . jabber-display-roster)
                        ("ne" . jabber-chat-with)
 
+                       ("hf" . helm-do-grep)
+
                        ("nv" . jorbi/find-init-file)
 
                        ("io" . imenu-anywhere)
@@ -306,6 +308,9 @@
                        (" r" . recompile)))
               (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
 
+  :ensure t)
+
+(use-package projectile
   :ensure t)
 
 (use-package auto-indent-mode
@@ -467,6 +472,14 @@
             (require 'auto-complete)
             (add-to-list 'ac-modes 'enh-ruby-mode))
   :ensure t)
+
+(use-package robe
+  :config (progn
+            (push 'company-robe company-backends)
+            
+            )
+  :ensure t)
+
 
 (use-package rsense
   :ensure t)
