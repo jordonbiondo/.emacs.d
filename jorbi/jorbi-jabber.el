@@ -35,7 +35,7 @@
       (erase-buffer)
       (setq jabber-roster-ewoc nil)
       (when jabber-roster-show-title
-        (insert (jabber-propertize "SALESPAD" 'face `(:inherit jabber-title-large :inherit font-lock-preprocessor-face)) "\n"))
+        (insert (jabber-propertize "chat" 'face `(:inherit jabber-title-large :inherit font-lock-preprocessor-face)) "\n"))
       (when jabber-roster-show-bindings
         (insert "RET      Open chat buffer        C-k      Delete roster item
 e        Edit item               s        Send subscription request
