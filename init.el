@@ -83,8 +83,7 @@
       '("~/.emacs.d/use-package/"
         "~/.emacs.d/other/quake-mode/"
         "~/.emacs.d/other/"
-        "~/.emacs.d/jorbi/"
-        "~/.emacs.d/"))
+        "~/.emacs.d/jorbi/"))
 
 (require 'use-package)
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
