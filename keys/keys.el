@@ -1,4 +1,4 @@
-(defmacro key (key)
+(defun key (key)
   (let* ((name (substring (symbol-name key) 1))
          (file (concat "~/.emacs.d/keys/" name)))
     (if (file-exists-p file)
