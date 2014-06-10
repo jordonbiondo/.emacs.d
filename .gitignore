@@ -33,3 +33,6 @@ jabber-history/*
 /roguel-ike-saves
 /history
 /%backup%~
+!.gitignore
+keys/*
+!keys/keys.el
