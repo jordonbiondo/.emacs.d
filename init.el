@@ -470,14 +470,17 @@
 (use-package enh-ruby-mode
   :config (progn
             (require 'auto-complete)
-            (add-to-list 'ac-modes 'enh-ruby-mode))
-  :ensure t)
+            (add-to-list 'ac-modes 'enh-ruby-mode)
 
-(use-package robe
-  :config (progn
-            (push 'company-robe company-backends)
-            
-            )
+            (use-package robe
+              :config (progn
+                        (eval-after-load 'company
+                          '(progn
+                             (push 'company-robe company-backends))))
+              :ensure t)
+
+            (use-package bundler
+              :ensure t))
   :ensure t)
 
 
