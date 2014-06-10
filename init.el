@@ -615,6 +615,10 @@
                        erc-port 6665
                        erc-server "irc.freenode.net")))
 
+(use-package pivotal-tracker
+  :config (progn
+            (setq pivotal-api-token (key :pivotal)))
+  :ensure t)
 
 (use-package ediff
   :defer t
