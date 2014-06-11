@@ -83,12 +83,15 @@
       '("~/.emacs.d/use-package/"
         "~/.emacs.d/other/quake-mode/"
         "~/.emacs.d/other/"
+        "~/.emacs.d/keys/"
         "~/.emacs.d/jorbi/"))
 
 (require 'use-package)
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
 (font-lock-add-keywords 'lisp-interaction-mode use-package-font-lock-keywords)
 (require 'package)
+
+(require 'keys)
 
 ;; common lisp
 (use-package cl-lib)
