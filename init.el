@@ -585,6 +585,10 @@
   :config (progn (setq pulse-iterations 7
                        pulse-delay .01)))
 
+(use-package eww
+  :config (progn
+            (add-hook 'eww-mode-hook (apply-partially 'toggle-truncate-lines 1))))
+
 (use-package savehist
   :config (savehist-mode t))
 
