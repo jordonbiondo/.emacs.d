@@ -42,7 +42,6 @@
 
 (defvar jorbi/should-load-theme t)
 
-
 ;; (defmacro ! (identifier &rest args)
 ;;   (let* ((all (mapcar 'intern (split-string (symbol-name identifier) "\\." t)))
 ;;          (first (car all))
@@ -52,12 +51,10 @@
 ;;         `(<<! (reduce (lambda (a b) (<< a b))  (cons ,first ',(butlast (cdr all)))) ',last ,@args)
 ;;       `(reduce (lambda (a b) (<< a b))  (cons ,first ',(cdr all))))))
 
-
 ;; (let ((a ({ 'b ({ 'c 3 'd 4 }) 'x ({ 'name "bob"
 ;;          'y
 ;;          (lambda (x) (concat (<< 'name) ": \"" x  " yay!\""))})})))
 ;;   (! a.x.y "Foobar"))
-
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Initial setup
@@ -103,11 +100,9 @@
 (package-refresh-contents)
 (package-initialize)
 
-
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; personal custom stuff
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (push "~/.emacs.d/jorbi/" load-path)
 (push "/usr/local/bin/" exec-path)
@@ -131,7 +126,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hosted packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 (use-package ample-theme
@@ -172,7 +166,6 @@
   :bind ("C-c <SPC>" . ace-jump-mode)
   :ensure t)
 
-
 (use-package multiple-cursors
   :config (progn (defun jorbi/mc/mark-until-line-change (&optional up)
                    (interactive "P")
@@ -189,11 +182,9 @@
          ("C-c C-m" . jorbi/mc/mark-until-line-change))
   :ensure t)
 
-
 (use-package expand-region
   :bind ("C-c e" . er/expand-region)
   :ensure t)
-
 
 (use-package python
   :mode ("\\<SConstruct\\>$" . python-mode)
@@ -202,12 +193,10 @@
               :config (elpy-enable)
               :ensure t)))
 
-
 (use-package cmake-mode
   :defer t
   :mode ("\\.cmake$" . cmake-mode)
   :ensure t)
-
 
 (use-package switch-window
   :config (setq switch-window-shortcut-style 'qwerty
@@ -216,12 +205,10 @@
 
   :ensure t)
 
-
 (use-package smex
   :bind (("M-x" . smex)
          ("C-c M-x" . execute-extended-command))
   :ensure t)
-
 
 (use-package magit
   :bind ("C-x m" . magit-status)
@@ -331,10 +318,8 @@
                                       (setq indent-tabs-mode nil))))
   :ensure t)
 
-
 (use-package header2
   :ensure t)
-
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
@@ -344,10 +329,8 @@
          ("C-c ;" . undo-tree-visualize))
   :ensure t)
 
-
 (use-package google-this
   :ensure t)
-
 
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
@@ -368,7 +351,6 @@
                                     (point))))
                 (indirect-region beg end))))
   :ensure t)
-
 
 
 (use-package edit-server
@@ -440,7 +422,6 @@
 
 
 
-
 (use-package flycheck
   :config (progn
             (add-hook 'c-mode-hook 'flycheck-mode)
@@ -499,7 +480,6 @@
               :ensure t))
   :ensure t)
 
-
 (use-package rsense
   :ensure t)
 
@@ -519,9 +499,8 @@
               :config (progn
                         (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
                         (slime-setup '(slime-repl slime-js)))
-              :ensure t))
+              :ensure nil))
   :ensure t)
-
 
 (use-package slime
   :config
@@ -543,7 +522,6 @@
     :init (exec-path-from-shell-initialize)
     :ensure t))
 
-
 (use-package rust-mode
   :mode ("\\.rs$" . rust-mode)
   :config (progn
@@ -552,16 +530,13 @@
   :defer t
   :ensure t)
 
-
 (use-package paredit
   :config (add-hook 'paredit-space-for-delimiter-predicates (lambda(&rest args) (not (equal major-mode 'csharp-mode))))
   :ensure t)
 
-
 (use-package rainbow-delimiters
   :config (global-rainbow-delimiters-mode t)
   :ensure t)
-
 
 (use-package markdown-mode
   :defer t
@@ -592,11 +567,9 @@
 (use-package savehist
   :config (savehist-mode t))
 
-
 (use-package hideshow
   :config (progn)
   :bind ("C-c h" . hs-toggle-hiding))
-
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
@@ -606,7 +579,6 @@
   :config (progn
             (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
             (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
-
 
 (use-package cc-mode
   :config (progn
@@ -624,17 +596,14 @@
 
             (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
 
-
 (use-package autoinsert
   :init (progn (auto-insert-mode t)
                (setq auto-insert-prompt "insert %s? ")))
-
 
 (use-package ido
   :init
   (progn (ido-everywhere t)
          (ido-mode t)))
-
 
 (use-package erc
   :defer t
@@ -654,11 +623,9 @@
             (setq ediff-split-window-function 'split-window-horizontally)
             (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
 
-
 (use-package compile
   :defer t
   :config (progn (setq compilation-scroll-output t)))
-
 
 (use-package org
   :defer t
@@ -678,7 +645,6 @@
                   org-export-html-date-format-string "%d %B %Y"
                   org-export-html-preamble-format `(("en" "%a : %d")))
 
-
             (use-package org-latex
               :config (progn
                         (setq org-export-latex-listings 'minted)
@@ -693,7 +659,6 @@
                         (autoload 'org-bullets-mode "org-bullets-mode" nil t)
                         (add-hook 'org-mode-hook 'org-bullets-mode))
               :ensure t)))
-
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -714,7 +679,6 @@
   "Inside region BEG END, Align text after STR."
   (interactive "r\nsAlign After: ")
   (align-regexp beg end (format "%s\\(\\s-*\\)" str)1 1 t))
-
 
 ;;---------------------------------------------------------------------------
 ;; win config stack
@@ -742,12 +706,10 @@ Use `winstack-push' and
              (message "popped"))
     (message "End of window stack")))
 
-
 (defun osx-copy-region(beg end)
   "Stick the region on yer pastin' board."
   (interactive "r")
   (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
-
 
 (defun shell-clear()
   "Clear a shell buffer."
@@ -756,7 +718,6 @@ Use `winstack-push' and
     (delete-region (point-min) (point-max))
     (call-interactively 'comint-send-input)))
 
-
 (defun eval-and-replace-sexp()
   "Evaluate sexp behind point and replace it with the result."
   (interactive)
@@ -764,7 +725,6 @@ Use `winstack-push' and
    (let ((expr (read (buffer-substring (point) (save-excursion (backward-sexp) (point))))))
      (delete-region (point) (save-excursion (backward-sexp) (point)))
      (format "%s" (save-excursion (eval expr))))))
-
 
 ;; color theme making helpers
 (defun dump-face-as-theme-spec(face)
