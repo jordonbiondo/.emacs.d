@@ -36,3 +36,7 @@ jabber-history/*
 !.gitignore
 keys/*
 !keys/keys.el
+/jabber-avatar-cache/
+/projectile-bookmarks.eld
+/projectile.cache
+/ido.last
