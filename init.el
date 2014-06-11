@@ -307,6 +307,8 @@
 
                        ("hf" . helm-do-grep)
 
+                       (" g" . goto-line)
+
                        ("nv" . jorbi/find-init-file)
 
                        ("io" . imenu-anywhere)
