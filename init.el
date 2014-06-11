@@ -573,6 +573,14 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package files
+  :config (setq backup-directory-alist `(("." . "~/.saves"))
+                version-control t
+                kept-new-versions 10
+                kept-old-versions 0
+                delete-old-versions t
+                backup-by-copying t))
+
 (use-package pulse
   :config (progn (setq pulse-iterations 7
                        pulse-delay .01)))
