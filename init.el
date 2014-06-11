@@ -150,7 +150,10 @@
                   jabber-history-enabled t
                   jabber-use-global-history nil
                   jabber-backlog-number 40
-                  jabber-backlog-days 30)
+                  jabber-backlog-days 30
+                  jabber-account-list '(("jordon.biondo@parelio.com" 
+                                         (:network-server . "talk.google.com")
+                                         (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (use-package jorbi-jabber
               :config (progn
