@@ -490,6 +490,12 @@
               :ensure t)
 
             (use-package bundler
+              :ensure t)
+
+            (use-package haml-mode
+              :ensure t)
+
+            (use-package yaml-mode
               :ensure t))
   :ensure t)
 
