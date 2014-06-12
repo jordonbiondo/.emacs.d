@@ -139,7 +139,7 @@
 
 (use-package jabber
   :config (progn
-            (setq jabber-roster-line-format " %a %c %-25n %S"
+            (setq jabber-roster-line-format " %c %-25n %S"
                   jabber-use-sasl nil
                   jabber-history-enabled t
                   jabber-use-global-history nil
