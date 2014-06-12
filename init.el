@@ -468,7 +468,7 @@
   :config (progn
             (require 'auto-complete)
             (add-to-list 'ac-modes 'enh-ruby-mode)
-
+            (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
             (use-package robe
               :config (progn
                         (add-hook 'enh-ruby-mode-hook 'robe-mode)
