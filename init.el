@@ -311,8 +311,9 @@
   :ensure t)
 
 (use-package projectile
-  :config (add-hook 'enh-ruby-mode-hook 'projectile-mode
-                    'prog-mode-hook 'projectile-mode)
+  :config (progn
+            (add-hook 'enh-ruby-mode-hook 'projectile-mode)
+            (add-hook 'prog-mode-hook 'projectile-mode))
   :ensure t)
 
 (use-package auto-indent-mode
