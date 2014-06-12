@@ -486,6 +486,15 @@
               :ensure t))
   :ensure t)
 
+(use-package moz
+  :config (progn
+            (defun jorbi-moz/refresh ()
+              (interactive)
+              (comint-send-string (inferior-moz-process)
+                                  "setTimeout(BrowserReload(), \"1000\");"))
+            (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh))
+  :ensure t)
+
 (use-package rsense
   :ensure t)
 
