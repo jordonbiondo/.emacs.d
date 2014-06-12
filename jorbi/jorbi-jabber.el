@@ -344,8 +344,3 @@ been idle for a little bit when the message comes in."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; jorbi-jabber.el ends here
-
-
-
-
-
