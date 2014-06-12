@@ -1,3 +1,9 @@
+(defun jorbi/truncate-lines ()
+  (setq truncate-lines t))
+
+(defun jorbi/dont-truncate-lines ()
+  (setq truncate-lines nil))
+
 (defmacro Windows ()
   `(equal system-type 'windows-nt))
 
