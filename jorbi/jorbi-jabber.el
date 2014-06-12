@@ -156,7 +156,9 @@ BUDDY is a JID symbol."
                                       ""
                                     (or (jabber-fix-status (get buddy 'status)) "")))
                          ))))
-        (add-text-properties 5
+        ;; NOTE!
+        ;; start the coloration after three characters, need to update if format changes
+        (add-text-properties 3
                              (length buddy-str)
                              (list
                               'face
