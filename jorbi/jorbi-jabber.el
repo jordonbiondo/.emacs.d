@@ -284,6 +284,27 @@ BUDDY is a JID symbol."
     (unless (equal (buffer-name (current-buffer)) (buffer-name buffer))
       (flash-buffer buffer (face-foreground (face-foreground 'font-lock-comment-face))))))
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; OSX Terminal notification stuff
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar terminal-notifier-command (executable-find "terminal-notifier") "The path to terminal-notifier.")
+
+(defun terminal-notifier-notify (title message)
+  "Show a message with `terminal-notifier-command`."
+  (start-process "terminal-notifier"
+                 "*terminal-notifier*"
+                 terminal-notifier-command
+                 "-title" (format "Emacs: %s" title)
+                 "-message" message
+                 "-activate" "org.gnu.Emacs"))
+
+(defun jorbi-jabber/terminal-notification (from buffer text title)
+  "Show a osx notification if chat buffer not visible."
+  (if (not (get-buffer-window buffer))
+      (terminal-notifier-notify title text)))
+
+
 
 (defvar jorbi-jabber/pending-mail-msgs '()
   "List of messages not yet sent via email.")
