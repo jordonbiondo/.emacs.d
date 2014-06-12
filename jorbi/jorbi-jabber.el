@@ -268,7 +268,7 @@ BUDDY is a JID symbol."
   (let ((mail-interactive nil))
     (with-temp-buffer
       (insert "From:  <jordon.biondo@WIND-021>\nTo: \nSubject: \n--text follows this line--\n")
-      (mail-to) (insert "jordon.biondo@salespad.net")
+      (mail-to) (insert "jordon.biondo@parelio.com")
       (mail-subject) (insert subject)
       (insert "\nMime-Version: 1.0;")
       (insert "\nContent-Type: text/html; charset=\"ISO-8859-1\";")
