@@ -471,6 +471,9 @@
 
             (use-package robe
               :config (progn
+                        (add-hook 'enh-ruby-mode-hook 'robe-mode)
+                        (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
+                        (add-hook 'robe-mode-hook (defun jorbi-robe:/setup-completeion() (auto-complete-mode -1) (company-mode t)))
                         (eval-after-load 'company
                           '(progn
                              (push 'company-robe company-backends))))
