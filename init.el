@@ -150,11 +150,16 @@
                                          (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (use-package jorbi-jabber
-              :config (progn
-                        (add-hook 'jabber-alert-message-hooks
-                                  'jorbi-jabber/toast-notification)
-                        (add-hook 'jabber-alert-message-hooks
-                                  'jorbi-jabber/send-mail-notification)))
+              :config  (cond
+                        ((OSX)
+                         (add-hook 'jabber-alert-message-hooks
+                                   'jorbi-jabber/terminal-notification))
+                        ((Windows)
+                         (add-hook 'jabber-alert-message-hooks
+                                   'jorbi-jabber/toast-notification)
+                         (add-hook 'jabber-alert-message-hooks
+                                   'jorbi-jabber/send-mail-notification))))
+              
 
             (global-set-key (kbd "C-c u i") 'jabber-chat-with)
             (global-set-key (kbd "C-c u u") 'jabber-display-roster)
