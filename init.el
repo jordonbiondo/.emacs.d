@@ -459,11 +459,6 @@
               :ensure t))
   :ensure t)
 
-(use-package jabber
-  :config (progn
-            (setq jabber-account-list `("jordonb@chat.facebook.com")))
-  :ensure t)
-
 (use-package enh-ruby-mode
   :config (progn
             (require 'auto-complete)
