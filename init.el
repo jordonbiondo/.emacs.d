@@ -490,7 +490,13 @@
               (interactive)
               (comint-send-string (inferior-moz-process)
                                   "setTimeout(BrowserReload(), \"1000\");"))
-            (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh))
+            (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
+
+            (eval-after-load 'js2-mode
+              '(add-hook 'js2-mode-hook 'moz-minor-mode))
+
+            (eval-after-load 'enh-ruby-mode
+              '(add-hook 'enh-ruby-mode-hook 'moz-minor-mode)))
   :ensure t)
 
 (use-package rsense
