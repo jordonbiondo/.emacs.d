@@ -685,16 +685,15 @@
                   org-export-html-date-format-string "%d %B %Y"
                   org-export-html-preamble-format `(("en" "%a : %d")))
 
-            (use-package org-latex
-              :config (progn
-                        (setq org-export-latex-listings 'minted)
-                        (add-to-list 'org-export-latex-packages-alist '("" "minted"))
-                        (setq org-src-fontify-natively t)
-                        (put 'erase-buffer 'disabled nil)))
+            ;;(use-package org-latex
+            ;;  :config (progn
+            ;;            (setq org-export-latex-listings 'minted)
+            ;;            (add-to-list 'org-export-latex-packages-alist '("" "minted"))
+            ;;            (setq org-src-fontify-natively t))
+            ;;  :ensure nil)
 
             (use-package org-bullets
               :config (progn
-
                         (setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
                         (autoload 'org-bullets-mode "org-bullets-mode" nil t)
                         (add-hook 'org-mode-hook 'org-bullets-mode))
