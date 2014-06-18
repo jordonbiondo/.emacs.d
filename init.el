@@ -217,8 +217,10 @@
 
 (use-package magit
   :bind ("C-x m" . magit-status)
-  :config (when (eq system-type 'darwin)
-            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+  :config (progn
+            (use-package flymake)
+            (when (OSX)
+              (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")))
   :ensure t)
 
 (use-package w3m
