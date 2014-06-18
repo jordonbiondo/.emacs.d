@@ -76,12 +76,13 @@
 ;; Set up package.el and use-package for init
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(mapc (lambda(p) (push p load-path))
+(mapc (lambda (p) (push p load-path))
       '("~/.emacs.d/use-package/"
         "~/.emacs.d/other/quake-mode/"
         "~/.emacs.d/other/"
         "~/.emacs.d/keys/"
-        "~/.emacs.d/jorbi/"))
+        "~/.emacs.d/jorbi/"
+        "~/src/redspot-emacs/"))
 
 (require 'use-package)
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
@@ -523,6 +524,9 @@
   :init (progn
           (setq js2-basic-offset 2))
   :config (progn
+            (when jordonp (use-package redspot
+                            :config (define-key js2-mode-map (kbd "M-.") 'redspot:find-js-definition-here)))
+
             (use-package ac-js2 :ensure t)
             (use-package js2-refactor :ensure t)
             (use-package slime-js
