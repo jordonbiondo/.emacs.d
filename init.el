@@ -315,7 +315,14 @@
 (use-package projectile
   :config (progn
             (add-hook 'enh-ruby-mode-hook 'projectile-mode)
-            (add-hook 'prog-mode-hook 'projectile-mode))
+            (add-hook 'prog-mode-hook 'projectile-mode)
+            (use-package projectile-rails
+              :config (progn
+                        (add-hook 'enh-ruby-mode-hook 'projectile-rails-mode)
+                        (add-hook 'haml-mode-hook 'projectile-rails-mode)
+                        (add-hook 'yaml-mode-hook 'projectile-rails-mode)
+                        (add-hook 'js2-mode-hook 'projectile-rails-mode))
+              :ensure t))
   :ensure t)
 
 (use-package auto-indent-mode
