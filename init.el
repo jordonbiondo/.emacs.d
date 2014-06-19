@@ -611,6 +611,10 @@
 (use-package savehist
   :config (savehist-mode t))
 
+(use-package desktop
+  :config (progn (desktop-save-mode t)
+                 (setq desktop-path '("~/.emacs.d/"))))
+
 (use-package hideshow
   :config (progn)
   :bind ("C-c h" . hs-toggle-hiding))
