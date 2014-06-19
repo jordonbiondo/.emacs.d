@@ -40,3 +40,5 @@ keys/*
 /projectile-bookmarks.eld
 /projectile.cache
 /ido.last
+/bookmarks
+/semanticdb/
