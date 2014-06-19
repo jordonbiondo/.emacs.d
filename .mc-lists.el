@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         ac-clang-async-autocomplete-autotrigger
+        backward-sexp
         beginning-of-visual-line
         c-electric-brace
         c-electric-colon
