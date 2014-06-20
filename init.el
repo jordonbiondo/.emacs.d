@@ -649,10 +649,12 @@
                (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
-  :init (progn (ido-everywhere t)
-               (use-package flx-ido
-                 :config (flx-ido-mode t)
-                 :ensure t)))
+  :init (progn
+          (ido-mode t)
+          (ido-everywhere t)
+          (use-package flx-ido
+            :config (flx-ido-mode t)
+            :ensure t)))
 
 (use-package erc
   :defer t
