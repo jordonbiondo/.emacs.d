@@ -12,7 +12,7 @@
       (set-face-attribute 'default nil :height 105))
 
     (when jordonp
-      (setq user-mail-address "jordon.biondo@salespad.net")))
+      (setq user-mail-address "jordon.biondo@parelio.com")))
 
   (define-keys jordon-dev-mode-map
     ("C-\\" 'jorbi/toggle-comment)
