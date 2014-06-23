@@ -221,7 +221,17 @@
   :config (progn
             (use-package flymake)
             (when (OSX)
-              (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")))
+              (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+
+            (use-package git-gutter
+              :config (eval-after-load "ample-theme"
+                        '(dolist (face '(git-gutter:added
+                                         git-gutter:deleted
+                                         git-gutter:modified
+                                         git-gutter:separator
+                                         git-gutter:unchanged))
+                           (set-face-background face (face-foreground face))))
+              :ensure t))
   :ensure t)
 
 (use-package w3m
