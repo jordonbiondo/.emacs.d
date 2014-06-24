@@ -94,11 +94,15 @@
 ;; common lisp
 (use-package cl-lib)
 
-;;(load-library "~/.emacs.d/package.el")
-(mapc (lambda(p) (push p package-archives))
-      '(;;("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.milkbox.net/packages/")))
-(package-refresh-contents)
+(dolist (p '(;;("marmalade" . "http://marmalade-repo.org/packages/")
+             ("melpa" . "http://melpa.milkbox.net/packages/")))
+  (add-to-list 'package-archives p))
+
+(when (and (member "--" command-line-args)
+         (member "-refresh" command-line-args))
+  (delete "-refresh" command-line-args)
+  (package-refresh-contents))
+
 (package-initialize)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
