@@ -664,6 +664,9 @@
           (ido-everywhere t)
           (use-package flx-ido
             :config (flx-ido-mode t)
+            :ensure t)
+          (use-package ido-vertical-mode
+            :config (ido-vertical-mode t)
             :ensure t)))
 
 (use-package erc
