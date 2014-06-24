@@ -630,8 +630,13 @@
                  (setq desktop-path '("~/.emacs.d/"))))
 
 (use-package hideshow
-  :config (progn)
-  :bind ("C-c h" . hs-toggle-hiding))
+  :bind ("C-c h" . hs-toggle-hiding)
+  :config (progn
+            (eval-after-load 'enh-ruby-mode
+              '(add-to-list 'hs-special-modes-alist
+                            '(enh-ruby-mode
+                              "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
+                              'enh-ruby-end-of-block nil)))))
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
