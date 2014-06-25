@@ -61,7 +61,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar jordonp (or (equal (getenv "USER") "jordon")
-                    (equal (getenv "USERNAME") "jordon")))
+                   (equal (getenv "USERNAME") "jordon")))
 
 (mapc (lambda(mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode
@@ -402,7 +402,7 @@
             (add-hook 'csharp-mode-hook 'hs-minor-mode)
             (add-hook 'csharp-mode-hook 'toggle-truncate-lines)
             (add-hook 'csharp-mode-hook (lambda () (setq c-basic-offset 4
-                                                         indent-tabs-mode nil)))
+                                                    indent-tabs-mode nil)))
 
             (font-lock-add-keywords 'csharp-mode
                                     '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
@@ -428,7 +428,7 @@
                   (omnisharp-go-to-file-line-and-column
                    json-result
                    (or force-ow (not (equal (omnisharp--convert-backslashes-to-forward-slashes filename)
-                                            (buffer-file-name)))))
+                                         (buffer-file-name)))))
                   (pulse-momentary-highlight-one-line (point)))))
 
             (defun jorbi/reload-csharp-buffers ()
@@ -705,8 +705,8 @@
   :config (progn
             (mapcar*
              (lambda (pair) (set-face-attribute
-                             (car pair) nil :height
-                             (round (*  (face-attribute 'default :height) (cdr pair)))))
+                        (car pair) nil :height
+                        (round (*  (face-attribute 'default :height) (cdr pair)))))
              '((org-level-1 . 2.0)
                (org-level-2 . 1.6)
                (org-level-3 . 1.4)
