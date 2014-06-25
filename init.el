@@ -697,6 +697,9 @@
   :defer t
   :config (progn (setq compilation-scroll-output t)))
 
+(use-package hl-line
+  :config (global-hl-line-mode t))
+
 (use-package org
   :defer t
   :config (progn
