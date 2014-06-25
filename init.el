@@ -143,6 +143,8 @@
   :ensure t)
 
 (use-package jabber
+  :bind (("C-c u i" . jabber-chat-with)
+         ("C-c u u" . jabber-display-roster))
   :config (progn
             (setq jabber-roster-line-format " %c %-25n %S"
                   jabber-use-sasl nil
@@ -150,7 +152,7 @@
                   jabber-use-global-history nil
                   jabber-backlog-number 40
                   jabber-backlog-days 30
-                  jabber-account-list '(("jordon.biondo@parelio.com" 
+                  jabber-account-list '(("jordon.biondo@parelio.com"
                                          (:network-server . "talk.google.com")
                                          (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
@@ -164,12 +166,7 @@
                                    'jorbi-jabber/toast-notification)
                          (add-hook 'jabber-alert-message-hooks
                                    'jorbi-jabber/send-mail-notification))))
-              
-
-            (global-set-key (kbd "C-c u i") 'jabber-chat-with)
-            (global-set-key (kbd "C-c u u") 'jabber-display-roster)
             (setq jabber-chat-buffer-format "Chat: %n"))
-
   :ensure t)
 
 (use-package ace-jump-mode
