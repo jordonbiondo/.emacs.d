@@ -9,7 +9,7 @@
     (ignore-errors
       (set-default-font "-outline-Inconsolata-normal-normal-normal-mono-*-*-*-*-c-*-iso10646-1")
 
-      (set-face-attribute 'default nil :height 105))
+      (set-face-attribute 'default nil :height 115))
 
     (when jordonp
       (setq user-mail-address "jordon.biondo@parelio.com")))
