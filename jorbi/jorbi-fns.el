@@ -172,6 +172,11 @@ Function `enabled-important-minor-modes' is what you are probably looking for."
   (interactive "fOpen File: ")
   (w32-shell-execute 1 doc))
 
+(defun align-after-thing (beg end str)
+  "Inside region BEG END, Align text after STR."
+  (interactive "r\nsAlign After: ")
+  (align-regexp beg end (format "%s\\(\\s-*\\)" str)1 1 t))
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Color theme helpers
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -192,5 +197,53 @@ Function `enabled-important-minor-modes' is what you are probably looking for."
                      (progn (end-of-thing 'symbol) (point)))
       (dump-face-as-theme-spec face))))
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; win config stack
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar winstack-stack '()
+  "A Stack holding window configurations.
+Use `winstack-push' and
+`winstack-pop' to modify it.")
+
+(defun winstack-push()
+  "Push the current window configuration onto `winstack-stack'."
+  (interactive)
+  (if (and (window-configuration-p (first winstack-stack))
+         (compare-window-configurations (first winstack-stack) (current-window-configuration)))
+      (message "Current config already pushed")
+    (progn (push (current-window-configuration) winstack-stack)
+           (message (concat "pushed " (number-to-string
+                                       (length (window-list (selected-frame)))) " frame config")))))
+
+(defun winstack-pop()
+  "Pop the last window configuration off `winstack-stack' and apply it."
+  (interactive)
+  (if (first winstack-stack)
+      (progn (set-window-configuration (pop winstack-stack))
+             (message "popped"))
+    (message "End of window stack")))
+
+(defun osx-copy-region(beg end)
+  "Stick the region on yer pastin' board."
+  (interactive "r")
+  (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
+
+(defun shell-clear()
+  "Clear a shell buffer."
+  (interactive)
+  (when (equal mode-name "Shell")
+    (delete-region (point-min) (point-max))
+    (call-interactively 'comint-send-input)))
+
+(defun eval-and-replace-sexp()
+  "Evaluate sexp behind point and replace it with the result."
+  (interactive)
+  (insert
+   (let ((expr (read (buffer-substring (point) (save-excursion (backward-sexp) (point))))))
+     (delete-region (point) (save-excursion (backward-sexp) (point)))
+     (format "%S" (save-excursion (eval expr))))))
 
 (provide 'jorbi-fns)
+
+
+
