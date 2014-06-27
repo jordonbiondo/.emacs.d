@@ -633,7 +633,7 @@
               '(add-to-list 'hs-special-modes-alist
                             '(enh-ruby-mode
                               "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
-                              'enh-ruby-end-of-block nil)))))
+                              (lambda (arg) (enh-ruby-end-of-block arg)) nil)))))
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
