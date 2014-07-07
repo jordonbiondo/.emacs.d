@@ -703,6 +703,13 @@
 (use-package hl-line
   :config (global-hl-line-mode t))
 
+(use-package php-mode
+  :config (add-hook 'php-mode-hook
+                    (defun jorbi/php-mode-setup ()
+                      (setq c-basic-offset 4
+                            indent-tabs-mode nil
+                            tab-width 4))))
+
 (use-package org
   :defer t
   :config (progn
