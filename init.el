@@ -501,6 +501,9 @@
             (use-package haml-mode
               :ensure t)
 
+            (use-package sass-mode
+              :ensure t)
+
             (use-package yaml-mode
               :ensure t))
   :ensure t)
