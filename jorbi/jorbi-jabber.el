@@ -334,6 +334,25 @@ been idle for a little bit when the message comes in."
         from buffer text title))
      from buffer text title)))
 
+(defvar jorbi-jabber/chat-header-line-format
+  '(""
+    (:eval (jabber-jid-displayname jabber-chatting-with))
+    "       "
+    (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
+             (propertize (or (cdr (assoc (get buddy 'show)
+                                        jabber-presence-strings))
+                            (get buddy 'show))
+                         'face
+                         (or (cdr (assoc (get buddy 'show)
+                                        jabber-presence-faces))
+                            'jabber-roster-user-online))))
+    "       "
+    (:eval (jabber-fix-status (get (jabber-jid-symbol jabber-chatting-with)
+                                   'status)))
+    "       "
+    jabber-events-message
+    "       "
+    jabber-chatstates-message))
 
 (defun jorbi-jabber/im-online ()
   (interactive)

@@ -160,15 +160,17 @@
                                          (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (use-package jorbi-jabber
-              :config  (cond
-                        ((OSX)
-                         (add-hook 'jabber-alert-message-hooks
-                                   'jorbi-jabber/terminal-notification))
-                        ((Windows)
-                         (add-hook 'jabber-alert-message-hooks
-                                   'jorbi-jabber/toast-notification)
-                         (add-hook 'jabber-alert-message-hooks
-                                   'jorbi-jabber/send-mail-notification))))
+              :config  (progn
+                         (setq jabber-chat-header-line-format jorbi-jabber/chat-header-line-format)
+                         (cond
+                          ((OSX)
+                           (add-hook 'jabber-alert-message-hooks
+                                     'jorbi-jabber/terminal-notification))
+                          ((Windows)
+                           (add-hook 'jabber-alert-message-hooks
+                                     'jorbi-jabber/toast-notification)
+                           (add-hook 'jabber-alert-message-hooks
+                                     'jorbi-jabber/send-mail-notification)))))
             (setq jabber-chat-buffer-format "Chat: %n"))
   :ensure t)
 
