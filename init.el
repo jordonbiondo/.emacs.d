@@ -581,6 +581,9 @@
   :ensure t)
 
 (when (OSX)
+
+  (global-unset-key (kbd "s-t"))
+
   (use-package exec-path-from-shell
     :init (exec-path-from-shell-initialize)
     :ensure t))
