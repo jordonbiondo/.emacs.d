@@ -507,6 +507,8 @@
               :ensure t)
 
             (use-package sass-mode
+              :config (add-hook 'sass-mode-hook (defun jorbi-sass/setup-hook()
+                                                  (auto-indent-mode -1)))
               :ensure t)
 
             (use-package yaml-mode
