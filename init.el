@@ -234,13 +234,14 @@
               (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
 
             (use-package git-gutter
-              :config (eval-after-load "ample-theme"
-                        '(dolist (face '(git-gutter:added
-                                         git-gutter:deleted
-                                         git-gutter:modified
-                                         git-gutter:separator
-                                         git-gutter:unchanged))
-                           (set-face-background face (face-foreground face))))
+              :config
+              (depends "ample-theme"
+                (lambda ()(dolist (face '(git-gutter:added
+                                     git-gutter:deleted
+                                     git-gutter:modified
+                                     git-gutter:separator
+                                     git-gutter:unchanged))
+                       (set-face-background face (face-foreground face)))))
               :ensure t))
   :ensure t)
 
@@ -502,9 +503,9 @@
                         (add-hook 'enh-ruby-mode-hook 'robe-mode)
                         (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
                         (add-hook 'robe-mode-hook (defun jorbi-robe:/setup-completeion() (auto-complete-mode -1) (company-mode t)))
-                        (eval-after-load 'company
-                          '(progn
-                             (push 'company-robe company-backends))))
+                        (depends "company"
+                          (lambda () (progn (push 'company-robe company-backends)))))
+
               :ensure t)
 
             (use-package bundler
@@ -543,11 +544,11 @@
 
             (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
 
-            (eval-after-load 'js2-mode
-              '(add-hook 'js2-mode-hook 'moz-minor-mode))
+            (depends "js2-mode"
+              (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
 
-            (eval-after-load 'enh-ruby-mode
-              '(add-hook 'enh-ruby-mode-hook 'moz-minor-mode)))
+            (depends "enh-ruby-mode"
+              (lambda () (add-hook 'enh-ruby-mode-hook 'moz-minor-mode))))
   :ensure t)
 
 (use-package rsense
@@ -662,11 +663,11 @@
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)
   :config (progn
-            (eval-after-load 'enh-ruby-mode
-              '(add-to-list 'hs-special-modes-alist
-                            '(enh-ruby-mode
-                              "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
-                              (lambda (arg) (enh-ruby-end-of-block arg)) nil)))))
+            (depends "enh-ruby-mode"
+              (lambda () (add-to-list 'hs-special-modes-alist
+                                 '(enh-ruby-mode
+                                   "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
+                                   (lambda (arg) (enh-ruby-end-of-block arg)) nil))))))
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
