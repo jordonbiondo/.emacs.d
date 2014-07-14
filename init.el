@@ -89,6 +89,10 @@
 (font-lock-add-keywords 'lisp-interaction-mode use-package-font-lock-keywords)
 (require 'package)
 
+(defmacro depends (name &rest body)
+  (declare (indent defun))
+  `(eval-after-load ,name (lambda () ,@body)))
+
 (require 'keys)
 
 ;; common lisp
@@ -485,6 +489,9 @@
               :ensure t))
   :ensure t)
 
+(use-package highlight-indentation
+  :ensure t)
+
 (use-package enh-ruby-mode
   :config (progn
             (require 'auto-complete)
@@ -504,10 +511,20 @@
               :ensure t)
 
             (use-package haml-mode
+              :config (add-hook 'haml-mode-hook (defun jorbi-haml/setup-hook()
+                                                  (depends "highlight-indentation"
+                                                    (highlight-indentation-mode 1)
+                                                    (highlight-indentation-current-column-mode 1)
+                                                    (highlight-indentation-set-offset 2))
+                                                  (auto-indent-mode -1)))
               :ensure t)
 
             (use-package sass-mode
               :config (add-hook 'sass-mode-hook (defun jorbi-sass/setup-hook()
+                                                  (depends "highlight-indentation"
+                                                    (highlight-indentation-mode 1)
+                                                    (highlight-indentation-current-column-mode 1)
+                                                    (highlight-indentation-set-offset 2))
                                                   (auto-indent-mode -1)))
               :ensure t)
 
