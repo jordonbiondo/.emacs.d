@@ -624,6 +624,9 @@
                 delete-old-versions t
                 backup-by-copying t))
 
+(use-package grep
+  :config (add-hook 'grep-mode-hook 'jorbi/truncate-lines))
+
 (use-package pulse
   :config (progn (setq pulse-iterations 7
                        pulse-delay .01)))
