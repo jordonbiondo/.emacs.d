@@ -7,9 +7,14 @@
 (defdev "jordon"
   (when jordon-dev-mode
     (ignore-errors
-      (set-default-font "-outline-Inconsolata-normal-normal-normal-mono-*-*-*-*-c-*-iso10646-1")
+      (set-default-font "Envy Code R")
+      ;; (set-default-font "Inconsolata")
+      ;; (set-default-font "Menlo")
+      ;; (set-default-font "Source Code Pro")
+      ;; (set-default-font "Manaco")
+      ;; (set-default-font "Courier")
 
-      (set-face-attribute 'default nil :height 115))
+      (set-face-attribute 'default nil :height 125))
 
     (when jordonp
       (setq user-mail-address "jordon.biondo@parelio.com")))
