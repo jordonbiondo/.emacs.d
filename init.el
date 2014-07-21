@@ -405,6 +405,17 @@
 ;;                  (add-hook 'd-mode-hook 'ac-d-mode-setup))
 ;;   :ensure t)
 
+(use-package io-mode
+  :config (progn
+            (defvar jorbi/io-function-name-re "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\(method\\)")
+            (defvar jorbi/io-variable-name-re "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\([^\r\n \(\){},;:=]+\\)")
+
+            (add-hook 'io-mode-hook (defun jorbi/io-setup-function ()
+                                      (font-lock-add-keywords
+                                       'io-mode
+                                       `((,io-function-name-re (1 font-lock-function-name-face))
+                                         (,io-variable-name-re (1 font-lock-variable-name-face))))))))
+
 (use-package csharp-mode
   :init (add-to-list 'c-default-style
                      (cons 'csharp-mode "c#"))
