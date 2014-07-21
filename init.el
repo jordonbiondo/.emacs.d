@@ -413,8 +413,9 @@
             (add-hook 'io-mode-hook (defun jorbi/io-setup-function ()
                                       (font-lock-add-keywords
                                        'io-mode
-                                       `((,io-function-name-re (1 font-lock-function-name-face))
-                                         (,io-variable-name-re (1 font-lock-variable-name-face))))))))
+                                       `((,jorbi/io-function-name-re (1 font-lock-function-name-face))
+                                         (,jorbi/io-variable-name-re (1 font-lock-variable-name-face)))))))
+  :ensure t)
 
 (use-package csharp-mode
   :init (add-to-list 'c-default-style
