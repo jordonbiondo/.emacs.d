@@ -534,6 +534,7 @@
             (use-package haml-mode
               :config (add-hook 'haml-mode-hook
                                 (defun jorbi-haml/setup-hook()
+                                  (flycheck-mode t)
                                   (depends "highlight-indentation"
                                     (highlight-indentation-mode 1)
                                     (highlight-indentation-current-column-mode)
@@ -544,6 +545,7 @@
             (use-package sass-mode
               :config (add-hook 'sass-mode-hook
                                 (defun jorbi-sass/setup-hook()
+                                  (flycheck-mode t)
                                   (depends "highlight-indentation"
                                     (highlight-indentation-mode 1)
                                     (highlight-indentation-current-column-mode)
