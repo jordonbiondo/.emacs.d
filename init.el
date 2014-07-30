@@ -49,7 +49,7 @@
   (or (equal (getenv "USER") "jordon")
      (equal (getenv "USERNAME") "jordon")))
 
-(mapc (lambda(mode) (when (fboundp mode) (apply mode '(-1))))
+(mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode
         menu-bar-mode
         scroll-bar-mode))
@@ -487,13 +487,14 @@ Wraps `eval-after-load'."
 (use-package enh-ruby-mode
   :config (progn
             (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
+            (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode)))
+  :ensure t)
 
-            (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
+(use-package bundler
+  :ensure t)
 
-            (use-package bundler
-              :ensure t)
-
-
+(use-package yaml-mode
+  :ensure t)
 
 (use-package highlight-indentation
   :ensure t)
