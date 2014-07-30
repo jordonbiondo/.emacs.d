@@ -104,6 +104,17 @@
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
+(when jordonp
+  (use-package redspot
+    :config
+    (depends "js2-mode"
+      (dolist (b '(("M-." . redspot:find-js-definition-here)
+                   ("C-c n m" . redspot:mvp-mode)
+                   ("C-c n t" . redspot:mvp-triplet-select)
+                   ("C-c n c" . redspot:js-console-this-line)))
+        (define-key js2-mode-map (kbd (car b)) (cdr b))))))
+
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command Lines Args
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -580,9 +591,6 @@
              '(("\\(console\\)\\(\.\\)\\(log\\)"
                 (1 font-lock-warning-face t)
                 (3 font-lock-warning-face t))))
-            (when jordonp (use-package redspot
-                            :config (define-key js2-mode-map (kbd "M-.")
-                                      'redspot:find-js-definition-here)))
 
             (use-package ac-js2 :ensure t)
             (use-package js2-refactor :ensure t)
