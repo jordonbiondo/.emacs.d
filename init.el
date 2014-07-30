@@ -501,26 +501,24 @@ Wraps `eval-after-load'."
 
 (use-package sass-mode
   :config
-  (depends "highlight-indentation"
-    (add-hook 'sass-mode-hook
-              (defun jorbi-sass/setup-hook()
-                (flycheck-mode t)
-                (depends "highlight-indentation"
-                  (highlight-indentation-mode 1)
-                  (highlight-indentation-current-column-mode)
-                  (highlight-indentation-set-offset 2)))))
+  (progn
+    (add-hook 'sass-mode-hook 'flycheck-mode)
+    (depends "highlight-indentation"    
+      (defun jorbi-sass/setup-hook()
+        (highlight-indentation-mode 1)
+        (highlight-indentation-current-column-mode)
+        (highlight-indentation-set-offset 2))))
   :ensure t)
 
 (use-package haml-mode
   :config
-  (depends "highlight-indentation"
-    (add-hook 'haml-mode-hook
-              (defun jorbi-haml/setup-hook()
-                (flycheck-mode t)
-                (depends "highlight-indentation"
-                  (highlight-indentation-mode 1)
-                  (highlight-indentation-current-column-mode)
-                  (highlight-indentation-set-offset 2)))))
+  (progn
+    (add-hook 'haml-mode-hook 'flycheck-mode)
+    (depends "highlight-indentation"    
+      (defun jorbi-haml/setup-hook()
+        (highlight-indentation-mode 1)
+        (highlight-indentation-current-column-mode)
+        (highlight-indentation-set-offset 2))))
   :ensure t)
 
 (use-package robe
@@ -675,7 +673,13 @@ Wraps `eval-after-load'."
             (add-hook 'eww-mode-hook
                       (apply-partially 'toggle-truncate-lines 1))))
 
-(use-package electric)
+(use-package electric
+  :config
+  (progn
+    (depends "sass-mode"
+      (add-hook 'sass-mode-hook (apply-partially 'electric-indent-mode -1)))
+    (depends "haml-mode"
+      (add-hook 'haml-mode-hook (apply-partially 'electric-indent-mode -1)))))
 
 (use-package prog-mode
   :init (progn
