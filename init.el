@@ -338,14 +338,6 @@ Wraps `eval-after-load'."
               :ensure t))
   :ensure t)
 
-(use-package auto-indent-mode
-  :init (progn
-          (add-hook 'prog-mode-hook 'auto-indent-mode)
-          (add-hook 'prog-mode-hook (defun indent-tabs-mode-off ()
-                                      (interactive)
-                                      (setq indent-tabs-mode nil))))
-  :ensure t)
-
 (use-package header2
   :ensure t)
 
@@ -492,9 +484,6 @@ Wraps `eval-after-load'."
     (global-auto-complete-mode t))
   :ensure t)
 
-(use-package highlight-indentation
-  :ensure t)
-
 (use-package enh-ruby-mode
   :config (progn
             (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
@@ -506,19 +495,19 @@ Wraps `eval-after-load'."
 
 
 
-            (use-package sass-mode
-              :config (add-hook 'sass-mode-hook
-                                (defun jorbi-sass/setup-hook()
-                                  (flycheck-mode t)
-                                  (depends "highlight-indentation"
-                                    (highlight-indentation-mode 1)
-                                    (highlight-indentation-current-column-mode)
-                                    (highlight-indentation-set-offset 2))
-                                  (auto-indent-mode -1)))
-              :ensure t)
+(use-package highlight-indentation
+  :ensure t)
 
-            (use-package yaml-mode
-              :ensure t))
+(use-package sass-mode
+  :config
+  (depends "highlight-indentation"
+    (add-hook 'sass-mode-hook
+              (defun jorbi-sass/setup-hook()
+                (flycheck-mode t)
+                (depends "highlight-indentation"
+                  (highlight-indentation-mode 1)
+                  (highlight-indentation-current-column-mode)
+                  (highlight-indentation-set-offset 2)))))
   :ensure t)
 
 (use-package haml-mode
@@ -530,8 +519,7 @@ Wraps `eval-after-load'."
                 (depends "highlight-indentation"
                   (highlight-indentation-mode 1)
                   (highlight-indentation-current-column-mode)
-                  (highlight-indentation-set-offset 2))
-                (auto-indent-mode -1))))
+                  (highlight-indentation-set-offset 2)))))
   :ensure t)
 
 (use-package robe
@@ -685,6 +673,16 @@ Wraps `eval-after-load'."
   :config (progn
             (add-hook 'eww-mode-hook
                       (apply-partially 'toggle-truncate-lines 1))))
+
+(use-package electric)
+
+(use-package prog-mode
+  :init (progn
+          (depends "electric"
+            (add-hook 'prog-mode-hook 'electric-indent-mode))
+          (add-hook 'prog-mode-hook (defun indent-tabs-mode-off ()
+                                      (interactive)
+                                      (setq indent-tabs-mode nil)))))
 
 (use-package savehist
   :config (savehist-mode t))
