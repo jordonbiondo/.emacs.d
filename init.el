@@ -40,22 +40,6 @@
 ;;
 ;;; Code:
 
-(defvar jorbi/should-load-theme t)
-
-;; (defmacro ! (identifier &rest args)
-;;   (let* ((all (mapcar 'intern (split-string (symbol-name identifier) "\\." t)))
-;;          (first (car all))
-;;          (last (car (last all))))
-;;     (assert (not (and args (= 1 (length all)))) t "Error, attempting to call method on hash, rather than hash key.")
-;;     (if args
-;;         `(<<! (reduce (lambda (a b) (<< a b))  (cons ,first ',(butlast (cdr all)))) ',last ,@args)
-;;       `(reduce (lambda (a b) (<< a b))  (cons ,first ',(cdr all))))))
-
-;; (let ((a ({ 'b ({ 'c 3 'd 4 }) 'x ({ 'name "bob"
-;;          'y
-;;          (lambda (x) (concat (<< 'name) ": \"" x  " yay!\""))})})))
-;;   (! a.x.y "Foobar"))
-
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Initial setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,8 +69,6 @@
         "~/src/redspot-emacs/"))
 
 (require 'use-package)
-(font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
-(font-lock-add-keywords 'lisp-interaction-mode use-package-font-lock-keywords)
 (require 'package)
 
 (defmacro depends (name &rest body)
@@ -165,7 +147,8 @@
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (use-package jorbi-jabber
               :config  (progn
-                         (setq jabber-chat-header-line-format jorbi-jabber/chat-header-line-format)
+                         (setq jabber-chat-header-line-format
+                               jorbi-jabber/chat-header-line-format)
                          (cond
                           ((OSX)
                            (add-hook 'jabber-alert-message-hooks
@@ -190,7 +173,9 @@
                                (forward-line (if up -1 1))
                                (move-to-column col))
                              (looking-at "\\( +\\| *$\\)"))
-                     (when up (next-line -1)) (mc/mark-next-lines 1) (jorbi/mc/mark-until-line-change up)))
+                     (when up (next-line -1))
+                     (mc/mark-next-lines 1)
+                     (jorbi/mc/mark-until-line-change up)))
 
                  (push 'jorbi/mc/mark-until-line-change mc/cmds-to-run-once))
 
@@ -266,9 +251,10 @@
   :ensure t)
 
 (use-package imenu-anywhere
-  :config (progn
-            (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
-              (pulse-momentary-highlight-one-line (point))))
+  :config
+  (progn
+    (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
+      (pulse-momentary-highlight-one-line (point))))
   :ensure t)
 
 (use-package rainbow-mode
@@ -330,7 +316,9 @@
                        ("io" . imenu-anywhere)
 
                        (" r" . recompile)))
-              (key-chord-define jordon-dev-mode-map (car binding) (cdr binding))))
+              (key-chord-define jordon-dev-mode-map
+                                (car binding)
+                                (cdr binding))))
 
   :ensure t)
 
@@ -407,14 +395,18 @@
 
 (use-package io-mode
   :config (progn
-            (defvar jorbi/io-function-name-re "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\(method\\)")
-            (defvar jorbi/io-variable-name-re "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\([^\r\n \(\){},;:=]+\\)")
+            (defvar jorbi/io-function-name-re
+              "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\(method\\)")
+            (defvar jorbi/io-variable-name-re
+              "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\([^\r\n \(\){},;:=]+\\)")
 
             (add-hook 'io-mode-hook (defun jorbi/io-setup-function ()
                                       (font-lock-add-keywords
                                        'io-mode
-                                       `((,jorbi/io-function-name-re (1 font-lock-function-name-face))
-                                         (,jorbi/io-variable-name-re (1 font-lock-variable-name-face)))))))
+                                       `((,jorbi/io-function-name-re
+                                          (1 font-lock-function-name-face))
+                                         (,jorbi/io-variable-name-re
+                                          (1 font-lock-variable-name-face)))))))
   :ensure t)
 
 (use-package csharp-mode
@@ -427,7 +419,8 @@
                                                     indent-tabs-mode nil)))
 
             (font-lock-add-keywords 'csharp-mode
-                                    '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
+                                    '(("\\(// *\\)\\(todo\\)\\(.*$\\)"
+                                       2 'font-lock-warning-face t))))
 
   :ensure t)
 
@@ -490,7 +483,8 @@
               :config (if (file-exists-p "~/.emacs.d/clang-complete")
                           (progn
                             (defun ac-cc-mode-setup ()
-                              (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
+                              (setq ac-clang-complete-executable
+                                    "~/.emacs.d/clang-complete")
                               (setq ac-sources '(ac-source-clang-async))
                               (ac-clang-launch-completion-process))
 
@@ -513,8 +507,11 @@
             (use-package robe
               :config (progn
                         (add-hook 'enh-ruby-mode-hook 'robe-mode)
-                        (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
-                        (add-hook 'robe-mode-hook (defun jorbi-robe:/setup-completeion() (auto-complete-mode -1) (company-mode t)))
+                        (add-to-list 'auto-mode-alist
+                                     '("Gemfile\\'" . enh-ruby-mode))
+                        (add-hook 'robe-mode-hook
+                                  (defun jorbi-robe:/setup-completeion()
+                                    (auto-complete-mode -1) (company-mode t)))
                         (depends "company"
                           (lambda () (progn (push 'company-robe company-backends)))))
 
@@ -524,21 +521,23 @@
               :ensure t)
 
             (use-package haml-mode
-              :config (add-hook 'haml-mode-hook (defun jorbi-haml/setup-hook()
-                                                  (depends "highlight-indentation"
-                                                    (highlight-indentation-mode 1)
-                                                    (highlight-indentation-current-column-mode 1)
-                                                    (highlight-indentation-set-offset 2))
-                                                  (auto-indent-mode -1)))
+              :config (add-hook 'haml-mode-hook
+                                (defun jorbi-haml/setup-hook()
+                                  (depends "highlight-indentation"
+                                    (highlight-indentation-mode 1)
+                                    (highlight-indentation-current-column-mode)
+                                    (highlight-indentation-set-offset 2))
+                                  (auto-indent-mode -1)))
               :ensure t)
 
             (use-package sass-mode
-              :config (add-hook 'sass-mode-hook (defun jorbi-sass/setup-hook()
-                                                  (depends "highlight-indentation"
-                                                    (highlight-indentation-mode 1)
-                                                    (highlight-indentation-current-column-mode 1)
-                                                    (highlight-indentation-set-offset 2))
-                                                  (auto-indent-mode -1)))
+              :config (add-hook 'sass-mode-hook
+                                (defun jorbi-sass/setup-hook()
+                                  (depends "highlight-indentation"
+                                    (highlight-indentation-mode 1)
+                                    (highlight-indentation-current-column-mode)
+                                    (highlight-indentation-set-offset 2))
+                                  (auto-indent-mode -1)))
               :ensure t)
 
             (use-package yaml-mode
@@ -550,8 +549,9 @@
             (defun jorbi-moz/refresh ()
               (interactive)
               (if (ignore-errors
-                    (comint-send-string (inferior-moz-process)
-                                        "setTimeout(BrowserReload(), \"1000\");") t)
+                    (comint-send-string
+                     (inferior-moz-process)
+                     "setTimeout(BrowserReload(), \"1000\");") t)
                   (message "Moz Refreshing...")))
 
             (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
@@ -575,8 +575,14 @@
   :init (progn
           (setq js2-basic-offset 2))
   :config (progn
+            (font-lock-add-keywords
+             'js2-mode
+             '(("\\(console\\)\\(\.\\)\\(log\\)"
+                (1 font-lock-warning-face t)
+                (3 font-lock-warning-face t))))
             (when jordonp (use-package redspot
-                            :config (define-key js2-mode-map (kbd "M-.") 'redspot:find-js-definition-here)))
+                            :config (define-key js2-mode-map (kbd "M-.")
+                                      'redspot:find-js-definition-here)))
 
             (use-package ac-js2 :ensure t)
             (use-package js2-refactor :ensure t)
@@ -629,7 +635,9 @@
   :ensure t)
 
 (use-package paredit
-  :config (add-hook 'paredit-space-for-delimiter-predicates (lambda(&rest args) (not (equal major-mode 'csharp-mode))))
+  :config (add-hook 'paredit-space-for-delimiter-predicates
+                    (lambda (&rest args)
+                      (not (equal major-mode 'csharp-mode))))
   :ensure t)
 
 (use-package rainbow-delimiters
@@ -663,7 +671,8 @@
 
 (use-package eww
   :config (progn
-            (add-hook 'eww-mode-hook (apply-partially 'toggle-truncate-lines 1))))
+            (add-hook 'eww-mode-hook
+                      (apply-partially 'toggle-truncate-lines 1))))
 
 (use-package savehist
   :config (savehist-mode t))
@@ -676,10 +685,11 @@
   :bind ("C-c h" . hs-toggle-hiding)
   :config (progn
             (depends "enh-ruby-mode"
-              (lambda () (add-to-list 'hs-special-modes-alist
-                                 '(enh-ruby-mode
-                                   "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
-                                   (lambda (arg) (enh-ruby-end-of-block arg)) nil))))))
+              (lambda () (add-to-list
+                     'hs-special-modes-alist
+                     '(enh-ruby-mode
+                       "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
+                       (lambda (arg) (enh-ruby-end-of-block arg)) nil))))))
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
@@ -694,8 +704,10 @@
   :config (progn
             (font-lock-add-keywords
              'c-mode
-             '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>" . font-lock-constant-face) ; caps words
-               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>" . font-lock-preprocessor-face))) ;custom resources
+             '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>"
+                . font-lock-constant-face)
+               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>"
+                . font-lock-preprocessor-face)))
 
             (defun c-maybe-insert-semicolon()
               "Insert a semicolon a the end of a line only if there isn't one."
@@ -759,7 +771,8 @@
             (mapcar*
              (lambda (pair) (set-face-attribute
                         (car pair) nil :height
-                        (round (*  (face-attribute 'default :height) (cdr pair)))))
+                        (round (*  (face-attribute 'default :height)
+                                   (cdr pair)))))
              '((org-level-1 . 2.0)
                (org-level-2 . 1.6)
                (org-level-3 . 1.4)
@@ -771,19 +784,21 @@
                   org-export-html-date-format-string "%d %B %Y"
                   org-export-html-preamble-format `(("en" "%a : %d")))
 
-            ;;(use-package org-latex
-            ;;  :config (progn
-            ;;            (setq org-export-latex-listings 'minted)
-            ;;            (add-to-list 'org-export-latex-packages-alist '("" "minted"))
-            ;;            (setq org-src-fontify-natively t))
+            ;; (use-package org-latex
+            ;;   :config
+            ;;   (progn
+            ;;     (setq org-export-latex-listings 'minted)
+            ;;     (add-to-list 'org-export-latex-packages-alist '("" "minted"))
+            ;;     (setq org-src-fontify-natively t))
             ;;  :ensure nil)
 
             (use-package org-bullets
-              :config (progn
-                        (setq org-bullets-bullet-list '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
-                        (autoload 'org-bullets-mode "org-bullets-mode" nil t)
-                        (add-hook 'org-mode-hook 'org-bullets-mode))
+              :config
+              (progn
+                (setq org-bullets-bullet-list
+                      '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
+                (autoload 'org-bullets-mode "org-bullets-mode" nil t)
+                (add-hook 'org-mode-hook 'org-bullets-mode))
               :ensure t)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
