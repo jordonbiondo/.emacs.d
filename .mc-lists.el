@@ -22,8 +22,11 @@
         dired-find-file
         dired-flag-file-deletion
         end-of-visual-line
+        enh-ruby-electric-brace
+        enh-ruby-forward-sexp
         eval-print-last-sexp
         forward-sexp
+        haml-electric-backspace
         ibuffer-mark-for-delete
         indent-for-tab-command
         jorbi/indent-repeat
@@ -54,8 +57,10 @@
         paredit-splice-sexp
         paredit-split-sexp
         python-indent-dedent-line-backspace
+        sh-assignment
         show-children
         slime-space
+        transpose-words
         web-mode-comment-or-uncomment
         whitespace-mode
         yas-expand
