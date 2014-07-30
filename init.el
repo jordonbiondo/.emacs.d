@@ -6,9 +6,9 @@
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
 ;; Version: 2.1.0
 ;; Package-Requires: ()
-;; Last-Updated: Wed Jul 30 09:36:25 2014 (-0400)
+;; Last-Updated: Wed Jul 30 09:54:43 2014 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 28
+;;     Update #: 29
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
 ;; Compatibility:
