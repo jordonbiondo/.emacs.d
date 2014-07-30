@@ -33,233 +33,7 @@
 ;; utility my total load time is just under 1 second, with no loss of
 ;; functionality!
 ;;
-;; Here is the simplest `use-package' declaration:
-;;
-;;   (use-package foo)
-;;
-;; This loads in the package foo, but only if foo is available on your system.
-;; If not, a warning is logged to your `*Messages*' buffer.  If it succeeds a
-;; message about "Loading foo" is logged, along with the time it took to load,
-;; if that time is over 0.01s.
-;;
-;; Use the :init keywoard to do some stuff to initialize foo, but only if foo
-;; actually gets loaded:
-;;
-;;   (use-package foo
-;;     :init
-;;     (progn
-;;       (setq foo-variable t)
-;;       (foo-mode 1)))
-;;
-;; A very common thing to do when loading a module is to bind a key to primary
-;; commands within that module:
-;;
-;;   (use-package ace-jump-mode
-;;     :bind ("C-." . ace-jump-mode))
-;;
-;; This does two things: first, it creates autoload for the `ace-jump-mode'
-;; command, and defers loading of `ace-jump-mode' until you actually use it.
-;; Second, it binds the key `C-.' to that command.  After loading, you can use
-;; `M-x describe-personal-keybindings' to see all such bindings you've set
-;; throughout your Emacs.
-;;
-;; A more literal way to do the exact same thing is:
-;;
-;;   (use-package ace-jump-mode
-;;     :commands ace-jump-mode
-;;     :init
-;;     (bind-key "C-." 'ace-jump-mode))
-;;
-;; When you use the `:commands' keyword, it creates autoloads for those
-;; commands and defers loading of the module until they are used.  In this
-;; case, the `:init' form is always run -- even if ace-jump-mode might not be
-;; on your system.  So remember to keep `:init' activities to only those that
-;; would succeed either way.
-;;
-;; Similar to `:bind', you can use `:mode' and `:interpreter' to establish a
-;; deferred binding within `auto-mode-alist' and `interpreter-mode-alist'.
-;; The specifier to either keyword can be a single cons, or a list, or just
-;; a string:
-;;
-;;   (use-package ruby-mode
-;;     :mode "\\.rb\\'"
-;;     :interpreter "ruby")
-;;
-;;   ;; The package is "python" but the mode is "python-mode":
-;;   (use-package python
-;;     :mode ("\\.py\\'" . python-mode)
-;;     :interpreter ("python" . python-mode))
-;;
-;; If you aren't using `:commands', `:bind', `:mode', or `:interpreter' (all
-;; of which imply `:commands'), you can still defer loading with the `:defer'
-;; keyword:
-;;
-;;   (use-package ace-jump-mode
-;;     :defer t
-;;     :init
-;;     (progn
-;;       (autoload 'ace-jump-mode "ace-jump-mode" nil t)
-;;       (bind-key "C-." 'ace-jump-mode)))
-;;
-;; This does exactly the same thing as the other two commands above.
-;;
-;; A companion to the `:init' keyword is `:config'.  Although `:init' always
-;; happens in the case of deferred modules (which are likely to be the most
-;; common kind), `:config' form only run after the module has been loaded by
-;; Emacs:
-;;
-;;   (use-package ace-jump-mode
-;;     :bind ("C-." . ace-jump-mode)
-;;     :config
-;;     (message "Yay, ace-jump-mode was actually loaded!"))
-;;
-;; You will see a "Configured..." message in your `*Messages*' log when a
-;; package is configured, and a timing if the configuration time was longer
-;; than 0.01s.  You should keep `:init' forms as simple as possible, and put
-;; as much as you can get away with on the `:config' side.
-;;
-;; You can have both `:init' and `:config':
-;;
-;;   (use-package haskell-mode
-;;     :commands haskell-mode
-;;     :init
-;;     (add-to-list 'auto-mode-alist '("\\.l?hs$" . haskell-mode))
-;;     :config
-;;     (progn
-;;       (use-package inf-haskell)
-;;       (use-package hs-lint)))
-;;
-;; In this case, I want to autoload the command `haskell-mode' from
-;; "haskell-mode.el", add it to `auto-mode-alist' at the time ".emacs" is
-;; loaded, but wait until after I've opened a Haskell file before loading
-;; "inf-haskell.el" and "hs-lint.el".
-;;
-;; Another similar option to `:init' is `:idle'. Like `:init' this always run,
-;; however, it does so when Emacs is idle at some time in the future after
-;; load. This is particularly useful for convienience minor modes which can be
-;; slow to load. For instance, in this case, I want Emacs to always use
-;; `global-pabbrev-mode'. `:commands' creates an appropriate autoload; `:idle'
-;; will run this command at some point in the future. If you start Emacs and
-;; beginning typing straight-away, loading will happen eventually.
-;;
-;; (use-package pabbrev
-;;   :commands global-pabbrev-mode
-;;   :idle (global-pabbrev-mode))
-;;
-;; Idle functions are run in the order in which they are evaluated. If you
-;; have many, it may take sometime for all to run. `use-package' will always
-;; tell you if there is an error in the form which can otherwise be difficult
-;; to debug. It may tell you about functions being eval'd, depending on the
-;; value of `use-package-verbose'. Other good candidates for `:idle' are
-;; `yasnippet', `auto-complete' and `autopair'.
-;;
-;; Finally, you may wish to use `:pre-load'. This form runs before everything
-;; else whenever the `use-package' form evals; the package in question will
-;; never have been required. This can be useful, if you wish for instance, to
-;; pull files from a git repository, or mount a file system. Like :init,
-;; keeping this form as simple as possible makes sense.
-;;
-;; The `:bind' keyword takes either a cons or a list of conses:
-;;
-;;   (use-package hi-lock
-;;     :bind (("M-o l" . highlight-lines-matching-regexp)
-;;            ("M-o r" . highlight-regexp)
-;;            ("M-o w" . highlight-phrase)))
-;;
-;; The `:commands' keyword likewise takes either a symbol or a list of
-;; symbols.
-;;
-;; You can use the `:if' keyword to predicate the loading and initialization
-;; of a module.  For example, I only want an `edit-server' running for my
-;; main, graphical Emacs, not for Emacsen I may start at the command line:
-;;
-;;   (use-package edit-server
-;;     :if window-system
-;;     :init
-;;     (progn
-;;       (add-hook 'after-init-hook 'server-start t)
-;;       (add-hook 'after-init-hook 'edit-server-start t)))
-;;
-;; The `:disabled' keyword can be used to turn off a module that you're having
-;; difficulties with, or to stop loading something you're not really using at
-;; the present time:
-;;
-;;   (use-package ess-site
-;;     :disabled t
-;;     :commands R)
-;;
-;; Another feature of `use-package' is that it always loads every file that it
-;; can when your ".emacs" is being byte-compiled (if you do that, which I
-;; recommend).  This helps to silence spurious warnings about unknown
-;; variables and functions.
-;;
-;; However, there are times when this is just not enough.  For those times,
-;; use the `:defines' keyword to introduce empty variable definitions solely
-;; for the sake of the byte-compiler:
-;;
-;;   (use-package texinfo
-;;     :defines texinfo-section-list
-;;     :commands texinfo-mode
-;;     :init
-;;     (add-to-list 'auto-mode-alist '("\\.texi$" . texinfo-mode)))
-;;
-;; If you need to silence a missing function warning, do it with an autoload
-;; stub in your `:init' block:
-;;
-;;   (use-package w3m
-;;     :commands (w3m-browse-url w3m-session-crash-recovery-remove)
-;;     :init
-;;     (eval-when-compile
-;;       (autoload 'w3m-search-escape-query-string "w3m-search")))
-;;
-;; If your package needs a directory added to the `load-path' in order load,
-;; use `:load-path'.  It takes a string or a list of strings.  If the path is
-;; relative, it will be expanded within `user-emacs-directory':
-;;
-;;   (use-package ess-site
-;;     :disabled t
-;;     :load-path "site-lisp/ess/lisp/"
-;;     :commands R)
-;;
-;; Lastly, `use-package' provides built-in support for the diminish utility,
-;; if you have that installed.  It's purpose is to remove strings from your
-;; mode-line that would otherwise always be there and provide no useful
-;; information.  It is invoked with the `:diminish' keyword, which is passed
-;; either the minor mode symbol, a cons of the symbol and a replacement string,
-;; or just a replacement string in which case the minor mode symbol is guessed
-;; to be the package name with "-mode" at the end:
-;;
-;;   (use-package abbrev
-;;     :diminish abbrev-mode
-;;     :init
-;;     (if (file-exists-p abbrev-file-name)
-;;         (quietly-read-abbrev-file))
-;;
-;;     :config
-;;     (add-hook 'expand-load-hook
-;;               (lambda ()
-;;                 (add-hook 'expand-expand-hook 'indent-according-to-mode)
-;;                 (add-hook 'expand-jump-hook 'indent-according-to-mode))))
-;;
-;; If you noticed that this declaration has neither a `:bind', `:commands' or
-;; `:defer' keyword: congratulations, you're an A student!  What it means is
-;; that both the `:init' and `:config' forms will be executed when ".emacs" is
-;; loaded, with no delays until later.  Is this useful?  Not really.  I just
-;; happen to like separating my configuration into things that must happen at
-;; startup time, and things that could potentioally wait until after the
-;; actual load.  In this case, everything could be put inside `:init' and
-;; there would be no difference.
-;;
-;; * For package.el user
-;;
-;; You can use `use-package' to load packages from ELPA with package.el. This
-;; is particularly useful if you share your .emacs between several machines;
-;; the relevant packages will download automatically once placed in your
-;; .emacs. The `:ensure' key will install the package automatically if it is
-;; not already present.
-;;
-;; (use-package tex-site
-;;  :ensure auctex)
+;; Please see README.md from the same repository for documentation.
 
 ;;; Code:
 
@@ -284,44 +58,70 @@
   :type 'number
   :group 'use-package)
 
-(defmacro with-elapsed-timer (text &rest forms)
-  (let ((body `(progn ,@forms)))
-    (if use-package-verbose
-        (let ((nowvar (make-symbol "now")))
-          `(let ((,nowvar (current-time)))
-             (message "%s..." ,text)
-             (prog1 ,body
-               (let ((elapsed
-                      (float-time (time-subtract (current-time) ,nowvar))))
-                 (if (> elapsed ,use-package-minimum-reported-time)
-                     (message "%s...done (%.3fs)" ,text elapsed)
-                   (message "%s...done" ,text))))))
-      body)))
+(defcustom use-package-idle-interval 3
+  "Time to wait when using :idle in a `use-package' specification."
+  :type 'number
+  :group 'use-package)
 
-(put 'with-elapsed-timer 'lisp-indent-function 1)
+(defmacro use-package-with-elapsed-timer (text &rest body)
+  (declare (indent 1))
+  (let ((nowvar (make-symbol "now")))
+    `(if use-package-verbose
+         (let ((,nowvar (current-time)))
+           (message "%s..." ,text)
+           (prog1 (progn ,@body)
+             (let ((elapsed
+                    (float-time (time-subtract (current-time) ,nowvar))))
+               (if (> elapsed ,use-package-minimum-reported-time)
+                   (message "%s...done (%.3fs)" ,text elapsed)
+                 (message "%s...done" ,text)))))
+       ,@body)))
+
+(put 'use-package-with-elapsed-timer 'lisp-indent-function 1)
 
 (defvar use-package-idle-timer nil)
-(defvar use-package-idle-forms nil)
+(defvar use-package-idle-forms (make-hash-table))
 
 (defun use-package-start-idle-timer ()
   "Ensure that the idle timer is running."
   (unless use-package-idle-timer
     (setq use-package-idle-timer
           (run-with-idle-timer
-           3 t
+           use-package-idle-interval t
            'use-package-idle-eval))))
 
-(defun use-package-init-on-idle (form)
+(defun use-package-init-on-idle (form priority)
   "Add a new form to the idle queue."
   (use-package-start-idle-timer)
-  (if use-package-idle-forms
-      (add-to-list 'use-package-idle-forms
-                   form t)
-    (setq use-package-idle-forms (list form))))
+  (puthash priority
+           (append (gethash priority use-package-idle-forms)
+                   (list form))
+           use-package-idle-forms))
+
+(defun use-package-idle-priorities ()
+  "Get a list of all priorities in the idle queue.
+The list is sorted in the order forms should be run."
+  (let ((priorities nil))
+    (maphash (lambda (priority forms)
+               (setq priorities (cons priority priorities)))
+             use-package-idle-forms)
+    (sort priorities '<)))
+
+(defun use-package-idle-pop ()
+  "Pop the top-priority task from the idle queue.
+Return nil when the queue is empty."
+  (let* ((priority        (car (use-package-idle-priorities)))
+         (forms           (gethash priority use-package-idle-forms))
+         (first-form      (car forms))
+         (forms-remaining (cdr forms)))
+      (if forms-remaining
+          (puthash priority forms-remaining use-package-idle-forms)
+        (remhash priority use-package-idle-forms))
+      first-form))
 
 (defun use-package-idle-eval()
   "Start to eval idle-commands from the idle queue."
-  (let ((next (pop use-package-idle-forms)))
+  (let ((next (use-package-idle-pop)))
     (if next
         (progn
           (when use-package-verbose
@@ -334,7 +134,7 @@
               "Failure on use-package idle. Form: %s, Error: %s"
               next e)))
           ;; recurse after a bit
-          (when (sit-for 3)
+          (when (sit-for use-package-idle-interval)
             (use-package-idle-eval)))
       ;; finished (so far!)
       (cancel-timer use-package-idle-timer)
@@ -356,6 +156,7 @@
      :disabled
      :ensure
      :idle
+     :idle-priority
      :if
      :init
      :interpreter
@@ -367,13 +168,64 @@
   )
   "Keywords recognized by `use-package'.")
 
-(defun plist-keys (plist)
-  "Return a list containing all the keys in PLIST."
-  (when plist
-    (cons
-      (car plist)
-      (plist-keys
-        (cddr plist)))))
+(defun use-package-mplist-get (plist prop)
+  "Get the values associated to PROP in PLIST, a modified plist.
+
+A modified plist is one where keys are keywords and values are
+all non-keywords elements that follow it.
+
+As a special case : if the first occurrence of the keyword PROP
+is followed by another keyword or is the last element in the
+list, the function returns t.
+
+Currently this function infloops when the list is circular."
+  (let ((tail plist)
+        found
+        result)
+    (while (and
+            (consp tail)
+            (not
+             (eq prop (car tail))))
+      (pop tail))
+    (when (eq prop (pop tail))
+      (setq found t))
+    (while (and (consp tail)
+                (not (keywordp (car tail))))
+      (push (pop tail) result))
+    (or (nreverse result) found)))
+
+(defun use-package-plist-get (plist prop &optional eval-backquote no-progn)
+  "Compatibility layer between classical and modified plists.
+
+If `use-package-mplist-get' returns exactly one value, that is
+returned ; otherwise the list is returned wrapped in a `progn'
+unless NO-PROGN is non-nil.
+
+When EVAL-BACKQUOTE is non-nil, the value is first evaluated as
+if it were backquoted."
+  (let ((values (use-package-mplist-get plist prop)))
+    (when eval-backquote
+      (setq values (eval (list 'backquote values))))
+    (when values
+      (cond ((not (listp values))
+             values)
+            ((eq 1 (length values))
+             (car values))
+            (t (if no-progn
+                   values
+                 (cons 'progn values)))))))
+
+(defun use-package-mplist-keys (plist)
+  "Get the keys in PLIST, a modified plist.
+
+A modified plist is one where properties are keywords and values
+are all non-keywords elements that follow it."
+  (let ((result))
+    (mapc (lambda (elt)
+            (when (keywordp elt)
+              (push elt result)))
+          plist)
+    (nreverse result)))
 
 (defun use-package-validate-keywords (args)
   "Error if any keyword given in ARGS is not recognized.
@@ -383,11 +235,7 @@ Return the list of recognized keywords."
       (lambda (keyword)
         (unless (memq keyword use-package-keywords)
           (error "Unrecognized keyword: %s" keyword))))
-    (plist-keys args)))
-
-(defun plist-get-value (plist prop)
-  "Return the value of PROP in PLIST as if it was backquoted."
-  (eval (list '\` (plist-get plist prop))))
+    (use-package-mplist-keys args)))
 
 (defmacro use-package (name &rest args)
   "Use a package with configuration options.
@@ -416,31 +264,36 @@ For full documentation. please see commentary.
 :load-path Add to `load-path' before loading.
 :diminish Support for diminish package (if it's installed).
 :idle adds a form to run on an idle timer
+:idle-priority schedules the :idle form to run with the given
+       priority (lower priorities run first). Default priority
+       is 5; forms with the same priority are run in the order in
+       which they are evaluated.
 :ensure loads package using package.el if necessary."
   (use-package-validate-keywords args) ; error if any bad keyword, ignore result
-  (let* ((commands (plist-get args :commands))
-         (pre-init-body (plist-get args :pre-init))
-         (pre-load-body (plist-get args :pre-load))
-         (init-body (plist-get args :init))
-         (config-body (plist-get args :config))
-         (diminish-var (plist-get-value args :diminish))
-         (defines (plist-get-value args :defines))
-         (idle-body (plist-get args :idle))
-         (keybindings-alist (plist-get-value args :bind))
-         (mode (plist-get-value args :mode))
+  (let* ((commands (use-package-plist-get args :commands t t))
+         (pre-init-body (use-package-plist-get args :pre-init))
+         (pre-load-body (use-package-plist-get args :pre-load))
+         (init-body (use-package-plist-get args :init))
+         (config-body (use-package-plist-get args :config))
+         (diminish-var (use-package-plist-get args :diminish t))
+         (defines (use-package-plist-get args :defines t t))
+         (idle-body (use-package-plist-get args :idle))
+         (idle-priority (use-package-plist-get args :idle-priority))
+         (keybindings-alist (use-package-plist-get args :bind t t))
+         (mode (use-package-plist-get args :mode t t))
          (mode-alist
           (if (stringp mode) (cons mode name) mode))
-         (interpreter (plist-get-value args :interpreter))
+         (interpreter (use-package-plist-get args :interpreter t t))
          (interpreter-alist
           (if (stringp interpreter) (cons interpreter name) interpreter))
-         (predicate (plist-get args :if))
-         (pkg-load-path (plist-get-value args :load-path))
+         (predicate (use-package-plist-get args :if))
+         (pkg-load-path (use-package-plist-get args :load-path t t))
          (defines-eval (if (null defines)
                            nil
                          (if (listp defines)
                              (mapcar (lambda (var) `(defvar ,var)) defines)
                            `((defvar ,defines)))))
-         (requires (plist-get-value args :requires))
+         (requires (use-package-plist-get args :requires t))
          (requires-test (if (null requires)
                             t
                           (if (listp requires)
@@ -451,9 +304,9 @@ For full documentation. please see commentary.
          (name-symbol (if (stringp name) (intern name) name)))
 
     ;; force this immediately -- one off cost
-    (unless (plist-get args :disabled)
+    (unless (use-package-plist-get args :disabled)
 
-      (let* ((ensure (plist-get args :ensure))
+      (let* ((ensure (use-package-plist-get args :ensure))
              (package-name
               (or (and (eq ensure t)
                        name)
@@ -489,10 +342,12 @@ For full documentation. please see commentary.
 
 
       (when idle-body
+        (when (null idle-priority)
+          (setq idle-priority 5))
         (setq init-body
               `(progn
                  (require 'use-package)
-                 (use-package-init-on-idle (lambda () ,idle-body))
+                 (use-package-init-on-idle (lambda () ,idle-body) ,idle-priority)
                  ,init-body)))
 
 
@@ -547,12 +402,13 @@ For full documentation. please see commentary.
          (eval-when-compile
            (when (bound-and-true-p byte-compile-current-file)
              ,@defines-eval
-             ,(if (stringp name)
-                  `(load ,name t)
-                `(require ',name nil t))))
+             (with-demoted-errors
+                ,(if (stringp name)
+                     `(load ,name t)
+                   `(require ',name nil t)))))
 
-         ,(if (and (or commands (plist-get args :defer))
-                   (not (plist-get args :demand)))
+         ,(if (and (or commands (use-package-plist-get args :defer))
+                   (not (use-package-plist-get args :demand)))
               (let (form)
                 (mapc #'(lambda (command)
                           (push `(autoload (function ,command)
@@ -567,13 +423,13 @@ For full documentation. please see commentary.
                       `(eval-after-load ,(if (stringp name) name `',name)
                          `(,(lambda ()
                               (if ,requires-test
-                                  (with-elapsed-timer
+                                  (use-package-with-elapsed-timer
                                       ,(format "Configuring package %s" name-string)
                                     ,config-body))))))
                    t))
             `(if (and ,(or predicate t)
                       ,requires-test)
-                 (with-elapsed-timer
+                 (use-package-with-elapsed-timer
                      ,(format "Loading package %s" name-string)
                    (if (not ,(if (stringp name)
                                  `(load ,name t)
@@ -587,7 +443,7 @@ For full documentation. please see commentary.
 (put 'use-package 'lisp-indent-function 'defun)
 
 (defconst use-package-font-lock-keywords
-  '(("(\\(use-package\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+  '(("(\\(use-package\\(?:-with-elapsed-timer\\)?\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
      (1 font-lock-keyword-face)
      (2 font-lock-constant-face nil t))))
 

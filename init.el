@@ -4,11 +4,11 @@
 ;; Description: Jordon Biondo's emacs configuration
 ;; Author: Jordon Biondo
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
-;; Version: 2.0.3
+;; Version: 2.1.0
 ;; Package-Requires: ()
-;; Last-Updated: Tue May 27 21:47:30 2014 (-0400)
+;; Last-Updated: Wed Jul 30 09:36:25 2014 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 24
+;;     Update #: 28
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
 ;; Compatibility:
@@ -44,8 +44,10 @@
 ;; Initial setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar jordonp (or (equal (getenv "USER") "jordon")
-                   (equal (getenv "USERNAME") "jordon")))
+(defun jordonp ()
+  "Are you jordon?"
+  (or (equal (getenv "USER") "jordon")
+     (equal (getenv "USERNAME") "jordon")))
 
 (mapc (lambda(mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode
@@ -72,6 +74,8 @@
 (require 'package)
 
 (defmacro depends (name &rest body)
+  "After loading NAME, eval BODY.
+Wraps `eval-after-load'."
   (declare (indent defun))
   `(eval-after-load ,name (lambda () ,@body)))
 
@@ -92,7 +96,7 @@
 (package-initialize)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; personal custom stuff
+;; Personal Custom Stuff
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (push "~/.emacs.d/jorbi/" load-path)
@@ -104,7 +108,7 @@
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
-(when jordonp
+(when (jordonp)
   (use-package redspot
     :config
     (depends "js2-mode"
@@ -114,21 +118,9 @@
                    ("C-c n c" . redspot:js-console-this-line)))
         (define-key js2-mode-map (kbd (car b)) (cdr b))))))
 
-
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Command Lines Args
+;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package commander
-  :ensure t)
-
-;;(commander
-;; (option "--no-theme" "Do not load theme" (lambda (&rest args) )
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hosted packages
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (use-package ample-theme
   :ensure t)
@@ -232,12 +224,12 @@
             (use-package git-gutter
               :config
               (depends "ample-theme"
-                (lambda ()(dolist (face '(git-gutter:added
-                                     git-gutter:deleted
-                                     git-gutter:modified
-                                     git-gutter:separator
-                                     git-gutter:unchanged))
-                       (set-face-background face (face-foreground face)))))
+                (lambda () (dolist (face '(git-gutter:added
+                                      git-gutter:deleted
+                                      git-gutter:modified
+                                      git-gutter:separator
+                                      git-gutter:unchanged))
+                        (set-face-background face (face-foreground face)))))
               :ensure t))
   :ensure t)
 
@@ -278,7 +270,7 @@
 
             ;; short waits
             (setq key-chord-two-keys-delay .020
-                  key-chord-one-key-delay .030)
+                  key-chord-one-key-delay .020)
 
             ;; jordon-dev-mode chords
             (dolist (binding
@@ -393,17 +385,6 @@
   :config (edit-server-start)
   :ensure t)
 
-;; (use-package d-mode
-;;   :init (progn (add-to-list 'exec-path "C:/D/dmd2/windows/bin")
-;;                (add-to-list 'exec-path "C:/Users/jordon.biondo/src/DCD"))
-;;   :config (progn (require 'ac-dcd)
-;;                  (add-to-list 'ac-modes 'd-mode)
-;;                  (defun ac-d-mode-setup ()
-;;                    (setq ac-sources (append '(ac-source-dcd) ac-sources))
-;;                    (global-auto-complete-mode t))
-;;                  (add-hook 'd-mode-hook 'ac-d-mode-setup))
-;;   :ensure t)
-
 (use-package io-mode
   :config (progn
             (defvar jorbi/io-function-name-re
@@ -424,26 +405,29 @@
   :init (add-to-list 'c-default-style
                      (cons 'csharp-mode "c#"))
   :config (progn
-            (add-hook 'csharp-mode-hook 'hs-minor-mode)
-            (add-hook 'csharp-mode-hook 'toggle-truncate-lines)
-            (add-hook 'csharp-mode-hook (lambda () (setq c-basic-offset 4
-                                                    indent-tabs-mode nil)))
+            (add-hook 'csharp-mode-hook
+                      (defun jorbi/csharp-setup-function ()
+                        (setq c-basic-offset 4
+                              indent-tabs-mode nil)
+                        (hs-minor-mode t)
+                        (jorbi/dont-truncate-lines)))
+            (font-lock-add-keywords
+             'csharp-mode
+             '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
+  :ensure t)
 
-            (font-lock-add-keywords 'csharp-mode
-                                    '(("\\(// *\\)\\(todo\\)\\(.*$\\)"
-                                       2 'font-lock-warning-face t))))
-
+(use-package company
   :ensure t)
 
 (use-package omnisharp
   :bind (("M-i" . jorbi/omnisharp-go-to-definition-smart)
          ("M-m" . omnisharp-find-usages))
   :config (progn
-
             (setq omnisharp-eldoc-support t)
             (add-hook 'csharp-mode-hook 'eldoc-mode)
 
             (defun jorbi/omnisharp-go-to-definition-smart (&optional force-ow)
+              "Goto definition at point, choose window intelligently."
               (interactive "P")
               (let* ((json-result (omnisharp-post-message-curl-as-json
                                    (concat (omnisharp-get-host) "gotodefinition")
@@ -458,22 +442,19 @@
                   (pulse-momentary-highlight-one-line (point)))))
 
             (defun jorbi/reload-csharp-buffers ()
-              "Restart csharp on all csharp buffers."
+              "Restart `csharp-mode' on all `csharp-mode' buffers."
               (interactive)
               (dolist (b (buffer-list))
                 (with-current-buffer b
                   (when (eql major-mode 'csharp-mode)
                     (csharp-mode)))))
 
-            (use-package company
-              :config (progn
-                        (add-to-list 'company-backends 'company-omnisharp)
-                        (add-hook 'csharp-mode-hook 'company-mode))
-              :ensure t)
-            (add-hook 'csharp-mode-hook 'omnisharp-mode))
+            (depends "company"
+              (depends "csharp"
+                (add-to-list 'company-backends 'company-omnisharp)
+                (add-hook 'csharp-mode-hook 'company-mode)
+                (add-hook 'csharp-mode-hook 'omnisharp-mode))))
   :ensure t)
-
-
 
 (use-package flycheck
   :config (progn
@@ -484,27 +465,31 @@
 (use-package auto-complete
   :config (progn
             (require 'auto-complete-config)
-            (add-to-list 'ac-modes 'slime-repl-mode)
-            (add-to-list 'ac-modes 'js2-mode)
-            (add-to-list 'ac-modes 'js-mode)
+            (depends "slime"
+              (add-to-list 'ac-modes 'slime-repl-mode))
+            (depends "js2-mode"
+              (add-to-list 'ac-modes 'js2-mode))
+            (depends "js-mode"
+              (add-to-list 'ac-modes 'js-mode))
+            (depends "enh-ruby-mode"
+              (add-to-list 'ac-modes 'enh-ruby-mode))
             (ac-config-default)
-            (global-auto-complete-mode t)
+            (global-auto-complete-mode t))
+  :ensure t)
 
-            (use-package auto-complete-clang-async
-              :config (if (file-exists-p "~/.emacs.d/clang-complete")
-                          (progn
-                            (defun ac-cc-mode-setup ()
-                              (setq ac-clang-complete-executable
-                                    "~/.emacs.d/clang-complete")
-                              (setq ac-sources '(ac-source-clang-async))
-                              (ac-clang-launch-completion-process))
+(use-package auto-complete-clang-async
+  :if (file-exists-p "~/.emacs.d/clang-complete")
+  :config
+  (depends "auto-complete-mode"
+    (defun ac-cc-mode-setup ()
+      (setq ac-clang-complete-executable
+            "~/.emacs.d/clang-complete")
+      (setq ac-sources '(ac-source-clang-async))
+      (ac-clang-launch-completion-process))
 
-                            (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-                            (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-                            (global-auto-complete-mode t))
-                        (message "no clang-complete found"))
-              :if (file-exists-p "~/.emacs.d/clang-complete")
-              :ensure t))
+    (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+    (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+    (global-auto-complete-mode t))
   :ensure t)
 
 (use-package highlight-indentation
@@ -512,35 +497,14 @@
 
 (use-package enh-ruby-mode
   :config (progn
-            (require 'auto-complete)
-            (add-to-list 'ac-modes 'enh-ruby-mode)
             (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
-            (use-package robe
-              :config (progn
-                        (add-hook 'enh-ruby-mode-hook 'robe-mode)
-                        (add-to-list 'auto-mode-alist
-                                     '("Gemfile\\'" . enh-ruby-mode))
-                        (add-hook 'robe-mode-hook
-                                  (defun jorbi-robe:/setup-completeion()
-                                    (auto-complete-mode -1) (company-mode t)))
-                        (depends "company"
-                          (lambda () (progn (push 'company-robe company-backends)))))
 
-              :ensure t)
+            (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
 
             (use-package bundler
               :ensure t)
 
-            (use-package haml-mode
-              :config (add-hook 'haml-mode-hook
-                                (defun jorbi-haml/setup-hook()
-                                  (flycheck-mode t)
-                                  (depends "highlight-indentation"
-                                    (highlight-indentation-mode 1)
-                                    (highlight-indentation-current-column-mode)
-                                    (highlight-indentation-set-offset 2))
-                                  (auto-indent-mode -1)))
-              :ensure t)
+
 
             (use-package sass-mode
               :config (add-hook 'sass-mode-hook
@@ -557,6 +521,30 @@
               :ensure t))
   :ensure t)
 
+(use-package haml-mode
+  :config
+  (depends "highlight-indentation"
+    (add-hook 'haml-mode-hook
+              (defun jorbi-haml/setup-hook()
+                (flycheck-mode t)
+                (depends "highlight-indentation"
+                  (highlight-indentation-mode 1)
+                  (highlight-indentation-current-column-mode)
+                  (highlight-indentation-set-offset 2))
+                (auto-indent-mode -1))))
+  :ensure t)
+
+(use-package robe
+  :config (progn
+            (depends "enh-ruby-mode"
+              (add-hook 'enh-ruby-mode-hook 'robe-mode))
+            (add-hook 'robe-mode-hook
+                      (defun jorbi-robe/setup-completeion()
+                        (auto-complete-mode -1) (company-mode t)))
+            (depends "company"
+              (lambda () (progn (push 'company-robe company-backends)))))
+  :ensure t)
+
 (use-package moz
   :config (progn
             (defun jorbi-moz/refresh ()
@@ -568,10 +556,8 @@
                   (message "Moz Refreshing...")))
 
             (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
-
             (depends "js2-mode"
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
-
             (depends "enh-ruby-mode"
               (lambda () (add-hook 'enh-ruby-mode-hook 'moz-minor-mode))))
   :ensure t)
@@ -581,28 +567,42 @@
 
 (use-package d-mode
   :if (executable-find "dmd")
+  ;; old windows config
+  ;; (use-package d-mode
+  ;;   :init (progn (add-to-list 'exec-path "C:/D/dmd2/windows/bin")
+  ;;                (add-to-list 'exec-path "C:/Users/jordon.biondo/src/DCD"))
+  ;;   :config (progn (require 'ac-dcd)
+  ;;                  (add-to-list 'ac-modes 'd-mode)
+  ;;                  (defun ac-d-mode-setup ()
+  ;;                    (setq ac-sources (append '(ac-source-dcd) ac-sources))
+  ;;                    (global-auto-complete-mode t))
+  ;;                  (add-hook 'd-mode-hook 'ac-d-mode-setup))
+  ;;   :ensure t)
   :ensure t)
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
-  :init (progn
-          (setq js2-basic-offset 2))
+  :init (setq js2-basic-offset 2)
   :config (progn
             (font-lock-add-keywords
              'js2-mode
              '(("\\(console\\)\\(\.\\)\\(log\\)"
                 (1 font-lock-warning-face t)
                 (3 font-lock-warning-face t))))
+            (use-package ac-js2
+              :ensure t)
 
-            (use-package ac-js2 :ensure t)
-            (use-package js2-refactor :ensure t)
-            (use-package slime-js
-              :defer t
-              :config (progn
-                        (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
-                        (slime-setup '(slime-repl slime-js)))
-              :ensure nil))
+            (use-package js2-refactor
+              :ensure t))
   :ensure t)
+
+(use-package slime-js
+  :defer t
+  :config (progn
+            (depends "js2-mode"
+              (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
+              (slime-setup '(slime-repl slime-js))))
+  :ensure nil)
 
 (use-package pretty-mode
   :config (progn
@@ -645,9 +645,11 @@
   :ensure t)
 
 (use-package paredit
-  :config (add-hook 'paredit-space-for-delimiter-predicates
-                    (lambda (&rest args)
-                      (not (equal major-mode 'csharp-mode))))
+  :config
+  (depends "csharp-mode"
+    (add-hook 'paredit-space-for-delimiter-predicates
+              (lambda (&rest args)
+                (not (equal major-mode 'csharp-mode)))))
   :ensure t)
 
 (use-package rainbow-delimiters
@@ -687,9 +689,9 @@
 (use-package savehist
   :config (savehist-mode t))
 
-(use-package desktop
-  :config (progn (desktop-save-mode t)
-                 (setq desktop-path '("~/.emacs.d/"))))
+;; (use-package desktop
+;;   :config (progn (desktop-save-mode t)
+;;                  (setq desktop-path '("~/.emacs.d/"))))
 
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)

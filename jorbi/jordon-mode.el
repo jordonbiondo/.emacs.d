@@ -16,7 +16,7 @@
 
       (set-face-attribute 'default nil :height 125))
 
-    (when jordonp
+    (when (jordonp)
       (setq user-mail-address "jordon.biondo@parelio.com")))
 
   (define-keys jordon-dev-mode-map

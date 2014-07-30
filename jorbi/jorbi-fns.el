@@ -255,6 +255,3 @@ Use `winstack-push' and
      (format "%S" (save-excursion (eval expr))))))
 
 (provide 'jorbi-fns)
-
-
-
