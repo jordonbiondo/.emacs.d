@@ -623,12 +623,25 @@ Wraps `eval-after-load'."
     :init (exec-path-from-shell-initialize)
     :ensure t))
 
+(use-package dired-subtree
+  :config (depends "dired"
+            (define-keys dired-mode-map
+              ("C-c C-i" 'dired-subtree-insert)
+              ("C-c C-r" 'dired-subtree-remove)
+              ("C-c C-g" 'dired-subtree-revert)))
+  :ensure t)
+
 (use-package rust-mode
   :mode ("\\.rs$" . rust-mode)
   :config (progn
             ;; indent with 2 spaces
             (setq rust-indent-offset 2) )
   :defer t
+  :ensure t)
+
+(use-package pivotal-tracker
+  :config (progn
+            (setq pivotal-api-token (key :pivotal)))
   :ensure t)
 
 (use-package paredit
@@ -663,6 +676,9 @@ Wraps `eval-after-load'."
 
 (use-package grep
   :config (add-hook 'grep-mode-hook 'jorbi/truncate-lines))
+
+(use-package dired
+  :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
 
 (use-package pulse
   :config (progn (setq pulse-iterations 7
@@ -754,11 +770,6 @@ Wraps `eval-after-load'."
                        erc-nick "jordonbiondo"
                        erc-port 6665
                        erc-server "irc.freenode.net")))
-
-(use-package pivotal-tracker
-  :config (progn
-            (setq pivotal-api-token (key :pivotal)))
-  :ensure t)
 
 (use-package ediff
   :defer t
