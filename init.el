@@ -224,12 +224,12 @@ Wraps `eval-after-load'."
             (use-package git-gutter
               :config
               (depends "ample-theme"
-                (lambda () (dolist (face '(git-gutter:added
-                                      git-gutter:deleted
-                                      git-gutter:modified
-                                      git-gutter:separator
-                                      git-gutter:unchanged))
-                        (set-face-background face (face-foreground face)))))
+                (dolist (face '(git-gutter:added
+                                git-gutter:deleted
+                                git-gutter:modified
+                                git-gutter:separator
+                                git-gutter:unchanged))
+                  (set-face-background face (face-foreground face))))
               :ensure t))
   :ensure t)
 
