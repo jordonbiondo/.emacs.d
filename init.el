@@ -4,14 +4,14 @@
 ;; Description: Jordon Biondo's emacs configuration
 ;; Author: Jordon Biondo
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
-;; Version: 2.1.0
+;; Version: 2.1.1
 ;; Package-Requires: ()
-;; Last-Updated: Wed Jul 30 09:54:43 2014 (-0400)
+;; Last-Updated: Mon Aug  4 10:53:04 2014 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 29
+;;     Update #: 31
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
-;; Compatibility:
+;; Compatibility: emacs >= 24.3
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -211,6 +211,7 @@
   :ensure t)
 
 (use-package switch-window
+  :defer t
   :config (setq switch-window-shortcut-style 'qwerty
                 switch-window-qwerty-shortcuts
                 '("a" "w" "e" "f" "j" "i" "o" ";" "s" "d" "k" "l"))
@@ -246,9 +247,11 @@
   :ensure t)
 
 (use-package gh
+  :defer t
   :ensure t)
 
 (use-package helm
+  :defer t
   :ensure t)
 
 (use-package sublimity
@@ -258,11 +261,14 @@
   :ensure t)
 
 (use-package powerline
-  :config  (use-package jorbi-powerline
-             :config (setq-default mode-line-format jorbi/powerline-format))
   :ensure t)
 
+(use-package jorbi-powerline
+  :config (depends "powerline" "cl"
+            (setq-default mode-line-format jorbi/powerline-format)))
+
 (use-package imenu-anywhere
+  :defer t
   :config
   (progn
     (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
@@ -270,6 +276,7 @@
   :ensure t)
 
 (use-package rainbow-mode
+  :defer t
   :ensure t)
 
 (use-package key-chord
@@ -335,16 +342,19 @@
   :ensure t)
 
 (use-package projectile
-  :config (progn
-            (add-hook 'enh-ruby-mode-hook 'projectile-mode)
-            (add-hook 'prog-mode-hook 'projectile-mode)
-            (use-package projectile-rails
-              :config (progn
-                        (add-hook 'enh-ruby-mode-hook 'projectile-rails-mode)
-                        (add-hook 'haml-mode-hook 'projectile-rails-mode)
-                        (add-hook 'yaml-mode-hook 'projectile-rails-mode)
-                        (add-hook 'js2-mode-hook 'projectile-rails-mode))
-              :ensure t))
+  :init (progn
+          (add-hook 'enh-ruby-mode-hook 'projectile-mode)
+          (add-hook 'prog-mode-hook 'projectile-mode))
+  :defer t
+  :ensure t)
+
+(use-package projectile-rails
+  :init (depends "projectile"
+          (add-hook 'enh-ruby-mode-hook 'projectile-rails-mode)
+          (add-hook 'haml-mode-hook 'projectile-rails-mode)
+          (add-hook 'yaml-mode-hook 'projectile-rails-mode)
+          (add-hook 'js2-mode-hook 'projectile-rails-mode))
+  :defer t
   :ensure t)
 
 (use-package header2
@@ -359,6 +369,7 @@
   :ensure t)
 
 (use-package google-this
+  :defer t
   :ensure t)
 
 (use-package web-mode
@@ -387,6 +398,7 @@
   :ensure t)
 
 (use-package io-mode
+  :defer t
   :config (progn
             (defvar jorbi/io-function-name-re
               "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\(method\\)")
@@ -403,8 +415,10 @@
   :ensure t)
 
 (use-package csharp-mode
-  :init (add-to-list 'c-default-style
-                     (cons 'csharp-mode "c#"))
+  :init (depends "cc-mode"
+          (add-to-list 'c-default-style
+                       (cons 'csharp-mode "c#")))
+  :mode ("\\.cs$" . csharp-mode)
   :config (progn
             (add-hook 'csharp-mode-hook
                       (defun jorbi/csharp-setup-function ()
@@ -418,6 +432,7 @@
   :ensure t)
 
 (use-package company
+  :defer t
   :ensure t)
 
 (use-package omnisharp
@@ -450,20 +465,21 @@
                   (when (eql major-mode 'csharp-mode)
                     (csharp-mode)))))
 
-            (depends "company"
-              (depends "csharp"
-                (add-to-list 'company-backends 'company-omnisharp)
-                (add-hook 'csharp-mode-hook 'company-mode)
-                (add-hook 'csharp-mode-hook 'omnisharp-mode))))
+            (depends "company" "csharp"
+              (add-to-list 'company-backends 'company-omnisharp)
+              (add-hook 'csharp-mode-hook 'company-mode)
+              (add-hook 'csharp-mode-hook 'omnisharp-mode)))
   :ensure t)
 
-(use-package flycheck
-  :config (progn
-            (add-hook 'c-mode-hook 'flycheck-mode)
-            (add-hook 'c++-mode-hook 'flycheck-mode))
+(use-package flycheck  
+  :init (depends "cc-mode"
+          (add-hook 'c-mode-hook 'flycheck-mode)
+          (add-hook 'c++-mode-hook 'flycheck-mode))
+  :defer t
   :ensure t)
 
 (use-package auto-complete
+  :defer t
   :config (progn
             (require 'auto-complete-config)
             (depends "slime"
@@ -500,37 +516,45 @@
   :ensure t)
 
 (use-package bundler
+  :defer t
   :ensure t)
 
 (use-package yaml-mode
+  :defer t
   :ensure t)
 
 (use-package highlight-indentation
+  :defer t
   :ensure t)
 
 (use-package sass-mode
+  :defer t
   :config
   (progn
     (add-hook 'sass-mode-hook 'flycheck-mode)
     (depends "highlight-indentation"    
-      (defun jorbi-sass/setup-hook()
-        (highlight-indentation-mode 1)
-        (highlight-indentation-current-column-mode)
-        (highlight-indentation-set-offset 2))))
+      (add-hook 'sass-mode-hook
+                (defun jorbi-sass/setup-hook()
+                  (highlight-indentation-mode 1)
+                  (highlight-indentation-current-column-mode)
+                  (highlight-indentation-set-offset 2)))))
   :ensure t)
 
 (use-package haml-mode
+  :defer t
   :config
   (progn
     (add-hook 'haml-mode-hook 'flycheck-mode)
-    (depends "highlight-indentation"    
-      (defun jorbi-haml/setup-hook()
-        (highlight-indentation-mode 1)
-        (highlight-indentation-current-column-mode)
-        (highlight-indentation-set-offset 2))))
+    (depends "highlight-indentation"
+      (add-hook 'haml-mode-hook 
+                (defun jorbi-haml/setup-hook()
+                  (highlight-indentation-mode 1)
+                  (highlight-indentation-current-column-mode)
+                  (highlight-indentation-set-offset 2)))))
   :ensure t)
 
 (use-package robe
+  :defer t
   :config (progn
             (depends "enh-ruby-mode"
               (add-hook 'enh-ruby-mode-hook 'robe-mode))
@@ -542,6 +566,8 @@
   :ensure t)
 
 (use-package moz
+  :defer t
+  :commands js2-mode
   :config (progn
             (defun jorbi-moz/refresh ()
               (interactive)
@@ -559,10 +585,12 @@
   :ensure t)
 
 (use-package rsense
+  :defer t
   :ensure t)
 
 (use-package d-mode
-  :if (executable-find "dmd")
+  :defer t
+  ;; :if (executable-find "dmd")
   ;; old windows config
   ;; (use-package d-mode
   ;;   :init (progn (add-to-list 'exec-path "C:/D/dmd2/windows/bin")
@@ -582,7 +610,7 @@
   :config (progn
             (font-lock-add-keywords
              'js2-mode
-             '(("\\(console\\)\\(\.\\)\\(log\\)"
+             '(("\\(console\\)\\(\.\\)\\(log\\|trace\\)"
                 (1 font-lock-warning-face t)
                 (3 font-lock-warning-face t))))
             (use-package ac-js2
@@ -610,6 +638,7 @@
   :ensure t)
 
 (use-package slime
+  :defer t
   :config
   (progn
     (use-package ac-slime :ensure t)
@@ -633,6 +662,7 @@
     :ensure t))
 
 (use-package dired-subtree
+  :commands dired
   :config (depends "dired"
             (define-keys dired-mode-map
               ("C-c C-i" 'dired-subtree-insert)
@@ -649,13 +679,15 @@
   :ensure t)
 
 (use-package pivotal-tracker
+  :defer t
   :config (progn
             (setq pivotal-api-token (key :pivotal)))
   :ensure t)
 
 (use-package paredit
-  :config
-  (depends "csharp-mode"
+  :defer t
+  :init
+  (depends "csharp-mode" "paredit"
     (add-hook 'paredit-space-for-delimiter-predicates
               (lambda (&rest args)
                 (not (equal major-mode 'csharp-mode)))))
@@ -670,6 +702,19 @@
   :ensure t)
 
 (use-package twittering-mode
+  :defer t
+  :ensure t)
+
+(use-package flx-ido
+  :defer t
+  :init (depends "ido"
+            (flx-ido-mode t))
+  :ensure t)
+
+(use-package ido-vertical-mode
+  :defer t
+  :init (depends "ido"
+          (ido-vertical-mode t))
   :ensure t)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -687,9 +732,11 @@
                 backup-by-copying t))
 
 (use-package grep
+  :defer t
   :config (add-hook 'grep-mode-hook 'jorbi/truncate-lines))
 
 (use-package dired
+  :defer t
   :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
 
 (use-package pulse
@@ -697,6 +744,7 @@
                        pulse-delay .01)))
 
 (use-package eww
+  :defer t
   :config (progn
             (add-hook 'eww-mode-hook
                       (apply-partially 'toggle-truncate-lines 1))))
@@ -744,6 +792,7 @@
             (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
 
 (use-package cc-mode
+  :defer t
   :config (progn
             (font-lock-add-keywords
              'c-mode
@@ -766,15 +815,10 @@
                (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
-  :init (progn
-          (ido-mode t)
-          (ido-everywhere t)
-          (use-package flx-ido
-            :config (flx-ido-mode t)
-            :ensure t)
-          (use-package ido-vertical-mode
-            :config (ido-vertical-mode t)
-            :ensure t)))
+  :commands (execute-extended-command switch-to-buffer find-file)
+  :config (progn
+            (ido-mode t)
+            (ido-everywhere t)))
 
 (use-package erc
   :defer t
@@ -797,6 +841,7 @@
   :config (global-hl-line-mode t))
 
 (use-package php-mode
+  :mode ("\\.php$" . php-mode)
   :config (add-hook 'php-mode-hook
                     (defun jorbi/php-mode-setup ()
                       (setq c-basic-offset 4

@@ -51,8 +51,7 @@
 (defvar jorbi/powerline-format
   '("%e"
     (:eval
-     (let* ((active (powerline-selected-window-active))
-            (lhs (list (powerline-raw
+     (let* ((lhs (list (powerline-raw
                         (format " |%s| %d minors |%s" mode-name
                                 (length (enabled-important-minor-modes (current-buffer)))
                                 (jorbi/powerline-point-progress 10)
