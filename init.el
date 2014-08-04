@@ -87,6 +87,7 @@
               (symbolp (car args)))
       (push (pop args) dependencies))
     (depends--helper dependencies args)))
+
 (require 'keys)
 
 ;; common lisp
@@ -134,9 +135,11 @@
   :ensure t)
 
 (use-package s ;; string lib
+  :defer t
   :ensure t)
 
 (use-package dash ;; list lib
+  :defer t
   :ensure t)
 
 (use-package jabber
@@ -376,10 +379,7 @@
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
   :config (progn
-            (use-package skewer-mode
-              :config (progn (skewer-setup)
-                             (add-hook 'web-mode-hook 'skewer-mode))
-              :ensure t)
+            
 
             (defun web-indirect-this-thing()
               (interactive)
@@ -391,6 +391,13 @@
                   (setq end (progn  (web-mode-forward-sexp 1)
                                     (point))))
                 (indirect-region beg end))))
+  :ensure t)
+
+(use-package skewer-mode
+  :defer t
+  :init (depends "web-mode"
+          (add-hook 'web-mode-hook 'skewer-mode))
+  :config (skewer-setup)
   :ensure t)
 
 
