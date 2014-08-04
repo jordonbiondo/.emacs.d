@@ -10,6 +10,9 @@
 (defmacro OSX ()
   `(equal system-type 'darwin))
 
+(defmacro GUI ()
+  `(window-system))
+
 (defsubst seconds (n)
   "N seconds to time object."
   (seconds-to-time n))

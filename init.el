@@ -244,6 +244,7 @@ Wraps `eval-after-load'."
   :ensure t)
 
 (use-package sublimity
+  :if (GUI)
   :config (use-package sublimity-scroll
             :config (sublimity-global-mode t))
   :ensure t)
