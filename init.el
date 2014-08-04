@@ -73,12 +73,20 @@
 (require 'use-package)
 (require 'package)
 
-(defmacro depends (name &rest body)
-  "After loading NAME, eval BODY.
-Wraps `eval-after-load'."
-  (declare (indent defun))
-  `(eval-after-load ,name (lambda () ,@body)))
+(defun depends--helper (deps body)
+  (let ((dep (if (stringp (car deps)) (pop deps) (cons 'quote (list (pop deps))))))
+    (list 'eval-after-load dep
+          (cons 'lambda (cons nil (if (not deps)
+                               body
+                             (list (depends--helper deps body))))))))
 
+(defmacro depends (&rest args)
+  (declare (indent defun))
+  (let ((dependencies nil))
+    (while (or (stringp (car args))
+              (symbolp (car args)))
+      (push (pop args) dependencies))
+    (depends--helper dependencies args)))
 (require 'keys)
 
 ;; common lisp
