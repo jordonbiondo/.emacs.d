@@ -808,8 +808,9 @@
             (defun c-maybe-insert-semicolon()
               "Insert a semicolon a the end of a line only if there isn't one."
               (interactive)
-              (if (looking-at ";$")
-                  (forward-char 1)
+              (if (looking-at " *; *$")
+                  (progn (delete-region (point) (point-at-eol))
+                         (call-interactively 'self-insert-command))
                 (call-interactively 'self-insert-command)))
 
             (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
