@@ -666,6 +666,9 @@ Wraps `eval-after-load'."
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package custom
+  :config (setq custom-file "~/.emacs.d/custom.el"))
+
 (use-package files
   :config (setq backup-directory-alist `(("." . "~/.saves"))
                 version-control t

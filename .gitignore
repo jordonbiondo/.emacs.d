@@ -42,3 +42,4 @@ keys/*
 /ido.last
 /bookmarks
 /semanticdb/
+/custom.el
