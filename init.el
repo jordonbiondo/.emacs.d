@@ -221,25 +221,26 @@
 (use-package smex
   :bind (("M-x" . smex)
          ("C-c M-x" . execute-extended-command))
+  :commands smex
   :ensure t)
 
 (use-package magit
   :bind ("C-x m" . magit-status)
-  :config (progn
-            (use-package flymake)
-            (when (OSX)
-              (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+  :commands magit-status
+  :config (when (OSX)
+            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+  :ensure t)
 
-            (use-package git-gutter
-              :config
-              (depends "ample-theme"
-                (dolist (face '(git-gutter:added
-                                git-gutter:deleted
-                                git-gutter:modified
-                                git-gutter:separator
-                                git-gutter:unchanged))
-                  (set-face-background face (face-foreground face))))
-              :ensure t))
+(use-package git-gutter
+  :defer t
+  :config
+  (depends "ample-theme"
+    (dolist (face '(git-gutter:added
+                    git-gutter:deleted
+                    git-gutter:modified
+                    git-gutter:separator
+                    git-gutter:unchanged))
+      (set-face-background face (face-foreground face))))
   :ensure t)
 
 (use-package w3m
@@ -720,6 +721,9 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package flymake
+  :commands flymake-mode)
+
 (use-package custom
   :config (setq custom-file "~/.emacs.d/custom.el"))
 
