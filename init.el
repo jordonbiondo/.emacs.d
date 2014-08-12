@@ -407,19 +407,6 @@
 
 (use-package io-mode
   :defer t
-  :config (progn
-            (defvar jorbi/io-function-name-re
-              "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\(method\\)")
-            (defvar jorbi/io-variable-name-re
-              "\\([^\r\n \(\){},;:=]+\\)\\( *\\)\\(:=\\)\\( *\\)\\([^\r\n \(\){},;:=]+\\)")
-
-            (add-hook 'io-mode-hook (defun jorbi/io-setup-function ()
-                                      (font-lock-add-keywords
-                                       'io-mode
-                                       `((,jorbi/io-function-name-re
-                                          (1 font-lock-function-name-face))
-                                         (,jorbi/io-variable-name-re
-                                          (1 font-lock-variable-name-face)))))))
   :ensure t)
 
 (use-package csharp-mode
