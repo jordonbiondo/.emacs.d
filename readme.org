@@ -1,7 +1,5 @@
 * Jordon Biondo's ~/.emacs.d/
 This is my personal Emacs configuration. 
-- It's not really setup to be used by others but should work well out of the box
 - if you want to full featured setup:
   1. build the clang-complete-async binary and copy it to ~/.emacs.d/
-  2. install swank-js
-  3. (require 'jordon-dev-mode)
+     
