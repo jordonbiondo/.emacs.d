@@ -67,8 +67,7 @@
         "~/.emacs.d/other/quake-mode/"
         "~/.emacs.d/other/"
         "~/.emacs.d/keys/"
-        "~/.emacs.d/jorbi/"
-        "~/src/redspot-emacs/"))
+        "~/.emacs.d/jorbi/"))
 
 (require 'use-package)
 (require 'package)
@@ -118,6 +117,7 @@
   :config (jordon-dev-mode t))
 
 (when (jordonp)
+  (add-to-list 'load-path "~/src/redspot-emacs/")
   (use-package redspot
     :config
     (depends "js2-mode"
@@ -490,12 +490,12 @@
   :ensure t)
 
 (use-package auto-complete-clang-async
-  :if (file-exists-p "~/.emacs.d/clang-complete")
+  :if (file-exists-p "~/.emacs.d/bin/clang-complete")
   :config
   (depends "auto-complete-mode"
     (defun ac-cc-mode-setup ()
       (setq ac-clang-complete-executable
-            "~/.emacs.d/clang-complete")
+            "~/.emacs.d/bin/clang-complete")
       (setq ac-sources '(ac-source-clang-async))
       (ac-clang-launch-completion-process))
 
@@ -783,6 +783,9 @@
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
          ("C-c s b" . ispell-buffer)))
+
+(use-package eldoc
+  :commands eldoc-mode)
 
 (use-package lisp-mode
   :config (progn
