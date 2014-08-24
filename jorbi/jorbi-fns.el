@@ -257,4 +257,47 @@ Use `winstack-push' and
      (delete-region (point) (save-excursion (backward-sexp) (point)))
      (format "%S" (save-excursion (eval expr))))))
 
+(defun process-exit-code-and-output (program &rest args)
+  "Run PROGRAM with ARGS and return the exit code and output in a list."
+  (with-temp-buffer
+    (list (apply 'call-process program nil (current-buffer) nil args)
+          (buffer-string))))
+
+(defvar tmux-default-command-switches
+  '((show . "-v")
+    (test . (lambda () 1 "test"))
+    (test2 . asdfasdf)
+    (test3 . ((lambda () "one") asdfasdf "three" 4))))
+
+(defun tmux--get-additional-command-switches (command)
+  (let ((value (cdr-safe (assoc command tmux-default-command-switches))))
+    (tmux--get-additional-command-switches-helper value)))
+
+(defun tmux--get-additional-command-switches-helper (value)
+  (typecase value
+    (string value)
+    (number (number-to-string value))
+    (function (apply value nil))
+    (symbol (if (fboundp value)
+                (apply value nil)
+              (symbol-value value)))
+    (list (with-temp-buffer
+            (while value
+              (message "%S" value)
+              (insert (tmux--get-additional-command-switches-helper (pop value)))
+              (when value (insert " ")))
+            (buffer-string)))
+    (otherwise "")))
+
+(defmacro tmux (command &rest args)
+  `(tmux--handle-output (process-exit-code-and-output "tmux" ,@(cons `(symbol-name ',command) args))))
+
+(defun tmux--handle-output (value)
+  (destructuring-bind (code output) value
+    (or (and (zerop code)
+             (with-temp-buffer
+               (insert output)
+               (buffer-substring (point-min) (1- (point-max)))))
+        (error "tmux error: %s" output))))
+
 (provide 'jorbi-fns)
