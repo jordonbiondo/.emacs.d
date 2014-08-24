@@ -1,5 +1,5 @@
 * Jordon Biondo's ~/.emacs.d/
 This is my personal Emacs configuration. 
 - if you want to full featured setup:
-  1. build the clang-complete-async binary and copy it to ~/.emacs.d/
+  1. build the clang-complete-async binary and copy it to ~/.emacs.d/bin/
      
