@@ -4,11 +4,11 @@
 ;; Description: Jordon Biondo's emacs configuration
 ;; Author: Jordon Biondo
 ;; Created: Mon Oct 14 11:37:26 2013 (-0400)
-;; Version: 2.1.1
+;; Version: 2.1.2
 ;; Package-Requires: ()
-;; Last-Updated: Mon Aug  4 10:53:04 2014 (-0400)
+;; Last-Updated: Tue Aug 26 10:11:17 2014 (-0400)
 ;;           By: Jordon Biondo
-;;     Update #: 31
+;;     Update #: 32
 ;; URL: www.github.com/jordonbiondo/.emacs.d
 ;; Keywords: Emacs 24.3
 ;; Compatibility: emacs >= 24.3
@@ -116,6 +116,7 @@
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
+;; work related tools
 (when (jordonp)
   (add-to-list 'load-path "~/src/redspot-emacs/")
   (use-package redspot
@@ -134,11 +135,11 @@
 (use-package ample-theme
   :ensure t)
 
-(use-package s ;; string lib
+(use-package s
   :defer t
   :ensure t)
 
-(use-package dash ;; list lib
+(use-package dash
   :defer t
   :ensure t)
 
@@ -152,12 +153,13 @@
                   jabber-use-global-history nil
                   jabber-backlog-number 40
                   jabber-backlog-days 30
-                  jabber-account-list '(("jordonbiondo@gmail.com"
-                                         (:network-server . "talk.google.com")
-                                         (:connection-type . ssl))
-                                        ("jordon.biondo@parelio.com"
-                                         (:network-server . "talk.google.com")
-                                         (:connection-type . ssl))))
+                  jabber-account-list
+                  '(("jordonbiondo@gmail.com"
+                     (:network-server . "talk.google.com")
+                     (:connection-type . ssl))
+                    ("jordon.biondo@parelio.com"
+                     (:network-server . "talk.google.com")
+                     (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (use-package jorbi-jabber
               :config  (progn
@@ -200,13 +202,6 @@
 (use-package expand-region
   :bind ("C-c e" . er/expand-region)
   :ensure t)
-
-(use-package python
-  :mode ("\\<SConstruct\\>$" . python-mode)
-  :config (progn
-            (use-package elpy
-              :config (elpy-enable)
-              :ensure t)))
 
 (use-package cmake-mode
   :defer t
@@ -681,11 +676,10 @@
 
 (use-package paredit
   :defer t
-  :init
-  (depends "csharp-mode" "paredit"
-    (add-hook 'paredit-space-for-delimiter-predicates
-              (lambda (&rest args)
-                (not (equal major-mode 'csharp-mode)))))
+  :init (depends "csharp-mode" "paredit"
+          (add-hook 'paredit-space-for-delimiter-predicates
+                    (lambda (&rest args)
+                      (not (equal major-mode 'csharp-mode)))))
   :ensure t)
 
 (use-package rainbow-delimiters
@@ -759,9 +753,17 @@
   :init (progn
           (depends "electric"
             (add-hook 'prog-mode-hook 'electric-indent-mode))
-          (add-hook 'prog-mode-hook (defun indent-tabs-mode-off ()
-                                      (interactive)
-                                      (setq indent-tabs-mode nil)))))
+          (add-hook 'prog-mode-hook
+                    (defun indent-tabs-mode-off ()
+                      (interactive)
+                      (setq indent-tabs-mode nil)))))
+
+(use-package python
+  :mode ("\\<SConstruct\\>$" . python-mode)
+  :config (progn
+            (use-package elpy
+              :config (elpy-enable)
+              :ensure t)))
 
 (use-package savehist
   :config (savehist-mode t))
@@ -853,7 +855,7 @@
 (use-package org
   :defer t
   :config (progn
-            (mapcar*
+            (mapcar
              (lambda (pair) (set-face-attribute
                         (car pair) nil :height
                         (round (*  (face-attribute 'default :height)
@@ -863,27 +865,19 @@
                (org-level-3 . 1.4)
                (org-level-4 . 1.2)
                (org-level-5 . 1.1)))
-
             (setq org-confirm-elisp-link-function nil
                   org-export-html-postamble  nil
                   org-export-html-date-format-string "%d %B %Y"
-                  org-export-html-preamble-format `(("en" "%a : %d")))
+                  org-export-html-preamble-format `(("en" "%a : %d")))))
 
-            ;; (use-package org-latex
-            ;;   :config
-            ;;   (progn
-            ;;     (setq org-export-latex-listings 'minted)
-            ;;     (add-to-list 'org-export-latex-packages-alist '("" "minted"))
-            ;;     (setq org-src-fontify-natively t))
-            ;;  :ensure nil)
-
-            (use-package org-bullets
-              :config
-              (progn
-                (setq org-bullets-bullet-list
-                      '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
-                (autoload 'org-bullets-mode "org-bullets-mode" nil t)
-                (add-hook 'org-mode-hook 'org-bullets-mode))
-              :ensure t)))
+(use-package org-bullets
+  :defer t
+  :init
+  (depends "org"
+    (setq org-bullets-bullet-list
+          '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
+    (autoload 'org-bullets-mode "org-bullets-mode" nil t)
+    (add-hook 'org-mode-hook 'org-bullets-mode))
+  :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
