@@ -228,12 +228,6 @@
   :defer t
   :ensure t)
 
-(use-package sublimity
-  :if (GUI)
-  :config (use-package sublimity-scroll
-            :config (sublimity-global-mode t))
-  :ensure t)
-
 (use-package powerline
   :ensure t)
 
