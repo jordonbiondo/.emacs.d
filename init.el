@@ -213,6 +213,9 @@
       (set-face-background face (face-foreground face))))
   :ensure t)
 
+(use-package git-messenger
+  :bind ("C-c g m" . git-messenger:popup-message))
+
 (use-package w3m
   :defer t
   :ensure t)
