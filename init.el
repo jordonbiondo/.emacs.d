@@ -69,45 +69,13 @@
         "~/.emacs.d/keys/"
         "~/.emacs.d/jorbi/"))
 
-(require 'use-package)
-(require 'package)
-
-(defun depends--helper (deps body)
-  (let ((dep (if (stringp (car deps)) (pop deps) (cons 'quote (list (pop deps))))))
-    (list 'eval-after-load dep
-          (cons 'lambda (cons nil (if (not deps)
-                               body
-                             (list (depends--helper deps body))))))))
-
-(defmacro depends (&rest args)
-  (declare (indent defun))
-  (let ((dependencies nil))
-    (while (or (stringp (car args))
-              (symbolp (car args)))
-      (push (pop args) dependencies))
-    (depends--helper dependencies args)))
-
+(require 'jorbi-package)
 (require 'keys)
-
-;; common lisp
 (use-package cl-lib)
-
-(dolist (p '(;;("marmalade" . "http://marmalade-repo.org/packages/")
-             ("melpa" . "http://melpa.milkbox.net/packages/")))
-  (add-to-list 'package-archives p))
-
-(when (and (member "--" command-line-args)
-         (member "-refresh" command-line-args))
-  (delete "-refresh" command-line-args)
-  (package-refresh-contents))
-
-(package-initialize)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Personal Custom Stuff
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(push "~/.emacs.d/jorbi/" load-path)
 (push "/usr/local/bin/" exec-path)
 
 (use-package jorbi-fns
