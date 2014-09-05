@@ -330,7 +330,7 @@
   :ensure t)
 
 (use-package undo-tree
-  :init (global-undo-tree-mode 1)
+  :idle (global-undo-tree-mode 1)
   :bind (("C-c j" . undo-tree-undo)
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
@@ -367,7 +367,7 @@
 
 
 (use-package edit-server
-  :config (edit-server-start)
+  :idle (edit-server-start)
   :ensure t)
 
 (use-package io-mode
@@ -618,7 +618,7 @@
   (global-unset-key (kbd "s-t"))
 
   (use-package exec-path-from-shell
-    :init (exec-path-from-shell-initialize)
+    :idle (exec-path-from-shell-initialize)
     :ensure t))
 
 (use-package dired-subtree
@@ -736,7 +736,7 @@
               :ensure t)))
 
 (use-package savehist
-  :config (savehist-mode t))
+  :idle (savehist-mode t))
 
 ;; (use-package desktop
 ;;   :config (progn (desktop-save-mode t)
@@ -789,10 +789,13 @@
                (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
-  :commands (execute-extended-command switch-to-buffer find-file)
+  :idle (require 'ido)
   :config (progn
-            (ido-mode t)
-            (ido-everywhere t)))
+            (ido-everywhere t)
+            (ido-mode t))
+   :defer t)
+
+
 
 (use-package erc
   :defer t
