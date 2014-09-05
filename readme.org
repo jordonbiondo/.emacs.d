@@ -1,131 +1,54 @@
 * Jordon Biondo's ~/.emacs.d v2.1.3
 This is my personal Emacs configuration. It requires at least Emacs 24.3
 - if you want to full featured setup:
-  1. build the clang-complete-async binary and copy it to ~/.emacs.d/bin/
-  2. ensure you have ispell installed
-  3. To use pivotal: create a file called "pivotal" in ~/.emacs.d/keys/ that contains nothing but your api key
-** Key chords
-   Many key-chords are defined in this config, see the use-package block for key-chords for full list.
-- <space> + i
-   previous-multiframe-window
-- <space> + o
-   next-multiframe-window
-- j + f
-   switch-window
-- <space> + l
-   ibuffer
-- <space> + m
-   magit-status
-- <space> + e
-   er/expand-region
-- <space> + q
-   quake-mode
-- <space> + 0
-   delete-window
-- <space> + 1
-   delete-other-windows
-- <space> + 2
-   split-window-below
-- <space> + 3
-   split-window-right
-- <space> + =
-   winstack-push
-- <space> + -
-   winstack-pop
-- <space> + w
-   whitespace-mode
-- j + i
-   undo-tree-undo
-- j + o
-   undo-tree-redo
-- j + k
-   undo-tree-switch-branch
-- j + ;
-  undo-tree-visualize
-- <space> + b
-  ido-switch-buffer 
-- <space> + f
-   ido-find-file
-- <space> + s
-   save-buffer
-- <space> + x
-   shell
-- <space> + \
-   orbi/toggle-comment
-- n + w
-   jabber-display-roster
-- n + e
-   jabber-chat-with
-- h + f
-   helm-do-grep
-- <space> + g
-   goto-line
-- n + v
-   jorbi/find-init-file
-- i + o
-   imenu-anywhere
-- <space> + r
-   recompile
-** Third party packages used
-  - ace-jump-mode
-  - ample-theme
-  - auto-complete
-  - auto-complete-clang-async
-  - bundler
-  - cmake-mode
-  - company
-  - csharp-mode
-  - d-mode
-  - dash
-  - dired-subtree
-  - enh-ruby-mode
-  - exec-path-from-shell
-  - expand-region
-  - flx-ido
-  - flycheck
-  - gh
-  - git-gutter
-  - google-this
-  - haml-mode
-  - header2
-  - helm
-  - highlight-indentation
-  - ido-vertical-mode
-  - imenu-anywhere
-  - io-mode
-  - jabber
-  - jorbi-powerline
-  - js2-mode
-  - key-chord
-  - magit
-  - markdown-mode
-  - moz
-  - multiple-cursors
-  - omnisharp
-  - org-bullets
-  - paredit
-  - php-mode
-  - pivotal-tracker
-  - powerline
-  - pretty-mode
-  - projectile
-  - projectile-rails
-  - rainbow-delimiters
-  - rainbow-mode
-  - robe
-  - rsense
-  - rust-mode
-  - s
-  - sass-mode
-  - skewer-mode
-  - slime
-  - slime-js
-  - smex
-  - sublimity
-  - switch-window
-  - twittering-mode
-  - undo-tree
-  - w3m
-  - web-mode
-  - yaml-mode
-  - and probably more  
+  1. ensure you have ispell installed
+  2. To use pivotal: create a file called "pivotal" in ~/.emacs.d/keys/ that contains nothing but your api key
+
+** Key Chords
+   #+BEGIN_SRC lisp
+     ((" i" . previous-multiframe-window)
+      (" o" . next-multiframe-window)
+      ("jf" . switch-window)
+      (" l" . ibuffer)
+      (" m" . magit-status)
+      (" e" . er/expand-region)
+      (" q" . quake-mode)
+      (" 0" . delete-window)
+      (" 1" . delete-other-windows)
+      (" 2" . split-window-below)
+      (" 3" . split-window-right)
+      (" =" . winstack-push)
+      (" -" . winstack-pop)
+      (" w" . whitespace-mode)
+      ("ji" . undo-tree-undo)
+      ("jo" . undo-tree-redo)
+      ("jk" . undo-tree-switch-branch)
+      ("j;" . undo-tree-visualize)
+      (" b" . ido-switch-buffer)
+      (" f" . ido-find-file)
+      (" s" . save-buffer)
+      (" x" . shell)
+      (" \\". jorbi/toggle-comment)
+      ("nw" . jabber-display-roster)
+      ("ne" . jabber-chat-with)
+      ("hf" . helm-do-grep)
+      (" g" . goto-line)
+      ("nv" . jorbi/find-init-file)
+      ("io" . imenu-anywhere)
+      (" r" . recompile))
+   #+END_SRC
+
+** Some other bindings
+   There are others littered in init.el
+   #+BEGIN_SRC lisp
+     ("C-\\" 'jorbi/toggle-comment)
+     ("C-x l" 'ibuffer)
+     ("C-<tab>" 'jorbi/indent-repeat)
+     ("<f12>" 'normal-person-mode)
+     ("C-c f u" 'winstack-push)
+     ("C-c f o" 'winstack-pop)
+     ("C-M-k" 'jorbi/c-doc-comment)
+     ("C-c i" 'previous-multiframe-window)
+     ("C-c o" 'next-multiframe-window)
+   #+END_SRC
+
