@@ -325,6 +325,10 @@
 (use-package header2
   :ensure t)
 
+(use-package lua-mode
+  :defer t
+  :ensure t)
+
 (use-package undo-tree
   :init (global-undo-tree-mode 1)
   :bind (("C-c j" . undo-tree-undo)
