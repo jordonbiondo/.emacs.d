@@ -41,26 +41,43 @@
 ;;
 ;;; Code:
 
-(defun jorbi/powerline-point-progress (length)
-  (let ((p-count (round (* (/ (float (point))
-                              (float (point-max))) length))))
-    (concat  (make-string p-count ?.)
-             (make-string (- length p-count) ? ) "|")))
+;; (defun jorbi/powerline-point-progress (length)
+;;   (let ((p-count (round (* (/ (float (point))
+;;                               (float (point-max))) length))))
+;;     (concat  (make-string p-count ?.)
+;;              (make-string (- length p-count) ? ) "|")))
 
 
-(defvar jorbi/powerline-format
+;; (defvar jorbi/powerline-format
+;;   '("%e"
+;;     (:eval
+;;      (let* ((lhs (list (powerline-raw
+;;                         (format " |%s| %d minors |%s" mode-name
+;;                                 (length (enabled-important-minor-modes (current-buffer)))
+;;                                 (jorbi/powerline-point-progress 10)
+;;                                 nil 'l))))
+;;             (rhs (list (if (not (buffer-file-name))
+;;                            "( -_-)zzZ         "
+;;                          (if (buffer-modified-p)
+;;                              (powerline-raw "( ╯°☐°)╯<( SAVE! )" nil 'r)
+;;                            (powerline-raw   "( °u°)            " nil 'r)))))
+;;             (center (list (powerline-raw "%b" nil))))
+;;        (concat (powerline-render lhs)
+;;                (powerline-fill-center nil (/ (powerline-width center) 2.0))
+;;                (powerline-render center)
+;;                (powerline-fill nil (powerline-width rhs))
+;;                (powerline-render rhs))))))
+
+(defvar jorbi/simple-powerline-format
   '("%e"
     (:eval
      (let* ((lhs (list (powerline-raw
-                        (format " |%s| %d minors |%s" mode-name
-                                (length (enabled-important-minor-modes (current-buffer)))
-                                (jorbi/powerline-point-progress 10)
-                                nil 'l))))
-            (rhs (list (if (not (buffer-file-name))
-                           "( -_-)zzZ         "
-                         (if (buffer-modified-p)
-                             (powerline-raw "( ╯°☐°)╯<( SAVE! )" nil 'r)
-                           (powerline-raw   "( °u°)            " nil 'r)))))
+                        (format " %s (%%l/%d) %%c " (downcase mode-name) (line-number-at-pos (point-max))) nil 'l)))
+            (rhs (list (powerline-raw
+                        (cond
+                         ((not (buffer-file-name)) "- ")
+                         ((buffer-modified-p) "m ")
+                         (t "s ")) nil 'r)))
             (center (list (powerline-raw "%b" nil))))
        (concat (powerline-render lhs)
                (powerline-fill-center nil (/ (powerline-width center) 2.0))

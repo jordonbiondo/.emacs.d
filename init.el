@@ -84,6 +84,10 @@
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
+(use-package jorbi-powerline
+  :config (depends "powerline"
+            (setq-default mode-line-format jorbi/simple-powerline-format)))
+
 ;; work related tools
 (when (jordonp)
   (add-to-list 'load-path "~/src/redspot-emacs/")
@@ -229,10 +233,6 @@
 
 (use-package powerline
   :ensure t)
-
-(use-package jorbi-powerline
-  :config (depends "powerline" "cl"
-            (setq-default mode-line-format jorbi/powerline-format)))
 
 (use-package imenu-anywhere
   :defer t
