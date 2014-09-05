@@ -307,7 +307,8 @@
 
 (use-package projectile
   :init (progn
-          (add-hook 'enh-ruby-mode-hook 'projectile-mode)
+          (depends "enh-ruby-mode"
+            (add-hook 'enh-ruby-mode-hook 'projectile-mode))
           (add-hook 'prog-mode-hook 'projectile-mode))
   :defer t
   :ensure t)
