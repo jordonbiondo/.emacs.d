@@ -588,15 +588,6 @@
               (slime-setup '(slime-repl slime-js))))
   :ensure nil)
 
-(use-package pretty-mode
-  :config (progn
-            (dolist (mode-hook '(emacs-lisp-mode-hook
-                                 lisp-interaction-mode-hook
-                                 js2-mode-hook
-                                 enh-ruby-mode-hook))
-              (add-hook mode-hook 'pretty-mode)))
-  :ensure t)
-
 (use-package slime
   :defer t
   :config
