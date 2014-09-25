@@ -372,6 +372,7 @@
 
 (use-package io-mode
   :defer t
+  :config (global-company-mode t)
   :ensure t)
 
 (use-package csharp-mode
