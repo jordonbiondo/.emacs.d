@@ -471,6 +471,7 @@
   :ensure t)
 
 (use-package enh-ruby-mode
+  :defer t
   :config (progn
             (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
             (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode)))
@@ -521,7 +522,7 @@
               (add-hook 'enh-ruby-mode-hook 'robe-mode))
             (add-hook 'robe-mode-hook
                       (defun jorbi-robe/setup-completeion()
-                        (auto-complete-mode -1) (company-mode t)))
+                        (company-mode t)))
             (depends "company"
               (lambda () (progn (push 'company-robe company-backends)))))
   :ensure t)
