@@ -300,4 +300,78 @@ Use `winstack-push' and
                (buffer-substring (point-min) (1- (point-max)))))
         (error "tmux error: %s" output))))
 
+(defun toggle-80-editting-columns ()
+  "Set the right window margin so the edittable space is only 80 columns."
+  (interactive)
+  (let ((margins (window-margins)))
+    (if (or (car margins) (cdr margins))
+        (set-window-margins nil 0 0)
+      (set-window-margins nil 0 (max (- (window-width) 80) 0)))))
+
+(defun toggle-80-editting-columns-balanced ()
+  "Set both window margins so the edittable space is only 80 columns."
+  (interactive)
+  (let ((margins (window-margins)))
+    (if (or (car margins) (cdr margins))
+        (set-window-margins nil 0 0)
+      (let* ((change (max (- (window-width) 80) 0))
+             (left (/ change 2))
+             (right (- change left)))
+        (set-window-margins nil left right)))))
+
+
+(defun guess-all-hooks ()
+  "Return a list of all variables that are probably hook lists."
+  (let ((syms '()))
+    (mapatoms
+     (lambda (sym)
+       (if (ignore-errors (symbol-value sym))
+           (let ((name (symbol-name sym)))
+             (when (string-match "-\\(hook[s]?\\|functions\\)$" name)
+               (push sym syms))))))
+    syms))
+
+(defun face-it (str face)
+  "Apply FACE to STR and return."
+  (propertize str 'face face))
+
+(defun describe-hook (hook)
+  "Display documentation about a hook variable and the
+functions it contains."
+  (interactive
+   (list (completing-read
+          "Hook: " (mapcar (lambda (x) (cons x nil)) (guess-all-hooks)))))
+  (let* ((sym (intern hook))
+         (sym-doc (documentation-property sym 'variable-documentation))
+         (hook-docs (mapcar
+                     (lambda (func)
+                       (cons func (ignore-errors (documentation func))))
+                     (symbol-value sym))))
+    (switch-to-buffer
+     (with-current-buffer (get-buffer-create "*describe-hook*")
+       (let ((inhibit-read-only t))
+         (delete-region (point-min) (point-max))
+         (insert (face-it "Hook: " 'font-lock-constant-face) "\n\n")
+         (insert (face-it hook 'font-lock-variable-name-face))
+         (replace-string "\n" "\n\t" nil
+                         (point)
+                         (save-excursion
+                           (insert "\n" sym-doc "\n\n")
+                           (1- (point))))
+         (goto-char (point-max))
+         (insert (face-it "Hook Functions: " 'font-lock-constant-face) "\n\n")
+         (dolist (hd hook-docs)
+           (insert (face-it (symbol-name (car hd))
+                            'font-lock-function-name-face)
+                   ": \n\t")
+           (replace-string "\n" "\n\t" nil
+                           (point)
+                           (save-excursion
+                             (insert (or (cdr hd) "No Documentation") "\n\n")
+                             (1- (point))))
+           (goto-char (point-max))))
+       (read-only-mode t)
+       (setq truncate-lines nil)
+       (current-buffer)))))
+
 (provide 'jorbi-fns)
