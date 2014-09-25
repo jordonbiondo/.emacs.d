@@ -568,8 +568,9 @@
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
-  :init (setq js2-basic-offset 2)
   :config (progn
+            (setq-default js2-basic-offset 2
+                  js2-global-externs '("clearTimeout" "setTimeout"))
             (font-lock-add-keywords
              'js2-mode
              '(("\\(console\\)\\(\.\\)\\(log\\|trace\\)"
