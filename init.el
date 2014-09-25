@@ -762,7 +762,7 @@
   :config (progn
             (font-lock-add-keywords
              'c-mode
-             '(("\\<\\([A-Z_][A-Z_0-9]+\\)\\>"
+             '(("\\<\\([A-Z_]\\([A-Z_0-9]\\)*\\)\\>"
                 . font-lock-constant-face)
                ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>"
                 . font-lock-preprocessor-face)))
