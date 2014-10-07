@@ -543,7 +543,9 @@
             (depends "js2-mode"
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
             (depends "enh-ruby-mode"
-              (lambda () (add-hook 'enh-ruby-mode-hook 'moz-minor-mode))))
+              (lambda () (add-hook 'enh-ruby-mode-hook 'moz-minor-mode)))
+            (depends "haml-mode"
+              (add-hook 'haml-mode-hook 'moz-minor-mode)))
   :ensure t)
 
 (use-package rsense
