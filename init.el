@@ -104,8 +104,13 @@
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package ample-theme
-  :ensure t)
+(unless
+    (ignore-errors
+      (load-file "~/src/yerdin-theme/yerdin-theme.el")
+      (or (enable-theme 'yerdin-theme) t))
+  (use-package ample-theme
+    :defer 
+    :ensure t))
 
 (use-package s
   :defer t
