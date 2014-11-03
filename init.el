@@ -343,7 +343,7 @@
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
   :config (progn
-            
+
 
             (defun web-indirect-this-thing()
               (interactive)
@@ -414,7 +414,7 @@
                   (omnisharp-go-to-file-line-and-column
                    json-result
                    (or force-ow (not (equal (omnisharp--convert-backslashes-to-forward-slashes filename)
-                                         (buffer-file-name)))))
+                                            (buffer-file-name)))))
                   (pulse-momentary-highlight-one-line (point)))))
 
             (defun jorbi/reload-csharp-buffers ()
@@ -431,7 +431,7 @@
               (add-hook 'csharp-mode-hook 'omnisharp-mode)))
   :ensure t)
 
-(use-package flycheck  
+(use-package flycheck
   :init (depends "cc-mode"
           (add-hook 'c-mode-hook 'flycheck-mode)
           (add-hook 'c++-mode-hook 'flycheck-mode))
@@ -482,7 +482,7 @@
   :config
   (progn
     (add-hook 'sass-mode-hook 'flycheck-mode)
-    (depends "highlight-indentation"    
+    (depends "highlight-indentation"
       (add-hook 'sass-mode-hook
                 (defun jorbi-sass/setup-hook()
                   (highlight-indentation-mode 1)
@@ -496,7 +496,7 @@
   (progn
     (add-hook 'haml-mode-hook 'flycheck-mode)
     (depends "highlight-indentation"
-      (add-hook 'haml-mode-hook 
+      (add-hook 'haml-mode-hook
                 (defun jorbi-haml/setup-hook()
                   (highlight-indentation-mode 1)
                   (highlight-indentation-current-column-mode)
@@ -560,7 +560,7 @@
   :mode ("\\.js$" . js2-mode)
   :config (progn
             (setq-default js2-basic-offset 2
-                  js2-global-externs '("clearTimeout" "setTimeout"))
+                          js2-global-externs '("clearTimeout" "setTimeout"))
             (font-lock-add-keywords
              'js2-mode
              '(("\\(console\\)\\(\.\\)\\(log\\|trace\\)"
@@ -770,9 +770,7 @@
   :config (progn
             (ido-everywhere t)
             (ido-mode t))
-   :defer t)
-
-
+  :defer t)
 
 (use-package erc
   :defer t
@@ -813,9 +811,9 @@
   :config (progn
             (mapcar
              (lambda (pair) (set-face-attribute
-                        (car pair) nil :height
-                        (round (*  (face-attribute 'default :height)
-                                   (cdr pair)))))
+                             (car pair) nil :height
+                             (round (*  (face-attribute 'default :height)
+                                        (cdr pair)))))
              '((org-level-1 . 2.0)
                (org-level-2 . 1.6)
                (org-level-3 . 1.4)
