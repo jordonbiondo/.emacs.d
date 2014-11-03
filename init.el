@@ -312,18 +312,16 @@
 
 (use-package projectile
   :init (progn
-          (depends "enh-ruby-mode"
-            (add-hook 'enh-ruby-mode-hook 'projectile-mode))
           (add-hook 'prog-mode-hook 'projectile-mode))
   :defer t
   :ensure t)
 
 (use-package projectile-rails
   :init (depends "projectile"
-          (add-hook 'enh-ruby-mode-hook 'projectile-rails-mode)
-          (add-hook 'haml-mode-hook 'projectile-rails-mode)
-          (add-hook 'yaml-mode-hook 'projectile-rails-mode)
-          (add-hook 'js2-mode-hook 'projectile-rails-mode))
+          (depends "ruby-mode" (add-hook 'ruby-mode-hook 'projectile-rails-mode))
+          (depends "haml-mode" (add-hook 'haml-mode-hook 'projectile-rails-mode))
+          (depends "yaml-mode" (add-hook 'yaml-mode-hook 'projectile-rails-mode))
+          (depends "js2-mode" (add-hook 'js2-mode-hook 'projectile-rails-mode)))
   :defer t
   :ensure t)
 
@@ -448,14 +446,10 @@
   :defer t
   :config (progn
             (require 'auto-complete-config)
-            (depends "slime"
-              (add-to-list 'ac-modes 'slime-repl-mode))
-            (depends "js2-mode"
-              (add-to-list 'ac-modes 'js2-mode))
-            (depends "js-mode"
-              (add-to-list 'ac-modes 'js-mode))
-            (depends "enh-ruby-mode"
-              (add-to-list 'ac-modes 'enh-ruby-mode))
+            (depends "slime" (add-to-list 'ac-modes 'slime-repl-mode))
+            (depends "js2-mode" (add-to-list 'ac-modes 'js2-mode))
+            (depends "js-mode" (add-to-list 'ac-modes 'js-mode))
+            (depends "ruby-mode" (add-to-list 'ac-modes 'ruby-mode))
             (ac-config-default)
             (global-auto-complete-mode t))
   :ensure t)
@@ -473,13 +467,6 @@
     (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
     (add-hook 'auto-complete-mode-hook 'ac-common-setup)
     (global-auto-complete-mode t))
-  :ensure t)
-
-(use-package enh-ruby-mode
-  :defer t
-  :config (progn
-            (add-hook 'enh-ruby-mode-hook 'jorbi/dont-truncate-lines)
-            (add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode)))
   :ensure t)
 
 (use-package bundler
@@ -523,8 +510,8 @@
 (use-package robe
   :defer t
   :config (progn
-            (depends "enh-ruby-mode"
-              (add-hook 'enh-ruby-mode-hook 'robe-mode))
+            (depends "ruby-mode"
+              (add-hook 'ruby-mode-hook 'robe-mode))
             (add-hook 'robe-mode-hook
                       (defun jorbi-robe/setup-completeion()
                         (company-mode t)))
@@ -547,8 +534,8 @@
             (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
             (depends "js2-mode"
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
-            (depends "enh-ruby-mode"
-              (lambda () (add-hook 'enh-ruby-mode-hook 'moz-minor-mode)))
+            (depends "ruby-mode"
+              (lambda () (add-hook 'ruby-mode-hook 'moz-minor-mode)))
             (depends "haml-mode"
               (add-hook 'haml-mode-hook 'moz-minor-mode)))
   :ensure t)
@@ -744,14 +731,7 @@
 ;;                  (setq desktop-path '("~/.emacs.d/"))))
 
 (use-package hideshow
-  :bind ("C-c h" . hs-toggle-hiding)
-  :config (progn
-            (depends "enh-ruby-mode"
-              (lambda () (add-to-list
-                     'hs-special-modes-alist
-                     '(enh-ruby-mode
-                       "\\(def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#"
-                       (lambda (arg) (enh-ruby-end-of-block arg)) nil))))))
+  :bind ("C-c h" . hs-toggle-hiding))
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
@@ -825,6 +805,12 @@
                       (setq c-basic-offset 4
                             indent-tabs-mode nil
                             tab-width 4))))
+
+(use-package ruby-mode
+  :defer t
+  :config (progn
+            (add-hook 'ruby-mode-hook 'jorbi/dont-truncate-lines)
+            (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 
 (use-package org
   :defer t

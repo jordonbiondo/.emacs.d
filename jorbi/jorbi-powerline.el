@@ -75,9 +75,9 @@
                         (format " %s (%%l/%d) %%c " (downcase mode-name) (line-number-at-pos (point-max))) nil 'l)))
             (rhs (list (powerline-raw
                         (cond
-                         ((not (buffer-file-name)) "- ")
-                         ((buffer-modified-p) "m ")
-                         (t "s ")) nil 'r)))
+                         ((not (buffer-file-name)) "_ ")
+                         ((buffer-modified-p) "! ")
+                         (t "  ")) nil 'r)))
             (center (list (powerline-raw "%b" nil))))
        (concat (powerline-render lhs)
                (powerline-fill-center nil (/ (powerline-width center) 2.0))
