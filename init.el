@@ -105,7 +105,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package ample-theme
-  :defer t
+  :idle (progn (load-theme 'ample-flat t) (enable-theme 'ample-flat))
   :ensure t)
 
 (use-package s
