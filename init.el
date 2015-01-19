@@ -84,9 +84,8 @@
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
-(use-package jorbi-powerline
-  :config (depends "powerline"
-            (setq-default mode-line-format jorbi/simple-powerline-format)))
+(use-package jorbi-mode-line
+  :config (setq-default mode-line-format jorbi/mode-line-format))
 
 ;; work related tools
 (when (jordonp)
