@@ -242,6 +242,11 @@ Use `winstack-push' and
   (interactive "r")
   (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
 
+(defun osx-safe-paste()
+  "Insert the contents from `pbpaste'. Won't trigger chords."
+  (interactive)
+  (insert (shell-command-to-string "pbpaste -Prefer txt")))
+
 (defun shell-clear()
   "Clear a shell buffer."
   (interactive)
