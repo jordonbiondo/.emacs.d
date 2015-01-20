@@ -802,7 +802,7 @@
 (use-package ruby-mode
   :defer t
   :config (progn
-            (add-hook 'ruby-mode-hook 'jorbi/dont-truncate-lines)
+            (add-hook 'ruby-mode-hook 'jorbi/truncate-lines)
             (depends "flycheck" (add-hook 'ruby-mode-hook 'flycheck-mode))
             (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 
