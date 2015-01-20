@@ -486,12 +486,7 @@
   :config
   (progn
     (add-hook 'haml-mode-hook 'flycheck-mode)
-    (depends "highlight-indentation"
-      (add-hook 'haml-mode-hook
-                (defun jorbi-haml/setup-hook()
-                  (highlight-indentation-mode 1)
-                  (highlight-indentation-current-column-mode)
-                  (highlight-indentation-set-offset 2)))))
+    (add-hook 'haml-mode-hook (apply-partially 'toggle-truncate-lines 1)))
   :ensure t)
 
 (use-package robe
