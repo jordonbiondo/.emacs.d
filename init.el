@@ -92,16 +92,17 @@
   (add-to-list 'load-path "~/src/redspot-emacs/")
   (use-package redspot
     :config
-    (depends "js2-mode"
-      (dolist (b '(("M-." . redspot:find-js-definition-here)
-                   ("C-c n m" . redspot:mvp-mode)
-                   ("C-c n t" . redspot:mvp-triplet-select)
-                   ("C-c n c" . redspot:js-console-this-line)
-                   ("C-c n l" . redspot:js-log-arguments)))
-        (define-key js2-mode-map (kbd (car b)) (cdr b))))
-    (depends "haml-mode"
-      (define-key haml-mode-map
-        (kbd "C-c n p") 'redspot:haml-find-partial-at-point))))
+    (progn
+      (depends "js2-mode"
+        (dolist (b '(("M-." . redspot:find-js-definition-here)
+                     ("C-c n m" . redspot:mvp-mode)
+                     ("C-c n t" . redspot:mvp-triplet-select)
+                     ("C-c n c" . redspot:js-console-this-line)
+                     ("C-c n l" . redspot:js-log-arguments)))
+          (define-key js2-mode-map (kbd (car b)) (cdr b))))
+      (depends "haml-mode"
+        (define-key haml-mode-map
+          (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
