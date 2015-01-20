@@ -824,14 +824,5 @@
                   org-export-html-date-format-string "%d %B %Y"
                   org-export-html-preamble-format `(("en" "%a : %d")))))
 
-(use-package org-bullets
-  :defer t
-  :init
-  (depends "org"
-    (setq org-bullets-bullet-list
-          '("ᚐ" "ᚑ" "ᚒ" "ᚓ" "ᚔ"))
-    (autoload 'org-bullets-mode "org-bullets-mode" nil t)
-    (add-hook 'org-mode-hook 'org-bullets-mode))
-  :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
