@@ -478,16 +478,8 @@
 
 (use-package sass-mode
   :defer t
-  :config
-  (progn
-    (add-hook 'sass-mode-hook 'flycheck-mode)
-    (depends "highlight-indentation"
-      (add-hook 'sass-mode-hook
-                (defun jorbi-sass/setup-hook()
-                  (highlight-indentation-mode 1)
-                  (highlight-indentation-current-column-mode)
-                  (highlight-indentation-set-offset 2)))))
-  :ensure t)
+  :config (progn (add-hook 'sass-mode-hook 'flycheck-mode))
+  :ensure )
 
 (use-package haml-mode
   :defer t
