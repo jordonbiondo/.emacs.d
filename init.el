@@ -768,6 +768,8 @@
 (use-package ediff
   :defer t
   :config (progn
+            (add-hook 'ediff-before-setup-windows-hook 'winstack-push)
+            (add-hook 'ediff-cleanup-hook 'winstack-pop)
             (setq ediff-split-window-function 'split-window-horizontally)
             (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
 
