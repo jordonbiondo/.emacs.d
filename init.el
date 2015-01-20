@@ -98,7 +98,10 @@
                    ("C-c n t" . redspot:mvp-triplet-select)
                    ("C-c n c" . redspot:js-console-this-line)
                    ("C-c n l" . redspot:js-log-arguments)))
-        (define-key js2-mode-map (kbd (car b)) (cdr b))))))
+        (define-key js2-mode-map (kbd (car b)) (cdr b))))
+    (depends "haml-mode"
+      (define-key haml-mode-map
+        (kbd "C-c n p") 'redspot:haml-find-partial-at-point))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
@@ -406,11 +409,12 @@
               "Goto definition at point, choose window intelligently."
               (interactive "P")
               (let* ((json-result (omnisharp-post-message-curl-as-json
-                                   (concat (omnisharp-get-host) "gotodefinition")
+                                   (concat (omnisharp-get-host)
+                                           "gotodefinition")
                                    (omnisharp--get-common-params)))
                      (filename (cdr (assoc 'FileName json-result))))
                 (if (null filename)
-                    (message "Cannot go to definition as none was returned by the API.")
+                    (message "Cannot go to definition: API returned none.")
                   (omnisharp-go-to-file-line-and-column
                    json-result
                    (or force-ow (not (equal (omnisharp--convert-backslashes-to-forward-slashes filename)
