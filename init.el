@@ -98,7 +98,8 @@
                      ("C-c n m" . redspot:mvp-mode)
                      ("C-c n t" . redspot:mvp-triplet-select)
                      ("C-c n c" . redspot:js-console-this-line)
-                     ("C-c n l" . redspot:js-log-arguments)))
+                     ("C-c n l" . redspot:js-log-arguments)
+                     ("C-c n a" . redspot:application.js-go)))
           (define-key js2-mode-map (kbd (car b)) (cdr b))))
       (depends "haml-mode"
         (define-key haml-mode-map
