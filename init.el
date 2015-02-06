@@ -1,4 +1,4 @@
-;;; init.el --- Jordon Biondo's emacs configuration
+;;; init.el --- Jordon Biondo's emacs configuration -*- lexical-binding: t; -*-
 ;;
 ;; Filename: init.el
 ;; Description: Jordon Biondo's emacs configuration
@@ -93,7 +93,7 @@
   (use-package redspot
     :config
     (progn
-      (depends "js2-mode"
+      (after (:js2-mode)
         (dolist (b '(("M-." . redspot:find-js-definition-here)
                      ("C-c n m" . redspot:mvp-mode)
                      ("C-c n t" . redspot:mvp-triplet-select)
@@ -101,7 +101,7 @@
                      ("C-c n l" . redspot:js-log-arguments)
                      ("C-c n a" . redspot:application.js-go)))
           (define-key js2-mode-map (kbd (car b)) (cdr b))))
-      (depends "haml-mode"
+      (after (:haml-mode)
         (define-key haml-mode-map
           (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))
 
@@ -210,7 +210,7 @@
 (use-package git-gutter
   :defer t
   :config
-  (depends "ample-theme"
+  (after (:ample-theme)
     (dolist (face '(git-gutter:added
                     git-gutter:deleted
                     git-gutter:modified
@@ -318,11 +318,11 @@
   :ensure t)
 
 (use-package projectile-rails
-  :init (depends "projectile"
-          (depends "ruby-mode" (add-hook 'ruby-mode-hook 'projectile-rails-mode))
-          (depends "haml-mode" (add-hook 'haml-mode-hook 'projectile-rails-mode))
-          (depends "yaml-mode" (add-hook 'yaml-mode-hook 'projectile-rails-mode))
-          (depends "js2-mode" (add-hook 'js2-mode-hook 'projectile-rails-mode)))
+  :init (after (:projectile)
+          (after (:ruby-mode) (add-hook 'ruby-mode-hook 'projectile-rails-mode))
+          (after (:haml-mode) (add-hook 'haml-mode-hook 'projectile-rails-mode))
+          (after (:yaml-mode) (add-hook 'yaml-mode-hook 'projectile-rails-mode))
+          (after (:js2-mode) (add-hook 'js2-mode-hook 'projectile-rails-mode)))
   :defer t
   :ensure t)
 
@@ -364,7 +364,7 @@
 
 (use-package skewer-mode
   :defer t
-  :init (depends "web-mode"
+  :init (after (:web-mode)
           (add-hook 'web-mode-hook 'skewer-mode))
   :config (skewer-setup)
   :ensure t)
@@ -380,7 +380,7 @@
   :ensure t)
 
 (use-package csharp-mode
-  :init (depends "cc-mode"
+  :init (after (:cc-mode)
           (add-to-list 'c-default-style
                        (cons 'csharp-mode "c#")))
   :mode ("\\.cs$" . csharp-mode)
@@ -431,14 +431,14 @@
                   (when (eql major-mode 'csharp-mode)
                     (csharp-mode)))))
 
-            (depends "company" "csharp"
+            (after (:company :csharp-mode)
               (add-to-list 'company-backends 'company-omnisharp)
               (add-hook 'csharp-mode-hook 'company-mode)
               (add-hook 'csharp-mode-hook 'omnisharp-mode)))
   :ensure t)
 
 (use-package flycheck
-  :init (depends "cc-mode"
+  :init (after (:cc-mode)
           (add-hook 'c-mode-hook 'flycheck-mode)
           (add-hook 'c++-mode-hook 'flycheck-mode))
   :defer t
@@ -448,10 +448,10 @@
   :defer t
   :config (progn
             (require 'auto-complete-config)
-            (depends "slime" (add-to-list 'ac-modes 'slime-repl-mode))
-            (depends "js2-mode" (add-to-list 'ac-modes 'js2-mode))
-            (depends "js-mode" (add-to-list 'ac-modes 'js-mode))
-            (depends "ruby-mode" (add-to-list 'ac-modes 'ruby-mode))
+            (after (:slime) (add-to-list 'ac-modes 'slime-repl-mode))
+            (after (:js2-mode) (add-to-list 'ac-modes 'js2-mode))
+            (after (:js-mode) (add-to-list 'ac-modes 'js-mode))
+            (after (:ruby-mode) (add-to-list 'ac-modes 'ruby-mode))
             (ac-config-default)
             (global-auto-complete-mode t))
   :ensure t)
@@ -459,7 +459,7 @@
 (use-package auto-complete-clang-async
   :if (file-exists-p "~/.emacs.d/bin/clang-complete")
   :config
-  (depends "auto-complete-mode"
+  (after (:auto-complete-mode)
     (defun ac-cc-mode-setup ()
       (setq ac-clang-complete-executable
             "~/.emacs.d/bin/clang-complete")
@@ -499,12 +499,12 @@
 (use-package robe
   :defer t
   :config (progn
-            (depends "ruby-mode"
+            (after (:ruby-mode)
               (add-hook 'ruby-mode-hook 'robe-mode))
             (add-hook 'robe-mode-hook
                       (defun jorbi-robe/setup-completeion()
                         (company-mode t)))
-            (depends "company"
+            (after (:company)
               (lambda () (progn (push 'company-robe company-backends)))))
   :ensure t)
 
@@ -521,11 +521,11 @@
                   (message "Moz Refreshing...")))
 
             (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
-            (depends "js2-mode"
+            (after (:js2-mode)
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
-            (depends "ruby-mode"
+            (after (:ruby-mode)
               (lambda () (add-hook 'ruby-mode-hook 'moz-minor-mode)))
-            (depends "haml-mode"
+            (after (:haml-mode)
               (add-hook 'haml-mode-hook 'moz-minor-mode)))
   :ensure t)
 
@@ -569,7 +569,7 @@
 (use-package slime-js
   :defer t
   :config (progn
-            (depends "js2-mode"
+            (after (:js2-mode)
               (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
               (slime-setup '(slime-repl slime-js))))
   :ensure nil)
@@ -600,7 +600,7 @@
 
 (use-package dired-subtree
   :commands dired
-  :config (depends "dired"
+  :config (after (:dired)
             (define-keys dired-mode-map
               ("C-c C-i" 'dired-subtree-insert)
               ("C-c C-r" 'dired-subtree-remove)
@@ -623,7 +623,7 @@
 
 (use-package paredit
   :defer t
-  :init (depends "csharp-mode" "paredit"
+  :init (after (:csharp-mode :paredit)
           (add-hook 'paredit-space-for-delimiter-predicates
                     (lambda (&rest args)
                       (not (equal major-mode 'csharp-mode)))))
@@ -643,13 +643,13 @@
 
 (use-package flx-ido
   :defer t
-  :init (depends "ido"
+  :init (after (:ido)
             (flx-ido-mode t))
   :ensure t)
 
 (use-package ido-vertical-mode
   :defer t
-  :init (depends "ido"
+  :init (after (:ido)
           (ido-vertical-mode t))
   :ensure t)
 
@@ -691,14 +691,14 @@
 (use-package electric
   :config
   (progn
-    (depends "sass-mode"
+    (after (:sass-mode)
       (add-hook 'sass-mode-hook (apply-partially 'electric-indent-mode -1)))
-    (depends "haml-mode"
+    (after (:haml-mode)
       (add-hook 'haml-mode-hook (apply-partially 'electric-indent-mode -1)))))
 
 (use-package prog-mode
   :init (progn
-          (depends "electric"
+          (after (:electric)
             (add-hook 'prog-mode-hook 'electric-indent-mode))
           (add-hook 'prog-mode-hook
                     (defun indent-tabs-mode-off ()
@@ -799,7 +799,7 @@
   :defer t
   :config (progn
             (add-hook 'ruby-mode-hook 'jorbi/truncate-lines)
-            (depends "flycheck" (add-hook 'ruby-mode-hook 'flycheck-mode))
+            (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
             (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 
 (use-package org

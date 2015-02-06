@@ -1,4 +1,4 @@
-;;; jorbi-package.el ---
+;;; jorbi-package.el --- -*- lexical-binding: t; -*-
 ;;
 ;; Filename: jorbi-package.el
 ;; Description:
@@ -62,23 +62,47 @@
     (package-install 'use-package)))
 
 (require 'use-package)
-
-(defun depends--helper (deps body)
-  (let ((dep (if (stringp (car deps)) (pop deps) (cons 'quote (list (pop deps))))))
-    (list 'eval-after-load dep
-          (cons 'lambda (cons nil (if (not deps)
-                               body
-                             (list (depends--helper deps body))))))))
-(defmacro depends (&rest args)
-  (declare (indent defun))
-  (let ((dependencies nil))
-    (while (or (stringp (car args))
-              (symbolp (car args)))
-      (push (pop args) dependencies))
-    (depends--helper dependencies args)))
-
 (use-package use-package
   :config (setq use-package-idle-interval 0))
+
+(defmacro lambda-once (args &rest body)
+  "Like lambda but body will only once, subsequent calls just return nil."
+  (let ((sym (make-symbol "lambda-once-sym")))
+    `(let ((,sym nil))
+       (lambda ,args (when (and (not ,sym) (setq ,sym t)) ,@body)))))
+
+(defmacro after (libs &rest body)
+  "After all LIBS, specified like (:lib1 :lib2), are loaded, eval BODY.
+
+This is mostly a wrapper for `eval-after-load', with some special behavior described below.
+
+In this example, once, the 'cl 'json and 'python libraries are all loaded, 'Hello will print.
+
+    (after (:cl :json :python) (print 'Hello))
+
+Not that the order of the libraries does not matter.
+
+The BODY is always wrapped in a lambda, so when `lexical-binding' is enabled,
+closures will be created to allow you access to local variables.
+
+Unlike `eval-after-load' BODY will only ever be evaluated one time, regardless of multiple loads
+of the LIBS."
+  (declare (indent defun))
+  (when (symbolp libs) (setq libs (list libs)))
+  (let ((form (cons 'progn body)))
+    (mapc (lambda-once (lib)
+            (setq form 
+                  `(eval-after-load ',(and (or (equal (substring (symbol-name lib) 0 1) ":")
+                                               (error "`after' libs must be like `:lib'"))
+                                           (intern (substring (symbol-name lib) 1)))
+                     (lambda-once () ,form))))
+          libs)
+    form))
+
+(defconst jorbi-package-font-lock-keywords
+  '(("\\((\\)\\(after\\) "
+     (2 font-lock-keyword-face))))
+(font-lock-add-keywords 'emacs-lisp-mode jorbi-package-font-lock-keywords)
 
 (provide 'jorbi-package)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
