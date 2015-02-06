@@ -371,7 +371,8 @@
 
 
 (use-package edit-server
-  :idle (edit-server-start)
+  :defer t
+  ;;:idle (edit-server-start)
   :ensure t)
 
 (use-package io-mode
