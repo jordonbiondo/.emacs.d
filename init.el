@@ -203,12 +203,12 @@
 (use-package magit
   :bind ("C-x m" . magit-status)
   :commands magit-status
-  :config (when (OSX)
-            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
+  :config (progn
+            (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (use-package jorbi-magit
-              :config (bind-key "C-c s d"
-                                'jorbi-magit/delete-hunk-trailing-whitespace
-                                magit-status-mode-map))))
+              :commands 'jorbi-magit/cleanup-this-hunk
+              :init (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
+                              magit-status-mode-map))))
 
 (use-package git-gutter
   :defer t
