@@ -1,4 +1,4 @@
-;;; jorbi-package.el --- -*- lexical-binding: t; -*-
+;;; jorbi-package.el ---
 ;;
 ;; Filename: jorbi-package.el
 ;; Description:
@@ -66,10 +66,11 @@
   :config (setq use-package-idle-interval 0))
 
 (defmacro lambda-once (args &rest body)
-  "Like lambda but body will only once, subsequent calls just return nil."
+  "Like lambda but body will only once, subsequent calls just return nil.
+Does not require lexical-binding."
   (let ((sym (make-symbol "lambda-once-sym")))
-    `(let ((,sym nil))
-       (lambda ,args (when (and (not ,sym) (setq ,sym t)) ,@body)))))
+    `(progn (defvar ,sym nil)
+            (lambda ,args (when (and (boundp ',sym) (makunbound ',sym)) ,@body)))))
 
 (defmacro after (libs &rest body)
   "After all LIBS, specified like (:lib1 :lib2), are loaded, eval BODY.

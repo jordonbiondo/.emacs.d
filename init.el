@@ -1,4 +1,4 @@
-;;; init.el --- Jordon Biondo's emacs configuration -*- lexical-binding: t; -*-
+;;; init.el --- Jordon Biondo's emacs configuration
 ;;
 ;; Filename: init.el
 ;; Description: Jordon Biondo's emacs configuration
