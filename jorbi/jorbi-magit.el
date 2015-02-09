@@ -46,20 +46,22 @@ The info is like (expanded-file-name starting-line number-of-lines-show)"
 (defun jorbi-magit/delete-hunk-trailing-whitespace ()
   "Run `delete-trailing-whitespace' on the region shown in the hunk under point."
   (interactive)
-  (let ((area (magit-line-region-of-section-at-point)))
-    (when area
-      (destructuring-bind (file start-line total-lines) area
-        (with-current-buffer (find-file-noselect file)
-          (save-some-buffers)
-          (save-excursion
-            (delete-trailing-whitespace
-             (progn (goto-char (point-min))
-                    (forward-line (1- start-line))
-                    (point-at-bol))
-             (progn (forward-line (1- total-lines))
-                    (point-at-eol))))
-          (save-buffer)))
-      (magit-refresh))))
+  (let ((area (jorbi-magit/-line-region-of-section-at-point)))
+    (if area
+        (progn
+          (destructuring-bind (file start-line total-lines) area
+            (with-current-buffer (find-file-noselect file)
+              (save-some-buffers)
+              (save-excursion
+                (delete-trailing-whitespace
+                 (progn (goto-char (point-min))
+                        (forward-line (1- start-line))
+                        (point-at-bol))
+                 (progn (forward-line (1- total-lines))
+                        (point-at-eol))))
+              (save-buffer)))
+          (magit-refresh))
+      (message "Not in a magit hunk!"))))
 
 (provide 'jorbi-magit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
