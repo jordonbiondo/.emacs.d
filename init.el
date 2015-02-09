@@ -67,8 +67,11 @@
         "~/.emacs.d/other/quake-mode/"
         "~/.emacs.d/other/"
         "~/.emacs.d/keys/"
-        "~/.emacs.d/jorbi/"))
+        "~/.emacs.d/jorbi/"
+        "~/.emacs.d/jorbi/use-package"))
 
+(load-library "~/.emacs.d/jorbi/use-package/use-package.el")
+(load-library "~/.emacs.d/jorbi/use-package/bind-key.el")
 (require 'jorbi-package)
 (require 'keys)
 (use-package cl-lib)
@@ -79,6 +82,10 @@
 (push "/usr/local/bin/" exec-path)
 
 (use-package jorbi-fns
+  :chords ((" =" . winstack-push)
+           (" -" . winstack-pop)
+           ("nv" . jorbi/find-init-file)
+           (" \\". jorbi/toggle-comment))
   :defer nil)
 
 (use-package jordon-mode
@@ -124,6 +131,8 @@
 (use-package jabber
   :bind (("C-c u i" . jabber-chat-with)
          ("C-c u u" . jabber-display-roster))
+  :chords (("ne" . jabber-chat-with)
+           ("nw" . jabber-display-roster))
   :config (progn
             (setq jabber-roster-line-format " %c %-25n %S"
                   jabber-use-sasl nil
@@ -179,6 +188,7 @@
 
 (use-package expand-region
   :bind ("C-c e" . er/expand-region)
+  :chords (" e" . er/expand-region)
   :ensure t)
 
 (use-package cmake-mode
@@ -188,10 +198,10 @@
 
 (use-package switch-window
   :defer t
+  :chords (("jf" . switch-window))
   :config (setq switch-window-shortcut-style 'qwerty
                 switch-window-qwerty-shortcuts
                 '("a" "w" "e" "f" "j" "i" "o" ";" "s" "d" "k" "l"))
-
   :ensure t)
 
 (use-package smex
@@ -202,6 +212,7 @@
 
 (use-package magit
   :bind ("C-x m" . magit-status)
+  :chords (" m" . magit-status)
   :commands magit-status
   :config (progn
             (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
@@ -236,6 +247,9 @@
 
 (use-package helm
   :defer t
+  :init (use-package helm-grep
+          :defer t
+          :chords ("hf" . helm-do-grep))
   :ensure t)
 
 (use-package powerline
@@ -243,76 +257,13 @@
 
 (use-package imenu-anywhere
   :defer t
-  :config
-  (progn
-    (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
-      (pulse-momentary-highlight-one-line (point))))
+  :chords ("io" . imenu-anywhere)
+  :config (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
+            (pulse-momentary-highlight-one-line (point)))
   :ensure t)
 
 (use-package rainbow-mode
   :defer t
-  :ensure t)
-
-(use-package key-chord
-  :config (progn
-
-            (key-chord-mode t)
-
-            ;; short waits
-            (setq key-chord-two-keys-delay .020
-                  key-chord-one-key-delay .020)
-
-            ;; jordon-dev-mode chords
-            (dolist (binding
-                     `((" i" . previous-multiframe-window)
-                       (" o" . next-multiframe-window)
-                       ("jf" . switch-window)
-                       (" l" . ibuffer)
-
-                       (" m" . magit-status)
-
-                       (" e" . er/expand-region)
-
-                       (" q" . quake-mode)
-
-                       (" 0" . delete-window)
-                       (" 1" . delete-other-windows)
-                       (" 2" . split-window-below)
-                       (" 3" . split-window-right)
-                       (" =" . winstack-push)
-                       (" -" . winstack-pop)
-
-                       (" w" . whitespace-mode)
-
-                       ("ji" . undo-tree-undo)
-                       ("jo" . undo-tree-redo)
-                       ("jk" . undo-tree-switch-branch)
-                       ("j;" . undo-tree-visualize)
-
-                       (" b" . ido-switch-buffer)
-                       (" f" . ido-find-file)
-                       (" s" . save-buffer)
-
-                       (" x" . shell)
-
-                       (" \\". jorbi/toggle-comment)
-
-                       ("nw" . jabber-display-roster)
-                       ("ne" . jabber-chat-with)
-
-                       ("hf" . helm-do-grep)
-
-                       (" g" . goto-line)
-
-                       ("nv" . jorbi/find-init-file)
-
-                       ("io" . imenu-anywhere)
-
-                       (" r" . recompile)))
-              (key-chord-define jordon-dev-mode-map
-                                (car binding)
-                                (cdr binding))))
-
   :ensure t)
 
 (use-package projectile
@@ -343,6 +294,10 @@
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
          ("C-c ;" . undo-tree-visualize))
+  :chords (("ji" . undo-tree-undo)
+           ("jo" . undo-tree-redo)
+           ("jk" . undo-tree-switch-branch)
+           ("j;" . undo-tree-visualize))
   :ensure t)
 
 (use-package google-this
@@ -661,13 +616,22 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package simple
+  :chords (" g" . goto-line))
+
 (use-package flymake
   :commands flymake-mode)
 
 (use-package custom
   :config (setq custom-file "~/.emacs.d/custom.el"))
 
+(use-package shell
+  :defer t
+  :chords (" x" . shell))
+
 (use-package files
+  :chords (" s" . save-buffer)
   :config (setq backup-directory-alist `(("." . "~/.saves"))
                 version-control t
                 kept-new-versions 10
@@ -679,6 +643,26 @@
   :defer t
   :config (add-hook 'grep-mode-hook 'jorbi/truncate-lines))
 
+(use-package window
+  :defer t
+  :chords ((" 0" . delete-window)
+           (" 1" . delete-other-windows)
+           (" 2" . split-window-below)
+           (" 3" . split-window-right)))
+
+(use-package whitespace
+  :defer t
+  :chords (" w" . whitespace-mode))
+
+(use-package frame
+  :defer t
+  :chords ((" i" . previous-multiframe-window)
+           (" o" . next-multiframe-window)))
+
+(use-package ibuffer
+  :defer t
+  :chords (" l" . ibuffer))
+           
 (use-package dired
   :defer t
   :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
@@ -765,6 +749,8 @@
 
 (use-package ido
   :idle (require 'ido)
+  :chords ((" b" . ido-switch-buffer)
+           (" f" . ido-find-file))
   :config (progn
             (ido-everywhere t)
             (ido-mode t))
@@ -787,6 +773,7 @@
 
 (use-package compile
   :defer t
+  :chords (" r" . recompile)
   :config (progn (setq compilation-scroll-output t)))
 
 (use-package hl-line

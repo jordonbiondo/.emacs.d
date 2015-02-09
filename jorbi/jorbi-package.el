@@ -63,7 +63,10 @@
 
 (require 'use-package)
 (use-package use-package
-  :config (setq use-package-idle-interval 0))
+  :config (progn (setq use-package-idle-interval 0)
+                 (use-package key-chord
+                   :config (key-chord-mode t)
+                   :ensure t)))
 
 (defmacro lambda-once (args &rest body)
   "Like lambda but body will only once, subsequent calls just return nil.
