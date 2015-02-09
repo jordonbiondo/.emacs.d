@@ -635,7 +635,7 @@
   :ensure t)
 
 (use-package rainbow-delimiters
-  :config (global-rainbow-delimiters-mode t)
+  :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   :ensure t)
 
 (use-package markdown-mode
