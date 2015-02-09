@@ -81,11 +81,6 @@
 (use-package jorbi-fns
   :defer nil)
 
-(use-package jorbi-magit
-  :init (after (:magit) (require 'jorbi-magit))
-  :config (bind-key "C-c s d" 'jorbi-magit/delete-hunk-trailing-whitespace magit-status-mode-map)
-  :defer t)
-
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
@@ -209,8 +204,11 @@
   :bind ("C-x m" . magit-status)
   :commands magit-status
   :config (when (OSX)
-            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
-  :ensure t)
+            (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
+            (use-package jorbi-magit
+              :config (bind-key "C-c s d"
+                                'jorbi-magit/delete-hunk-trailing-whitespace
+                                magit-status-mode-map))))
 
 (use-package git-gutter
   :defer t
