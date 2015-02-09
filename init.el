@@ -220,6 +220,7 @@
   :ensure t)
 
 (use-package git-messenger
+  :config (setq git-messenger:show-detail t)
   :bind ("C-c g m" . git-messenger:popup-message))
 
 (use-package w3m
