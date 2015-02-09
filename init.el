@@ -47,7 +47,7 @@
 (defun jordonp ()
   "Are you jordon?"
   (or (equal (getenv "USER") "jordon")
-     (equal (getenv "USERNAME") "jordon")))
+      (equal (getenv "USERNAME") "jordon")))
 
 (mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode
@@ -649,7 +649,7 @@
 (use-package flx-ido
   :defer t
   :init (after (:ido)
-            (flx-ido-mode t))
+          (flx-ido-mode t))
   :ensure t)
 
 (use-package ido-vertical-mode
