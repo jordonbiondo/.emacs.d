@@ -81,6 +81,11 @@
 (use-package jorbi-fns
   :defer nil)
 
+(use-package jorbi-magit
+  :init (after (:magit) (require 'jorbi-magit))
+  :config (bind-key "C-c s d" 'jorbi-magit/delete-hunk-trailing-whitespace magit-status-mode-map)
+  :defer t)
+
 (use-package jordon-mode
   :config (jordon-dev-mode t))
 
