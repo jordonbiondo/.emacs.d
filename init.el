@@ -258,9 +258,6 @@
           :chords ("hf" . helm-do-grep))
   :ensure t)
 
-(use-package powerline
-  :ensure t)
-
 (use-package imenu-anywhere
   :defer t
   :chords ("io" . imenu-anywhere)
