@@ -50,11 +50,9 @@
       (equal (getenv "USERNAME") "jordon")))
 
 (mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
-      '(tool-bar-mode
-        menu-bar-mode
-        scroll-bar-mode))
+      '(tool-bar-mode menu-bar-mode scroll-bar-mode))
 
-(setq ring-bell-function #'ignore
+(setq ring-bell-function 'ignore
       inhibit-startup-screen t
       indent-tabs-mode nil)
 
@@ -62,12 +60,8 @@
 ;; Set up package.el and use-package for init
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(mapc (lambda (p) (push p load-path))
-      '("~/.emacs.d/use-package/"
-        "~/.emacs.d/other/quake-mode/"
-        "~/.emacs.d/other/"
-        "~/.emacs.d/keys/"
-        "~/.emacs.d/jorbi/"
+(mapc (apply-partially 'add-to-list 'load-path)
+      '("~/.emacs.d/jorbi/"
         "~/.emacs.d/jorbi/use-package"))
 
 (require 'jorbi-package)
