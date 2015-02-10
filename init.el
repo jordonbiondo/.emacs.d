@@ -356,8 +356,7 @@
   :ensure t)
 
 (use-package company
-  :defer t
-  :config (global-company-mode t)
+  :idle (global-company-mode t)
   :ensure t)
 
 (use-package omnisharp
@@ -412,8 +411,7 @@
             (after (:js2-mode) (add-to-list 'ac-modes 'js2-mode))
             (after (:js-mode) (add-to-list 'ac-modes 'js-mode))
             (after (:ruby-mode) (add-to-list 'ac-modes 'ruby-mode))
-            (ac-config-default)
-            (global-auto-complete-mode t))
+            (ac-config-default))
   :ensure t)
 
 (use-package auto-complete-clang-async
