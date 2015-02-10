@@ -71,7 +71,6 @@
         "~/.emacs.d/jorbi/use-package"))
 
 (require 'jorbi-package)
-(require 'keys)
 (use-package cl-lib)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -581,12 +580,6 @@
             ;; indent with 2 spaces
             (setq rust-indent-offset 2) )
   :defer t
-  :ensure t)
-
-(use-package pivotal-tracker
-  :defer t
-  :config (progn
-            (setq pivotal-api-token (key :pivotal)))
   :ensure t)
 
 (use-package paredit
