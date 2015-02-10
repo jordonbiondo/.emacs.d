@@ -568,9 +568,7 @@
 
 (use-package rust-mode
   :mode ("\\.rs$" . rust-mode)
-  :config (progn
-            ;; indent with 2 spaces
-            (setq rust-indent-offset 2) )
+  :config (setq rust-indent-offset 2)
   :defer t
   :ensure t)
 
