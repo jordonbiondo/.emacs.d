@@ -665,6 +665,7 @@
   :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
 
 (use-package pulse
+  :commands pulse-momentary-highlight-one-line
   :config (progn (setq pulse-iterations 7
                        pulse-delay .01)))
 
