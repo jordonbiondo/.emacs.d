@@ -261,8 +261,10 @@
 (use-package imenu-anywhere
   :defer t
   :chords ("io" . imenu-anywhere)
-  :config (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
-            (pulse-momentary-highlight-one-line (point)))
+  :config (progn
+            (use-package cl)
+            (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
+              (pulse-momentary-highlight-one-line (point))))
   :ensure t)
 
 (use-package rainbow-mode
