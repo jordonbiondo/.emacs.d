@@ -334,7 +334,6 @@
 
 (use-package io-mode
   :defer t
-  :config (global-company-mode t)
   :ensure t)
 
 (use-package csharp-mode
@@ -356,6 +355,7 @@
 
 (use-package company
   :defer t
+  :config (global-company-mode t)
   :ensure t)
 
 (use-package omnisharp
