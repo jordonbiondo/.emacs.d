@@ -405,7 +405,7 @@
 (use-package auto-complete
   :defer t
   :config (progn
-            (require 'auto-complete-config)
+            (use-package auto-complete-config)
             (after (:slime) (add-to-list 'ac-modes 'slime-repl-mode))
             (after (:js2-mode) (add-to-list 'ac-modes 'js2-mode))
             (after (:js-mode) (add-to-list 'ac-modes 'js-mode))
