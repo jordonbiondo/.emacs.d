@@ -330,7 +330,6 @@
 
 (use-package edit-server
   :defer t
-  ;;:idle (edit-server-start)
   :ensure t)
 
 (use-package io-mode
