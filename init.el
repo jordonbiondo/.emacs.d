@@ -443,15 +443,18 @@
 
 (use-package sass-mode
   :defer t
-  :config (progn (add-hook 'sass-mode-hook 'flycheck-mode))
-  :ensure )
+  :config (progn
+            (add-hook 'sass-mode-hook 'flycheck-mode)
+            (add-hook 'sass-mode-hook (apply-partially 'electric-indent-mode -1)))
+  :ensure t)
 
 (use-package haml-mode
   :defer t
   :config
   (progn
     (add-hook 'haml-mode-hook 'flycheck-mode)
-    (add-hook 'haml-mode-hook (apply-partially 'toggle-truncate-lines 1)))
+    (add-hook 'haml-mode-hook (apply-partially 'toggle-truncate-lines 1))
+    (add-hook 'haml-mode-hook (apply-partially 'electric-indent-mode -1)))
   :ensure t)
 
 (use-package robe
@@ -672,12 +675,7 @@
                       (apply-partially 'toggle-truncate-lines 1))))
 
 (use-package electric
-  :config
-  (progn
-    (after (:sass-mode)
-      (add-hook 'sass-mode-hook (apply-partially 'electric-indent-mode -1)))
-    (after (:haml-mode)
-      (add-hook 'haml-mode-hook (apply-partially 'electric-indent-mode -1)))))
+  :config (progn))
 
 (use-package prog-mode
   :init (progn
