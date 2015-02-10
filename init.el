@@ -74,9 +74,8 @@
 (use-package cl-lib)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Personal Custom Stuff
+;; jorbi/ configuration
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(push "/usr/local/bin/" exec-path)
 
 (use-package jorbi-fns
   :chords ((" =" . winstack-push)
@@ -88,6 +87,7 @@
          ("C-M-k" . jorbi/c-doc-comment)
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
+  :config (when (OSX) (push "/usr/local/bin/" exec-path))
   :demand t)
 
 (use-package jorbi-mode-line
