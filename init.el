@@ -671,9 +671,7 @@
 
 (use-package eww
   :defer t
-  :config (progn
-            (add-hook 'eww-mode-hook
-                      (apply-partially 'toggle-truncate-lines 1))))
+  :config (add-hook 'eww-mode-hook 'jorbi/dont-truncate-lines))
 
 (use-package electric
   :config (progn))
