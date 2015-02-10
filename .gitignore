@@ -43,3 +43,8 @@ keys/*
 /bookmarks
 /semanticdb/
 /custom.el
+/.edbi-ds-history
+/SessionDesktop.el
+/eshell/
+/games/
+/recentf
