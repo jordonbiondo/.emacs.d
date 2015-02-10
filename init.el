@@ -84,28 +84,35 @@
            (" -" . winstack-pop)
            ("nv" . jorbi/find-init-file)
            (" \\". jorbi/toggle-comment))
-  :defer nil)
-
-(use-package jordon-mode
-  :config (jordon-dev-mode t))
+  :bind (("C-\\" . jorbi/toggle-comment)
+         ("C-<tab>" . jorbi/indent-repeat)
+         ("C-M-k" . jorbi/c-doc-comment)
+         ("C-c f u" . winstack-push)
+         ("C-c f o" . winstack-pop))
+  :demand t)
 
 (use-package jorbi-mode-line
   :config (setq-default mode-line-format jorbi/mode-line-format))
 
-;; work related tools
-(when (jordonp)
+;; work related
+(when (and (OSX) (jordonp))
+  (ignore-errors
+    (set-default-font "Envy Code R")
+    (set-face-attribute 'default nil :height 125))
+  (setq user-mail-address "jordon.biondo@parelio.com")
   (add-to-list 'load-path "~/src/redspot-emacs/")
   (use-package redspot
     :config
     (progn
       (after (:js2-mode)
-        (dolist (b '(("M-." . redspot:find-js-definition-here)
-                     ("C-c n m" . redspot:mvp-mode)
-                     ("C-c n t" . redspot:mvp-triplet-select)
-                     ("C-c n c" . redspot:js-console-this-line)
-                     ("C-c n l" . redspot:js-log-arguments)
-                     ("C-c n a" . redspot:application.js-go)))
-          (define-key js2-mode-map (kbd (car b)) (cdr b))))
+        (bind-keys
+         :map js2-mode-map
+         (("M-." . redspot:find-js-definition-here)
+          ("C-c n m" . redspot:mvp-mode)
+          ("C-c n t" . redspot:mvp-triplet-select)
+          ("C-c n c" . redspot:js-console-this-line)
+          ("C-c n l" . redspot:js-log-arguments)
+          ("C-c n a" . redspot:application.js-go))))
       (after (:haml-mode)
         (define-key haml-mode-map
           (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))
@@ -310,19 +317,16 @@
 
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
-  :config (progn
-
-
-            (defun web-indirect-this-thing()
-              (interactive)
-              (let ((beg 0) (end 0))
-                (save-excursion
-                  (setq beg (progn (web-mode-forward-sexp -1)
-                                   (call-interactively 'web-mode-tag-end)
-                                   (point)))
-                  (setq end (progn  (web-mode-forward-sexp 1)
-                                    (point))))
-                (indirect-region beg end))))
+  :config (defun web-indirect-this-thing()
+            (interactive)
+            (let ((beg 0) (end 0))
+              (save-excursion
+                (setq beg (progn (web-mode-forward-sexp -1)
+                                 (call-interactively 'web-mode-tag-end)
+                                 (point)))
+                (setq end (progn  (web-mode-forward-sexp 1)
+                                  (point))))
+              (indirect-region beg end)))
   :ensure t)
 
 (use-package skewer-mode
@@ -331,7 +335,6 @@
           (add-hook 'web-mode-hook 'skewer-mode))
   :config (skewer-setup)
   :ensure t)
-
 
 (use-package edit-server
   :defer t
@@ -565,10 +568,11 @@
 (use-package dired-subtree
   :commands dired
   :config (after (:dired)
-            (define-keys dired-mode-map
-              ("C-c C-i" 'dired-subtree-insert)
-              ("C-c C-r" 'dired-subtree-remove)
-              ("C-c C-g" 'dired-subtree-revert)))
+            (bind-keys
+             :map dired-mode-map
+             ("C-c C-i" . dired-subtree-insert)
+             ("C-c C-r" . dired-subtree-remove)
+             ("C-c C-g" . dired-subtree-revert)))
   :ensure t)
 
 (use-package rust-mode
@@ -661,11 +665,14 @@
 (use-package frame
   :defer t
   :chords ((" i" . previous-multiframe-window)
-           (" o" . next-multiframe-window)))
+           (" o" . next-multiframe-window))
+  :bind (("C-c i" . previous-multiframe-window)
+         ("C-c o" . next-multiframe-window)))
 
 (use-package ibuffer
   :defer t
-  :chords (" l" . ibuffer))
+  :chords ((" l" . ibuffer))
+  :bind (("C-x l" . ibuffer)))
            
 (use-package dired
   :defer t
