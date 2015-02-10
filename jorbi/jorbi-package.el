@@ -65,7 +65,9 @@
 (use-package use-package
   :config (progn (setq use-package-idle-interval 0)
                  (use-package key-chord
-                   :config (key-chord-mode t)
+                   :config (progn (key-chord-mode t)
+                                  (setq key-chord-two-keys-delay .020
+                                        key-chord-one-key-delay .020))
                    :ensure t)))
 
 (defmacro lambda-once (args &rest body)
