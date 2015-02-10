@@ -1,3 +1,16 @@
+
+# Custom use-package
+
+This is a customized version of use-package that adds a key-chord dependency
+and support for the :chords keyword in use-package declarations.
+
+:chords are specified like :bind but with two-character strings as chords
+
+    (use-package imenu-anywhere
+      :chords ("io" . imenu-anywhere))
+
+Below is the original readme
+
 # `use-package`
 
 The `use-package` declaration macro allows you to isolate package

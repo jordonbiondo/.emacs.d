@@ -61,14 +61,11 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
+(load-library "~/.emacs.d/jorbi/use-package/use-package.el")
+(load-library "~/.emacs.d/jorbi/use-package/bind-key.el")
 (require 'use-package)
 (use-package use-package
-  :config (progn (setq use-package-idle-interval 0)
-                 (use-package key-chord
-                   :config (progn (key-chord-mode t)
-                                  (setq key-chord-two-keys-delay .020
-                                        key-chord-one-key-delay .020))
-                   :ensure t)))
+  :config (setq use-package-idle-interval 0))
 
 (defmacro lambda-once (args &rest body)
   "Like lambda but body will only once, subsequent calls just return nil.

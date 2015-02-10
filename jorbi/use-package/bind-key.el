@@ -5,6 +5,7 @@
 ;; Author: John Wiegley <jwiegley@gmail.com>
 ;; Created: 16 Jun 2012
 ;; Version: 1.0
+;; Package-Requires: ((key-chord "0.5"))
 ;; Keywords: keys keybinding config dotemacs
 ;; URL: https://github.com/jwiegley/use-package
 
@@ -83,6 +84,7 @@
 ;; your binding it with `bind-key', and what it was rebound it to.
 
 (require 'easy-mmode)
+(require 'key-chord)
 
 (defgroup bind-key nil
   "A simple way to manage personal keybindings"
@@ -153,8 +155,6 @@ spelled-out keystrokes, e.g., \"C-c C-z\". See documentation of
   `(bind-key ,key-name nil ,keymap))
 
 (defun bind-chord (chord command &optional keymap)
-  (unless (fboundp 'key-chord-mode)
-    (error "Cannot bind chords without `key-chord-mode'."))
   (let ((key1 (logand 255 (aref chord 0)))
         (key2 (logand 255 (aref chord 1))))
     (if (eq key1 key2)

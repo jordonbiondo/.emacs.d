@@ -70,8 +70,6 @@
         "~/.emacs.d/jorbi/"
         "~/.emacs.d/jorbi/use-package"))
 
-(load-library "~/.emacs.d/jorbi/use-package/use-package.el")
-(load-library "~/.emacs.d/jorbi/use-package/bind-key.el")
 (require 'jorbi-package)
 (require 'keys)
 (use-package cl-lib)
@@ -115,6 +113,12 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package key-chord
+  :config (progn (key-chord-mode t)
+                 (setq key-chord-two-keys-delay .020
+                       key-chord-one-key-delay .020))
+  :ensure t)
 
 (use-package ample-theme
   :idle (progn (load-theme 'ample-flat t) (enable-theme 'ample-flat))
