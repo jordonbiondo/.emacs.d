@@ -520,14 +520,6 @@
               :ensure t))
   :ensure t)
 
-(use-package slime-js
-  :defer t
-  :config (progn
-            (after (:js2-mode)
-              (add-hook 'js2-mode-hook (lambda () (slime-js-minor-mode 1)))
-              (slime-setup '(slime-repl slime-js))))
-  :ensure nil)
-
 (use-package slime
   :defer t
   :config
