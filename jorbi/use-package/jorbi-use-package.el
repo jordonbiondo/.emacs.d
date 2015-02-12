@@ -1,4 +1,4 @@
-;;; use-package.el --- A use-package declaration for simplifying your .emacs
+;;; jorbi-use-package.el --- A use-package declaration for simplifying your .emacs
 
 ;; Copyright (C) 2012 John Wiegley
 
@@ -345,7 +345,7 @@ For full documentation. please see commentary.
           (setq idle-priority 5))
         (setq init-body
               `(progn
-                 (require 'use-package)
+                 (require 'jorbi-use-package)
                  (use-package-init-on-idle (lambda () ,idle-body) ,idle-priority)
                  ,init-body)))
 
@@ -457,4 +457,4 @@ For full documentation. please see commentary.
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
-;;; use-package.el ends here
+;;; jorbi-use-package.el ends here
