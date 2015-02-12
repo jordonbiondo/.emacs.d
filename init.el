@@ -9,8 +9,8 @@
 ;;           By: Jordon Biondo
 ;;     Update #: 34
 ;; URL: www.github.com/jordonbiondo/.emacs.d
-;; Keywords: Emacs 24.3
-;; Compatibility: emacs >= 24.3
+;; Keywords: Emacs 24.4
+;; Compatibility: emacs >= 24.4
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
