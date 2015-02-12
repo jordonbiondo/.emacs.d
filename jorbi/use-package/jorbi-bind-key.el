@@ -315,7 +315,7 @@ function symbol (unquoted)."
 
         (setq last-binding binding)))))
 
-(provide 'bind-key)
+(provide 'jorbi-bind-key)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:

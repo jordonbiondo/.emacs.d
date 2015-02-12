@@ -5,7 +5,7 @@
 ;; Author: John Wiegley <jwiegley@gmail.com>
 ;; Created: 17 Jun 2012
 ;; Version: 1.0
-;; Package-Requires: ((bind-key "1.0") (diminish "0.44"))
+;; Package-Requires: ((jorbi-bind-key "1.0") (diminish "0.44"))
 ;; Keywords: dotemacs startup speed config package
 ;; X-URL: https://github.com/jwiegley/use-package
 
@@ -37,7 +37,7 @@
 
 ;;; Code:
 
-(require 'bind-key)
+(require 'jorbi-bind-key)
 (require 'bytecomp)
 (require 'diminish nil t)
 
@@ -453,7 +453,7 @@ For full documentation. please see commentary.
 
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
 
-(provide 'use-package)
+(provide 'jorbi-use-package)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:

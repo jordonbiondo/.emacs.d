@@ -61,7 +61,7 @@
 
 (mapc (apply-partially 'add-to-list 'load-path)
       '("~/.emacs.d/jorbi/"
-        "~/.emacs.d/jorbi/use-package"))
+        "~/.emacs.d/jorbi/use-package/"))
 
 (require 'jorbi-package)
 (use-package cl-lib)

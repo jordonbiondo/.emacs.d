@@ -61,10 +61,10 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
-(load-library "~/.emacs.d/jorbi/use-package/use-package.el")
-(load-library "~/.emacs.d/jorbi/use-package/bind-key.el")
-(require 'use-package)
-(use-package use-package
+(require 'jorbi-use-package)
+(require 'jorbi-bind-key)
+
+(use-package jorbi-use-package
   :config (setq use-package-idle-interval 0))
 
 (defmacro lambda-once (args &rest body)
