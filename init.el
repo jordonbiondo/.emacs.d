@@ -407,21 +407,6 @@
             (ac-config-default))
   :ensure t)
 
-(use-package auto-complete-clang-async
-  :if (file-exists-p "~/.emacs.d/bin/clang-complete")
-  :config
-  (after (:auto-complete-mode)
-    (defun ac-cc-mode-setup ()
-      (setq ac-clang-complete-executable
-            "~/.emacs.d/bin/clang-complete")
-      (setq ac-sources '(ac-source-clang-async))
-      (ac-clang-launch-completion-process))
-
-    (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-    (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-    (global-auto-complete-mode t))
-  :ensure t)
-
 (use-package bundler
   :defer t
   :ensure t)
