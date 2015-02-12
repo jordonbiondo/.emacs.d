@@ -218,6 +218,7 @@
   :commands magit-status
   :config (progn
             (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+            (setq magit-status-buffer-switch-function 'switch-to-buffer)
             (use-package jorbi-magit
               :commands 'jorbi-magit/cleanup-this-hunk
               :init (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
