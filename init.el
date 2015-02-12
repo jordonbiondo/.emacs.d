@@ -182,9 +182,8 @@
                      (when up (next-line -1))
                      (mc/mark-next-lines 1)
                      (jorbi/mc/mark-until-line-change up)))
-
-                 (push 'jorbi/mc/mark-until-line-change mc/cmds-to-run-once))
-
+                 (push 'jorbi/mc/mark-until-line-change mc/cmds-to-run-once)
+                 (bind-key "C-c n" 'mc/insert-numbers mc/keymap))
   :bind (("C-c m" . mc/mark-next-like-this)
          ("C-c C-m" . jorbi/mc/mark-until-line-change))
   :ensure t)
