@@ -96,6 +96,12 @@
   (use-package redspot
     :config
     (progn
+      (after (:projectile)
+        (defun jorbi/redspot-activate-rvm-once ()
+          (when (equal (projectile-project-name) "redspot")
+            (rvm-activate-corresponding-ruby)
+            (remove-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once)))
+        (add-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once))
       (after (:js2-mode)
         (bind-keys
          :map js2-mode-map
@@ -278,6 +284,10 @@
           (after (:js2-mode) (add-hook 'js2-mode-hook 'projectile-rails-mode)))
   :defer t
   :ensure t)
+
+(use-package rvm
+  :commands rvm-activate-corresponding-ruby
+  :defer t)
 
 (use-package header2
   :ensure t)
