@@ -138,8 +138,6 @@
   :ensure t)
 
 (use-package jabber
-  :bind (("C-c u i" . jabber-chat-with)
-         ("C-c u u" . jabber-display-roster))
   :chords (("ne" . jabber-chat-with)
            ("nw" . jabber-display-roster))
   :config (progn
@@ -512,6 +510,7 @@
               :ensure t)
 
             (use-package js2-refactor
+              :config (js2r-add-keybindings-with-prefix "C-c u")
               :ensure t))
   :ensure t)
 
