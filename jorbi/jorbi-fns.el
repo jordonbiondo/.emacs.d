@@ -379,4 +379,22 @@ functions it contains."
        (setq truncate-lines nil)
        (current-buffer)))))
 
+(defun jorbi/init.el-jump (&optional package)
+  "Jump to the top level use-package definition in the init file."
+  (interactive)
+  (unless package
+    (setq package
+          (ido-completing-read
+           "Package: "
+           (mapcar (lambda (p) (symbol-name (cadr p)))
+                   (remove-if-not (lambda (f) (equal (car-safe f) 'use-package))
+                                  (with-temp-buffer
+                                    (insert-file-contents user-init-file)
+                                    (read (concat "(list " (buffer-string) ")"))))) nil t)))
+  (find-file user-init-file)
+  (goto-char (point-min))
+  (re-search-forward (format "( *use-package +%s *$" package) nil nil 1)
+  (recenter-top-bottom)
+  (pulse-momentary-highlight-one-line (point)))
+
 (provide 'jorbi-fns)
