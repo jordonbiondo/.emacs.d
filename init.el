@@ -645,8 +645,11 @@
 
 (use-package pulse
   :commands pulse-momentary-highlight-one-line
-  :config (progn (setq pulse-iterations 7
-                       pulse-delay .01)))
+  :config (progn
+            (setq pulse-iterations 7
+                  pulse-delay .01)
+            (set-face-background 'pulse-highlight-start-face
+                                 (face-foreground 'font-lock-keyword-face))))
 
 (use-package eww
   :defer t
