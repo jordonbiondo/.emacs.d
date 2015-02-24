@@ -48,7 +48,7 @@ can be used to add a number of spaces to the front and back of the string."
   (condition-case err
       (let* ((left (if lpad (concat (make-string lpad ?\s) left) left))
              (right (if rpad (concat right (make-string rpad ?\s)) right))
-             (width (window-width))
+             (width (apply '+ (window-width) (let ((m (window-margins))) (list (or (car m) 0) (or (cdr m) 0)))))
              (total-length (+ (length left) (length center) (length right) 2)))
         (when (> total-length width) (setq left "" right ""))
         (let* ((left-space (/ (- width (length center)) 2))
