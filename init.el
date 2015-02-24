@@ -260,6 +260,14 @@
   :chords ("io" . imenu-anywhere)
   :config (progn
             (use-package cl)
+            (defun jorbi/imenu-show-used-packages ()
+              (add-to-list 'imenu-generic-expression
+                           '("Used Packages"
+                             "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
+            (add-late-hook '((lisp-mode lisp-mode-hook)
+                             (emacs-lisp-mode emacs-lisp-mode-hook)
+                             (lisp-interaction-mode lisp-interaction-mode-hook))
+                           'jorbi/imenu-show-used-packages)
             (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
               (pulse-momentary-highlight-one-line (point))))
   :ensure t)
@@ -693,12 +701,6 @@
 
 (use-package lisp-mode
   :config (progn
-            (after (:imenu)
-              (defun jorbi/imenu-show-used-packages ()
-                (add-to-list 'imenu-generic-expression
-                             '("Used Packages"
-                               "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
-              (add-hook 'lisp-mode-hook 'jorbi/imenu-show-used-packages))
             (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
             (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
 
