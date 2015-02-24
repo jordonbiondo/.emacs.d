@@ -74,6 +74,26 @@ Does not require lexical-binding."
     `(progn (defvar ,sym nil)
             (lambda ,args (when (and (boundp ',sym) (makunbound ',sym)) ,@body)))))
 
+(defun add-late-hook (hook-modes hook)
+  "Add HOOK to all HOOK-SYMBOLSs and also immdiately run HOOK in all MODE-SYMBOL buffers.
+
+A MODE-SYMBOL can either be a possible `major-mode' value symbol or a minor mode variable.
+
+HOOK is run if either `major-mode' equals MODE-SYMBOL or MODE-SYMBOL is bound and true in a buffer.
+
+\(fn ((MODE-SYMBOL HOOK-SYMBOL)...) HOOK)"
+  (when (not (car-safe (car hook-modes)))
+    (setq hook-modes (list hook-modes)))
+  (mapc (lambda (hm)
+          (add-hook (cadr hm) hook)
+          (mapc (lambda (b)
+                  (with-current-buffer b
+                    (when (or (equal major-mode (car hm))
+                              (and (boundp (car hm)) (symbol-value (car hm))))
+                      (apply hook nil))))
+                (buffer-list)))
+        hook-modes))
+
 (defmacro after (libs &rest body)
   "After all LIBS, specified like (:lib1 :lib2), are loaded, eval BODY.
 
