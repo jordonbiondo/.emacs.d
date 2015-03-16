@@ -279,8 +279,7 @@
   :ensure t)
 
 (use-package projectile
-  :init (progn
-          (add-hook 'prog-mode-hook 'projectile-mode))
+  :init (add-hook 'prog-mode-hook 'projectile-mode)
   :defer t
   :ensure t)
 
