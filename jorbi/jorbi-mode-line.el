@@ -70,8 +70,10 @@ can be used to add a number of spaces to the front and back of the string."
             (cond
              ((not (buffer-file-name)) "_ ")
              ((buffer-modified-p) "! ")
-             (t "  ")) 1 4))))
+             (t "  ")) 1 3))))
 
 (provide 'jorbi-mode-line)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; jorbi-mode-line.el ends here
+
+
