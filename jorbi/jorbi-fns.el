@@ -313,13 +313,13 @@ Use `winstack-push' and
         (set-window-margins nil 0 0)
       (set-window-margins nil 0 (max (- (window-width) 80) 0)))))
 
-(defun toggle-80-editting-columns-balanced ()
+(defun toggle-80-editting-columns-balanced (&optional columns)
   "Set both window margins so the edittable space is only 80 columns."
-  (interactive)
+  (interactive "p")
   (let ((margins (window-margins)))
     (if (or (car margins) (cdr margins))
         (set-window-margins nil 0 0)
-      (let* ((change (max (- (window-width) 80) 0))
+      (let* ((change (max (- (window-width) (or columns 80)) 0))
              (left (/ change 2))
              (right (- change left)))
         (set-window-margins nil left right)))))
