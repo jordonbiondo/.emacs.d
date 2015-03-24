@@ -765,9 +765,9 @@
   :mode ("\\.php$" . php-mode)
   :config (add-hook 'php-mode-hook
                     (defun jorbi/php-mode-setup ()
-                      (setq c-basic-offset 4
-                            indent-tabs-mode nil
-                            tab-width 4))))
+                      (setq-local c-basic-offset 4)
+                      (setq-local indent-tabs-mode nil)
+                      (setq-local tab-width 4))))
 
 (use-package ruby-mode
   :defer t
