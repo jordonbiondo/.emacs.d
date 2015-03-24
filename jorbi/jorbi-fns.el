@@ -181,11 +181,11 @@ Function `enabled-important-minor-modes' is what you are probably looking for."
   (align-regexp beg end (format "%s\\(\\s-*\\)" str)1 1 t))
 
 (defun random-word ()
-  (when (or (OSX) (error "OS not supported"))
-    (with-temp-buffer
-      (insert-file-contents "/usr/share/dict/words")
-      (forward-line (random (count-lines (point-min) (point-max)) ))
-      (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
+  (unless (OSX) (error "OS not supported"))
+  (with-temp-buffer
+    (insert-file-contents "/usr/share/dict/words")
+    (forward-line (random (count-lines (point-min) (point-max)) ))
+    (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
 
 (defun insert-random-word ()
   (interactive)
