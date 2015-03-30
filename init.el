@@ -92,8 +92,8 @@
     (set-default-font "Envy Code R")
     (set-face-attribute 'default nil :height 125))
   (setq user-mail-address "jordon.biondo@parelio.com")
-  (setq-default scroll-margin 5
-        scroll-step 1)
+  (setq-default scroll-margin 5)
+  (setq-default scroll-step 1)
   (add-to-list 'load-path "~/src/redspot-emacs/")
   (use-package redspot
     :config
