@@ -785,17 +785,3 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (ample-theme yaml-mode wsd-mode wgrep web-mode w3m vs-emulation-mode vlf visible-mark use-package undo-tree typing twittering-mode tup-mode tern-auto-complete switch-window sublimity strie sql-indent spinner sotlisp solarized-theme smex smartparens slime-volleyball slime-company sass-mode rvm rust-mode rspec-mode rsense robe restclient rcirc-notify rainbow-mode rainbow-delimiters rails-log-mode projectile-rails pretty-mode powerline pivotal-tracker php-extras paredit osx-org-clock-menubar org-bullets omnisharp objc-font-lock noflet nodejs-repl moz monokai-theme markdown-mode magit lua-mode light-soap-theme key-chord json-mode js2-refactor jabber io-mode imenu-anywhere ido-vertical-mode htmlize highlight-symbol helm-swoop helm-rails helm-ag header2 haxe-mode haskell-mode google-this go-mode git-timemachine git-messenger git-gutter git-gutter+ gist flx-ido flex-isearch expand-region exec-path-from-shell emacsql elpy edit-server edbi-sqlite ducpel dired-subtree diff-hl d-mode company-tern coffee-mode cmake-mode cider bundler bongo autotetris-mode auto-complete-clang-async applescript-mode apples-mode aggressive-indent ace-jump-mode ac-slime ac-js2 4clojure 2048-game))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
