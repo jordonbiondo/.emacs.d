@@ -5,15 +5,18 @@
       '(
         ac-clang-async-autocomplete-autotrigger
         backward-sexp
+        beginning-of-defun
         beginning-of-visual-line
         c-electric-brace
         c-electric-colon
         c-electric-delete-forward
         c-electric-paren
+        c-electric-pound
         c-electric-semi&comma
         c-electric-slash
         c-electric-star
         c-indent-line-or-region
+        c-indent-new-comment-line
         c-maybe-insert-semicolon
         comment-dwim
         csharp-maybe-insert-codedoc
@@ -40,6 +43,7 @@
         org-end-of-line
         org-force-self-insert
         org-kill-line
+        org-meta-return
         org-metaleft
         org-metaright
         org-self-insert-command
