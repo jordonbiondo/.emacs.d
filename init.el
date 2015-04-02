@@ -595,6 +595,12 @@
           (ido-vertical-mode t))
   :ensure t)
 
+(use-package ido-ubiquitous
+  :defer t
+  :init (after (:ido)
+          (ido-ubiquitous-mode t))
+  :ensure t)
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
