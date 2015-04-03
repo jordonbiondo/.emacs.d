@@ -443,6 +443,10 @@
             (add-hook 'sass-mode-hook (apply-partially 'electric-indent-mode -1)))
   :ensure t)
 
+(use-package adaptive-wrap
+  :defer t
+  :ensure t)
+
 (use-package haml-mode
   :defer t
   :config
