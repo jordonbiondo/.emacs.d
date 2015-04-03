@@ -451,9 +451,13 @@
   :defer t
   :config
   (progn
-    (add-hook 'haml-mode-hook 'flycheck-mode)
-    (add-hook 'haml-mode-hook (apply-partially 'toggle-truncate-lines 1))
-    (add-hook 'haml-mode-hook (apply-partially 'electric-indent-mode -1)))
+    (defun jorbi-haml/setup-hook ()
+      (flycheck-mode t)
+      (setq truncate-lines nil)
+      (visual-line-mode t)
+      (adaptive-wrap-prefix-mode t)
+      (electric-indent-mode -1))
+    (add-hook 'haml-mode-hook 'jorbi-haml/setup-hook))
   :ensure t)
 
 (use-package robe
