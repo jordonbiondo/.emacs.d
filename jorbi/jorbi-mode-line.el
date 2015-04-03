@@ -66,11 +66,12 @@ can be used to add a number of spaces to the front and back of the string."
             (format-mode-line (format " %s (%%l/%d) %%c "
                                       (downcase mode-name)
                                       (line-number-at-pos (point-max))))
-            (buffer-name)
-            (cond
-             ((not (buffer-file-name)) "_ ")
-             ((buffer-modified-p) "! ")
-             (t "  ")) 1 3))))
+            (concat (buffer-name)
+                    (cond
+                     ((not (buffer-file-name)) " ")
+                     ((buffer-modified-p) "*")
+                     (t " ")))
+            " " 1 3))))
 
 (provide 'jorbi-mode-line)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
