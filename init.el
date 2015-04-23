@@ -252,7 +252,8 @@
 
 (use-package git-messenger
   :config (setq git-messenger:show-detail t)
-  :bind ("C-c g m" . git-messenger:popup-message))
+  :bind ("C-c g m" . git-messenger:popup-message)
+  :ensure t)
 
 (use-package gh
   :defer t
