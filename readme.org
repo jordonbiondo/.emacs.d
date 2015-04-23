@@ -1,4 +1,4 @@
-* Jordon Biondo's ~/.emacs.d
+* My ~/.emacs.d
   This is my Emacs configuration, it makes have use of a customized use-package which supports key chord declarations.
 
-  If you'd like to see how any package is configured or what bindings and chords are defined, just search for the cooresponding use-package block in the init.el file.
+  If you'd like to see how any package is configured or what bindings and chords are defined, just search for the cooresponding use-package block in the file init.el 
