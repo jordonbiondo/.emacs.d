@@ -222,13 +222,15 @@
   :bind ("C-x m" . magit-status)
   :chords (" m" . magit-status)
   :commands magit-status
+  :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn
             (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (setq magit-status-buffer-switch-function 'switch-to-buffer)
             (use-package jorbi-magit
               :commands 'jorbi-magit/cleanup-this-hunk
               :init (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
-                              magit-status-mode-map))))
+                              magit-status-mode-map)))
+  :ensure t)
 
 (use-package git-gutter
   :defer t
