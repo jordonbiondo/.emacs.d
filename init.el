@@ -83,6 +83,23 @@
   :config (when (OSX) (push "/usr/local/bin/" exec-path))
   :demand t)
 
+(use-package jorbi-jabber
+  :init (after (:jabber)
+          (require 'jorbi-jabber))
+  :config  (progn
+             (setq jabber-chat-header-line-format
+                   jorbi-jabber/chat-header-line-format)
+             (cond
+              ((OSX)
+               (add-hook 'jabber-alert-message-hooks
+                         'jorbi-jabber/terminal-notification))
+              ((Windows)
+               (add-hook 'jabber-alert-message-hooks
+                         'jorbi-jabber/toast-notification)
+               (add-hook 'jabber-alert-message-hooks
+                         'jorbi-jabber/send-mail-notification))))
+  :defer t)
+
 (use-package jorbi-mode-line
   :config (setq-default mode-line-format jorbi/mode-line-format))
 
@@ -157,19 +174,6 @@
                      (:network-server . "talk.google.com")
                      (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
-            (use-package jorbi-jabber
-              :config  (progn
-                         (setq jabber-chat-header-line-format
-                               jorbi-jabber/chat-header-line-format)
-                         (cond
-                          ((OSX)
-                           (add-hook 'jabber-alert-message-hooks
-                                     'jorbi-jabber/terminal-notification))
-                          ((Windows)
-                           (add-hook 'jabber-alert-message-hooks
-                                     'jorbi-jabber/toast-notification)
-                           (add-hook 'jabber-alert-message-hooks
-                                     'jorbi-jabber/send-mail-notification)))))
             (setq jabber-chat-buffer-format "Chat: %n"))
   :ensure t)
 
