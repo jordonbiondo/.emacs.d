@@ -622,7 +622,7 @@
   :commands flymake-mode)
 
 (use-package custom
-  :config (setq custom-file "~/.emacs.d/custom.el"))
+  :init (setq custom-file "~/.emacs.d/custom.el"))
 
 (use-package shell
   :defer t
