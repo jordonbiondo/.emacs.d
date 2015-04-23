@@ -301,6 +301,9 @@
   :defer t
   :ensure t)
 
+(use-package rspec-mode
+  :ensure t)
+
 (use-package rvm
   :commands rvm-activate-corresponding-ruby
   :defer t)
