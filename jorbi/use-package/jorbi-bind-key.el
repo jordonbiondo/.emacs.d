@@ -84,7 +84,7 @@
 ;; your binding it with `bind-key', and what it was rebound it to.
 
 (require 'easy-mmode)
-(require 'key-chord)
+(require 'jorbi-key-chord)
 
 (defgroup bind-key nil
   "A simple way to manage personal keybindings"

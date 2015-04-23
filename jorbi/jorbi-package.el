@@ -62,8 +62,6 @@
     (package-install 'use-package)))
 
 (require 'jorbi-use-package)
-(require 'jorbi-bind-key)
-
 (use-package jorbi-use-package
   :config (setq use-package-idle-interval 0))
 
