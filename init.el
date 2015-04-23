@@ -103,6 +103,13 @@
 (use-package jorbi-mode-line
   :config (setq-default mode-line-format jorbi/mode-line-format))
 
+(use-package jorbi-magit
+  :commands 'jorbi-magit/cleanup-this-hunk
+  :init (after (:magit)
+          (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
+                    magit-status-mode-map))
+  :defer t)
+
 ;; work related
 (when (and (OSX) (jordonp))
   (ignore-errors
@@ -229,11 +236,7 @@
   :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn
             (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
-            (setq magit-status-buffer-switch-function 'switch-to-buffer)
-            (use-package jorbi-magit
-              :commands 'jorbi-magit/cleanup-this-hunk
-              :init (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
-                              magit-status-mode-map)))
+            (setq magit-status-buffer-switch-function 'switch-to-buffer))
   :ensure t)
 
 (use-package git-gutter
