@@ -306,7 +306,8 @@
 
 (use-package rvm
   :commands rvm-activate-corresponding-ruby
-  :defer t)
+  :defer t
+  :ensure t)
 
 (use-package header2
   :ensure t)
