@@ -23,11 +23,11 @@
 The info is like (expanded-file-name starting-line number-of-lines-show)"
   (let* ((section (magit-current-section))
          (context-type (magit-section-context-type section)))
-    (when (and (member 'hunk context-type))
+    (when (and (cl-member 'hunk context-type))
       (let* ((info
               (mapcar 'string-to-number
                       (split-string
-                       (second (split-string
+                       (cl-second (split-string
                                 (magit-section-info
                                  (magit-current-section))
                                 "[ @]" t))
@@ -76,8 +76,8 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
        ,docstring
        (interactive)
        (let ((,area-sym (jorbi-magit/-line-region-of-section-at-point)))
-         (if (and ,area-sym (member 'unstaged (magit-section-context-type (magit-current-section))))
-             (destructuring-bind (,file-sym ,start-line-sym ,total-lines-sym) ,area-sym
+         (if (and ,area-sym (cl-member 'unstaged (magit-section-context-type (magit-current-section))))
+             (cl-destructuring-bind (,file-sym ,start-line-sym ,total-lines-sym) ,area-sym
                (save-some-buffers)
                (with-current-buffer (find-file-noselect ,file-sym)
                  (save-excursion
