@@ -703,6 +703,13 @@
                       (interactive)
                       (setq indent-tabs-mode nil)))))
 
+(use-package make-mode
+  :init (add-hook
+         'makefile-mode-hook
+         (defun jorbi/makefile-mode-setup ()
+           (setq-local indent-tabs-mode t)))
+  :defer t)
+
 (use-package python
   :mode ("\\<SConstruct\\>$" . python-mode)
   :config (progn
