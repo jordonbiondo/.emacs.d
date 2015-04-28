@@ -346,6 +346,15 @@
               (indirect-region beg end)))
   :ensure t)
 
+(use-package php-mode
+  :mode ("\\.php$" . php-mode)
+  :config (add-hook 'php-mode-hook
+                    (defun jorbi/php-mode-setup ()
+                      (setq-local c-basic-offset 4)
+                      (setq-local indent-tabs-mode nil)
+                      (setq-local tab-width 4)))
+  :ensure t)
+
 (use-package skewer-mode
   :defer t
   :init (after (:web-mode)
@@ -674,7 +683,7 @@
   :defer t
   :chords ((" l" . ibuffer))
   :bind (("C-x l" . ibuffer)))
-           
+
 (use-package dired
   :defer t
   :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
@@ -795,13 +804,6 @@
 (use-package hl-line
   :config (global-hl-line-mode t))
 
-(use-package php-mode
-  :mode ("\\.php$" . php-mode)
-  :config (add-hook 'php-mode-hook
-                    (defun jorbi/php-mode-setup ()
-                      (setq-local c-basic-offset 4)
-                      (setq-local indent-tabs-mode nil)
-                      (setq-local tab-width 4))))
 
 (use-package ruby-mode
   :defer t
