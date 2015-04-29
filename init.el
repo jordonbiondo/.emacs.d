@@ -302,6 +302,14 @@
   :ensure t)
 
 (use-package rspec-mode
+  :config
+  (progn
+    (bind-keys :map rspec-mode-map
+      ("C-c ," . rspec-verify-single)
+      ("C-c ." . rspec-verify))
+    (bind-chords :map rspec-mode-map
+      (" ," . rspec-verify-single)
+      (" ." . rspec-verify)))
   :ensure t)
 
 (use-package rvm
