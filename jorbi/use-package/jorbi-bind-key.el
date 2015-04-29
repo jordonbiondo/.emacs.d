@@ -163,6 +163,17 @@ spelled-out keystrokes, e.g., \"C-c C-z\". See documentation of
       (bind-key (vector 'key-chord key1 key2) command keymap)
       (bind-key (vector 'key-chord key2 key1) command keymap))))
 
+(defmacro bind-chords (&rest args)
+  (declare (indent defun))
+  (let ((map (plist-get args :map))
+        (key-bindings (progn
+                        (while (keywordp (car args)) (pop args) (pop args))
+                        args)))
+    `(progn
+       ,@(mapcar (lambda (binding)
+                   `(bind-chord ,(car binding) ',(cdr binding) ,map))
+                 key-bindings))))
+
 (defun unbind-chord (chord &optional keymap)
   (bind-chord chord nil keymap))
 
