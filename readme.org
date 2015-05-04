@@ -1,6 +1,8 @@
 * My ~/.emacs.d
   This is my Emacs configuration, it makes have use of a customized use-package which supports key chord declarations.
 
-  If you'd like to see how any package is configured or what bindings and chords are defined, just search for the cooresponding use-package block in the file init.el 
+  If you'd like to see how any package is configured or what bindings and chords are defined, just search for the corresponding use-package block in the file init.el
 
   I do Rails for work, and mainly C for fun, so that is what my config is geared towards. A lot of Railsy things are part of the config, like yaml, haml, sass, projectile-rails, rspec, js2-mode, and more.
+
+  I am usually running the latest dev build, so I can't guarantee that this is compatible with even the latest stable releases.
