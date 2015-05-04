@@ -45,6 +45,8 @@
 ;;
 ;;; Code:
 (require 'package)
+;; make this go away
+(defalias 'package--ensure-init-file #'ignore)
 
 (dolist (p '(;;("marmalade" . "http://marmalade-repo.org/packages/")
              ("melpa" . "http://melpa.milkbox.net/packages/")))
