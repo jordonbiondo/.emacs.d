@@ -235,7 +235,8 @@
   :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn
             (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
-            (setq magit-status-buffer-switch-function 'switch-to-buffer))
+            (setq magit-status-buffer-switch-function 'switch-to-buffer
+                  magit-completing-read-function 'magit-ido-completing-read))
   :ensure t)
 
 (use-package git-gutter
