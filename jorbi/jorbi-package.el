@@ -92,8 +92,17 @@ HOOK is run if either `major-mode' equals MODE-SYMBOL or MODE-SYMBOL is bound an
                 (buffer-list)))
         hook-modes))
 
+(defun jorbi-package/sanitize-package-name (name)
+  ":keyword => 'keyword, ensure normal things are passed to `eval-after-load'."
+  (cond
+   ((keywordp name) (list 'quote (intern (substring (symbol-name name) 1))))
+   ((symbolp name) (list 'quote name))
+   ((stringp name) name)
+   ((listp name) name)
+   (t (error "`after' macro doesn't know what to do with library: '%S'" name))))
+
 (defmacro after (libs &rest body)
-  "After all LIBS, specified like (:lib1 :lib2), are loaded, eval BODY.
+  "After all LIBS, specified like (:lib1 'lib2 \"lib3\"), are loaded, eval BODY.
 
 This is mostly a wrapper for `eval-after-load', with some special behavior described below.
 
@@ -113,9 +122,7 @@ of the LIBS."
   (let ((form (cons 'progn body)))
     (mapc (lambda-once (lib)
             (setq form 
-                  `(eval-after-load ',(and (or (equal (substring (symbol-name lib) 0 1) ":")
-                                               (error "`after' libs must be like `:lib'"))
-                                           (intern (substring (symbol-name lib) 1)))
+                  `(eval-after-load ,(jorbi-package/sanitize-package-name lib)
                      (lambda-once () ,form))))
           libs)
     form))
