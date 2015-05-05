@@ -314,6 +314,7 @@
     (bind-chords :map rspec-mode-map
       (" ," . rspec-verify-single)
       (" ." . rspec-verify)))
+  :defer t
   :ensure t)
 
 (use-package rvm
