@@ -366,6 +366,7 @@
                       (setq-local c-basic-offset 4)
                       (setq-local indent-tabs-mode nil)
                       (setq-local tab-width 4)))
+  :defer t
   :ensure t)
 
 (use-package skewer-mode
