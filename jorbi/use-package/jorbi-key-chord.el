@@ -214,9 +214,6 @@ entered during the last interactive macro recording. (This carries a bit of
 guesswork. We can't know for sure when executing whether two keys were
 typed quickly or slowly when recorded.)")
 
-;; Internal vars
-(defvar key-chord-mode nil)
-
 ;; Shortcut for key-chord-input-method: no need to test a key again if it
 ;; didn't matched a chord the last time. Improves feedback during autorepeat.
 (defvar key-chord-last-unmatched nil)
@@ -228,7 +225,7 @@ typed quickly or slowly when recorded.)")
 (defvar key-chord-defining-kbd-macro nil)
 
 ;;;###autoload
-(defun key-chord-mode (arg)
+(define-minor-mode key-chord-mode
   "Toggle key chord mode.
 With positive ARG enable the mode. With zero or negative arg disable the mode.
 A key chord is two keys that are pressed simultaneously, or one key quickly
@@ -236,17 +233,14 @@ pressed twice.
 \nSee functions `key-chord-define-global', `key-chord-define-local', and
 `key-chord-define' and variables `key-chord-two-keys-delay' and
 `key-chord-one-key-delay'."
-
-  (interactive "P")
-  (setq key-chord-mode (if arg
-                           (> (prefix-numeric-value arg) 0)
-                         (not key-chord-mode)))
+  :init-value nil
+  :lighter "kc"
+  :global t
+  :keymap nil
   (cond (key-chord-mode
-         (setq input-method-function 'key-chord-input-method)
-         (message "Key Chord mode on"))
+         (setq input-method-function 'key-chord-input-method))
         (t
-         (setq input-method-function nil)
-         (message "Key Chord mode off"))))
+         (setq input-method-function nil))))
 
 ;;;###autoload
 (defun key-chord-define-global (keys command)
