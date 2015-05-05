@@ -111,35 +111,36 @@
   :defer t)
 
 ;; work related
-(when (and (OSX) (jordonp))
+(when (OSX)
   (ignore-errors
     (set-default-font "Envy Code R")
     (set-face-attribute 'default nil :height 125))
   (setq user-mail-address "jordon.biondo@parelio.com")
   (setq-default scroll-margin 5)
   (setq-default scroll-step 1)
-  (add-to-list 'load-path "~/src/redspot-emacs/")
-  (use-package redspot
-    :config
-    (progn
-      (after (:projectile)
-        (defun jorbi/redspot-activate-rvm-once ()
-          (when (equal (projectile-project-name) "redspot")
-            (rvm-activate-corresponding-ruby)
-            (remove-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once)))
-        (add-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once))
-      (after (:js2-mode)
-        (bind-keys
-         :map js2-mode-map
-         ("M-." . redspot:find-js-definition-here)
-         ("C-c n m" . redspot:mvp-mode)
-         ("C-c n t" . redspot:mvp-triplet-select)
-         ("C-c n c" . redspot:js-console-this-line)
-         ("C-c n l" . redspot:js-log-arguments)
-         ("C-c n a" . redspot:application.js-go)))
-      (after (:haml-mode)
-        (define-key haml-mode-map
-          (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))
+  (when (jordonp)
+    (add-to-list 'load-path "~/src/redspot-emacs/")
+    (use-package redspot
+      :config
+      (progn
+        (after (:projectile)
+          (defun jorbi/redspot-activate-rvm-once ()
+            (when (equal (projectile-project-name) "redspot")
+              (rvm-activate-corresponding-ruby)
+              (remove-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once)))
+          (add-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once))
+        (after (:js2-mode)
+          (bind-keys
+            :map js2-mode-map
+            ("M-." . redspot:find-js-definition-here)
+            ("C-c n m" . redspot:mvp-mode)
+            ("C-c n t" . redspot:mvp-triplet-select)
+            ("C-c n c" . redspot:js-console-this-line)
+            ("C-c n l" . redspot:js-log-arguments)
+            ("C-c n a" . redspot:application.js-go)))
+        (after (:haml-mode)
+          (define-key haml-mode-map
+            (kbd "C-c n p") 'redspot:haml-find-partial-at-point))))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
