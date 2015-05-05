@@ -194,6 +194,7 @@ Accepts keyword arguments:
 
 The rest of the arguments are conses of keybinding string and a
 function symbol (unquoted)."
+  (declare (indent defun))
   (let ((map (plist-get args :map))
         (doc (plist-get args :prefix-docstring))
         (prefix-map (plist-get args :prefix-map))
