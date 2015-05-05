@@ -3,22 +3,6 @@
 ;; Filename: jorbi-mode-line.el
 ;; Description: Personal mode-line format
 ;; Author: Jordon Biondo <jordonbiondo@gmail.com>
-;; Created: Mon Jan 19 11:34:27 2015 (-0400)
-;; Version:
-;; Last-Updated: Mon Jan 19 11:30:56 2015 (-0500)
-;;           By: Jordon Biondo
-;;     Update #: 6
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Commentary:
-;;
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change Log:
-;;
-;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; This program is free software; you can redistribute it and/or
@@ -76,5 +60,3 @@ can be used to add a number of spaces to the front and back of the string."
 (provide 'jorbi-mode-line)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; jorbi-mode-line.el ends here
-
-
