@@ -47,10 +47,6 @@
           (move-to-column col))
       (comment-or-uncomment-region (point-at-bol) (point-at-eol)))))
 
-(defun jorbi/shell-named(name)
-  (interactive "sShell Name: ")
-  (shell (generate-new-buffer-name name)))
-
 (defun jorbi/c-doc-comment()
   "Insert a c style doc comment on the current line."
   (interactive)
@@ -60,17 +56,9 @@
   (goto-char (point-at-eol)))
 
 (defun jorbi/date()
-  "Insert the date at point. Value is determined by the date command."
+  "Insert the date at point."
   (interactive)
-  (lexical-let ((the-buff (current-buffer))
-                (the-point (point)))
-    (set-process-filter (start-process"*date-proc*" "*date-proc-buffer*" "date")
-                        (lambda (proc string)
-                          (save-excursion
-                            (with-current-buffer the-buff
-                              (goto-char the-point)
-                              (insert (remove-if (lambda (char) (= char ?\n)) string))))))))
-
+  (insert (format-time-string "%h %d %Y, %I:%M %p")))
 
 (defun scons/compile(&rest args)
   (interactive "sscons: ")
@@ -91,42 +79,6 @@
 (defun scons/clean-compile()
   (interactive)
   (scons/compile "-c" "&&" "scons"))
-
-(defun enabled-minor-modes (buffer)
-  "Returns a list of minor mode specs containing the modes enabled in BUFFER.
-This function returns a lot of modes you probably do not care about.
-
-Function `enabled-important-minor-modes' is what you are probably looking for."
-  (with-current-buffer buffer
-    (let (minor-modes)
-      (dolist (x minor-mode-alist)
-        (setq x (car x))
-        (unless (memq x minor-mode-list)
-          (push x minor-mode-list)))
-      (dolist (mode minor-mode-list)
-        (let ((fmode (or (get mode :minor-mode-function) mode)))
-          (and (boundp mode) (symbol-value mode)
-               (fboundp fmode)
-               (let ((pretty-minor-mode
-                      (if (string-match "\\(\\(-minor\\)?-mode\\)?\\'"
-                                        (symbol-name fmode))
-                          (capitalize
-                           (substring (symbol-name fmode)
-                                      0 (match-beginning 0)))
-                        fmode)))
-                 (push (list fmode pretty-minor-mode
-                             (format-mode-line (assq mode minor-mode-alist)))
-                       minor-modes)))))
-      (sort minor-modes
-            (lambda (a b) (string-lessp (cadr a) (cadr b)))))))
-
-(defun enabled-important-minor-modes (buffer)
-  (remove-if (lambda (mode-spec) (equal "" (third mode-spec)))
-             (enabled-minor-modes buffer)))
-
-(defun enabled-important-minor-lighters (buffer)
-  (mapcar 's-trim (mapcar 'third (enabled-important-minor-modes buffer))))
-
 
 (defun scratch ()
   "Open the *scratch* buffer, create on if needed."
@@ -268,43 +220,6 @@ Use `winstack-push' and
     (list (apply 'call-process program nil (current-buffer) nil args)
           (buffer-string))))
 
-(defvar tmux-default-command-switches
-  '((show . "-v")
-    (test . (lambda () 1 "test"))
-    (test2 . asdfasdf)
-    (test3 . ((lambda () "one") asdfasdf "three" 4))))
-
-(defun tmux--get-additional-command-switches (command)
-  (let ((value (cdr-safe (assoc command tmux-default-command-switches))))
-    (tmux--get-additional-command-switches-helper value)))
-
-(defun tmux--get-additional-command-switches-helper (value)
-  (typecase value
-    (string value)
-    (number (number-to-string value))
-    (function (apply value nil))
-    (symbol (if (fboundp value)
-                (apply value nil)
-              (symbol-value value)))
-    (list (with-temp-buffer
-            (while value
-              (message "%S" value)
-              (insert (tmux--get-additional-command-switches-helper (pop value)))
-              (when value (insert " ")))
-            (buffer-string)))
-    (otherwise "")))
-
-(defmacro tmux (command &rest args)
-  `(tmux--handle-output (process-exit-code-and-output "tmux" ,@(cons `(symbol-name ',command) args))))
-
-(defun tmux--handle-output (value)
-  (destructuring-bind (code output) value
-    (or (and (zerop code)
-             (with-temp-buffer
-               (insert output)
-               (buffer-substring (point-min) (1- (point-max)))))
-        (error "tmux error: %s" output))))
-
 (defun toggle-80-editting-columns ()
   "Set the right window margin so the edittable space is only 80 columns."
   (interactive)
@@ -323,7 +238,6 @@ Use `winstack-push' and
              (left (/ change 2))
              (right (- change left)))
         (set-window-margins nil left right)))))
-
 
 (defun guess-all-hooks ()
   "Return a list of all variables that are probably hook lists."
