@@ -151,7 +151,8 @@
                        key-chord-one-key-delay .020)))
 
 (use-package ample-theme
-  :idle (progn (load-theme 'ample-flat t) (enable-theme 'ample-flat))
+  :idle (load-theme 'ample-flat t)
+  :defer t
   :ensure t)
 
 (use-package s
