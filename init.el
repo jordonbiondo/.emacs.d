@@ -145,7 +145,7 @@
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package key-chord
+(use-package jorbi-key-chord
   :config (progn (key-chord-mode t)
                  (setq key-chord-two-keys-delay .020
                        key-chord-one-key-delay .020)))
