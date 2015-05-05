@@ -736,7 +736,8 @@
   :config (progn
             (use-package elpy
               :config (elpy-enable)
-              :ensure t)))
+              :ensure t))
+  :defer t)
 
 (use-package savehist
   :idle (savehist-mode t))
@@ -746,11 +747,15 @@
 ;;                  (setq desktop-path '("~/.emacs.d/"))))
 
 (use-package hideshow
-  :bind ("C-c h" . hs-toggle-hiding))
+  :bind ("C-c h" . hs-toggle-hiding)
+  :commands hs-toggle-hiding
+  :defer t)
+
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
-         ("C-c s b" . ispell-buffer)))
+         ("C-c s b" . ispell-buffer))
+  :defer t)
 
 (use-package eldoc
   :commands eldoc-mode)
@@ -815,7 +820,6 @@
 
 (use-package hl-line
   :config (global-hl-line-mode t))
-
 
 (use-package ruby-mode
   :defer t
