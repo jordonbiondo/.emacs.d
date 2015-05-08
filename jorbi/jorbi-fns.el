@@ -271,7 +271,7 @@ functions it contains."
        (let ((inhibit-read-only t))
          (delete-region (point-min) (point-max))
          (insert (face-it "Hook: " 'font-lock-constant-face) "\n\n")
-         (insert (face-it hook 'font-lock-variable-name-face))
+         (insert (face-it (concat "`" hook "'") 'font-lock-variable-name-face))
          (replace-string "\n" "\n\t" nil
                          (point)
                          (save-excursion
@@ -280,7 +280,7 @@ functions it contains."
          (goto-char (point-max))
          (insert (face-it "Hook Functions: " 'font-lock-constant-face) "\n\n")
          (dolist (hd hook-docs)
-           (insert (face-it (symbol-name (car hd))
+           (insert (face-it (concat "`" (symbol-name (car hd)) "'")
                             'font-lock-function-name-face)
                    ": \n\t")
            (replace-string "\n" "\n\t" nil
@@ -289,6 +289,8 @@ functions it contains."
                              (insert (or (cdr hd) "No Documentation") "\n\n")
                              (1- (point))))
            (goto-char (point-max))))
+       (help-mode)
+       (help-make-xrefs)
        (read-only-mode t)
        (setq truncate-lines nil)
        (current-buffer)))))
