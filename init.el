@@ -112,6 +112,7 @@
   (ignore-errors
     (set-default-font "Envy Code R")
     (set-face-attribute 'default nil :height 125))
+  (global-unset-key (kbd "s-t"))
   (setq user-mail-address "jordon.biondo@parelio.com")
   (setq-default scroll-margin 5)
   (setq-default scroll-step 1)
@@ -565,13 +566,11 @@
           slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
   :ensure t)
 
-(when (OSX)
-
-  (global-unset-key (kbd "s-t"))
-
-  (use-package exec-path-from-shell
-    :idle (exec-path-from-shell-initialize)
-    :ensure t))
+(use-package exec-path-from-shell
+  :defer t
+  :if (OSX)
+  :idle (exec-path-from-shell-initialize)
+  :ensure t)
 
 (use-package dired-subtree
   :commands dired
