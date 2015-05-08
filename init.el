@@ -529,18 +529,6 @@
 
 (use-package d-mode
   :defer t
-  ;; :if (executable-find "dmd")
-  ;; old windows config
-  ;; (use-package d-mode
-  ;;   :init (progn (add-to-list 'exec-path "C:/D/dmd2/windows/bin")
-  ;;                (add-to-list 'exec-path "C:/Users/jordon.biondo/src/DCD"))
-  ;;   :config (progn (require 'ac-dcd)
-  ;;                  (add-to-list 'ac-modes 'd-mode)
-  ;;                  (defun ac-d-mode-setup ()
-  ;;                    (setq ac-sources (append '(ac-source-dcd) ac-sources))
-  ;;                    (global-auto-complete-mode t))
-  ;;                  (add-hook 'd-mode-hook 'ac-d-mode-setup))
-  ;;   :ensure t)
   :ensure t)
 
 (use-package js2-mode
