@@ -527,10 +527,6 @@
               (add-hook 'haml-mode-hook 'moz-minor-mode)))
   :ensure t)
 
-(use-package rsense
-  :defer t
-  :ensure t)
-
 (use-package d-mode
   :defer t
   ;; :if (executable-find "dmd")
