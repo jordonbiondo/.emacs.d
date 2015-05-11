@@ -32,9 +32,9 @@
         haml-electric-backspace
         ibuffer-mark-for-delete
         indent-for-tab-command
-        jorbi/indent-repeat
-        jorbi/toggle-comment
-        jorbi/toggle-comment-line
+        jordon/indent-repeat
+        jordon/toggle-comment
+        jordon/toggle-comment-line
         kill-region
         kill-visual-line
         nxml-electric-slash
@@ -80,21 +80,21 @@
         handle-switch-frame
         ibuffer-do-kill-on-deletion-marks
         ignore
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
-        jorbi/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
+        jordon/mc/mark-until-line-change
         kmacro-end-and-call-macro
         kmacro-end-macro
         kmacro-start-macro

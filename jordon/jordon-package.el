@@ -1,6 +1,6 @@
-;;; jorbi-package.el ---
+;;; jordon-package.el ---
 ;;
-;; Filename: jorbi-package.el
+;; Filename: jordon-package.el
 ;; Description:
 ;; Author: Jordon Biondo
 ;; Maintainer:
@@ -63,8 +63,8 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
-(require 'jorbi-use-package)
-(use-package jorbi-use-package
+(require 'jordon-use-package)
+(use-package jordon-use-package
   :config (setq use-package-idle-interval 0))
 
 (defmacro lambda-once (args &rest body)
@@ -94,7 +94,7 @@ HOOK is run if either `major-mode' equals MODE-SYMBOL or MODE-SYMBOL is bound an
                 (buffer-list)))
         hook-modes))
 
-(defun jorbi-package/sanitize-package-name (name)
+(defun jordon-package/sanitize-package-name (name)
   ":keyword => 'keyword, ensure normal things are passed to `eval-after-load'."
   (cond
    ((keywordp name) (list 'quote (intern (substring (symbol-name name) 1))))
@@ -124,16 +124,16 @@ of the LIBS."
   (let ((form (cons 'progn body)))
     (mapc (lambda-once (lib)
             (setq form 
-                  `(eval-after-load ,(jorbi-package/sanitize-package-name lib)
+                  `(eval-after-load ,(jordon-package/sanitize-package-name lib)
                      (lambda-once () ,form))))
           libs)
     form))
 
-(defconst jorbi-package-font-lock-keywords
+(defconst jordon-package-font-lock-keywords
   '(("\\((\\)\\(after\\) "
      (2 font-lock-keyword-face))))
-(font-lock-add-keywords 'emacs-lisp-mode jorbi-package-font-lock-keywords)
+(font-lock-add-keywords 'emacs-lisp-mode jordon-package-font-lock-keywords)
 
-(provide 'jorbi-package)
+(provide 'jordon-package)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; jorbi-package.el ends here
+;;; jordon-package.el ends here

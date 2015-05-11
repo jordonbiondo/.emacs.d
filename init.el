@@ -57,53 +57,53 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (mapc (apply-partially 'add-to-list 'load-path)
-      '("~/.emacs.d/jorbi/"
-        "~/.emacs.d/jorbi/use-package/"))
+      '("~/.emacs.d/jordon/"
+        "~/.emacs.d/jordon/use-package/"))
 
-(require 'jorbi-package)
+(require 'jordon-package)
 (use-package cl-lib)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; jorbi/ configuration
+;; jordon configuration
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package jorbi-fns
+(use-package jordon-fns
   :chords ((" =" . winstack-push)
            (" -" . winstack-pop)
-           ("nv" . jorbi/find-init-file)
-           (" \\". jorbi/toggle-comment))
-  :bind (("C-\\" . jorbi/toggle-comment)
-         ("C-<tab>" . jorbi/indent-repeat)
-         ("C-M-k" . jorbi/c-doc-comment)
+           ("nv" . jordon/find-init-file)
+           (" \\". jordon/toggle-comment))
+  :bind (("C-\\" . jordon/toggle-comment)
+         ("C-<tab>" . jordon/indent-repeat)
+         ("C-M-k" . jordon/c-doc-comment)
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
   :config (when (OSX) (push "/usr/local/bin/" exec-path))
   :demand t)
 
-(use-package jorbi-jabber
+(use-package jordon-jabber
   :init (after (:jabber)
-          (require 'jorbi-jabber))
+          (require 'jordon-jabber))
   :config  (progn
              (setq jabber-chat-header-line-format
-                   jorbi-jabber/chat-header-line-format)
+                   jordon-jabber/chat-header-line-format)
              (cond
               ((OSX)
                (add-hook 'jabber-alert-message-hooks
-                         'jorbi-jabber/terminal-notification))
+                         'jordon-jabber/terminal-notification))
               ((Windows)
                (add-hook 'jabber-alert-message-hooks
-                         'jorbi-jabber/toast-notification)
+                         'jordon-jabber/toast-notification)
                (add-hook 'jabber-alert-message-hooks
-                         'jorbi-jabber/send-mail-notification))))
+                         'jordon-jabber/send-mail-notification))))
   :defer t)
 
-(use-package jorbi-mode-line
-  :config (setq-default mode-line-format jorbi/mode-line-format))
+(use-package jordon-mode-line
+  :config (setq-default mode-line-format jordon/mode-line-format))
 
-(use-package jorbi-magit
-  :commands 'jorbi-magit/cleanup-this-hunk
+(use-package jordon-magit
+  :commands 'jordon-magit/cleanup-this-hunk
   :init (after (:magit)
-          (bind-key "C-c s d" 'jorbi-magit/cleanup-this-hunk
+          (bind-key "C-c s d" 'jordon-magit/cleanup-this-hunk
                     magit-status-mode-map))
   :defer t)
 
@@ -122,11 +122,11 @@
       :config
       (progn
         (after (:projectile)
-          (defun jorbi/redspot-activate-rvm-once ()
+          (defun jordon/redspot-activate-rvm-once ()
             (when (equal (projectile-project-name) "redspot")
               (rvm-activate-corresponding-ruby)
-              (remove-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once)))
-          (add-hook 'ruby-mode-hook 'jorbi/redspot-activate-rvm-once))
+              (remove-hook 'ruby-mode-hook 'jordon/redspot-activate-rvm-once)))
+          (add-hook 'ruby-mode-hook 'jordon/redspot-activate-rvm-once))
         (after (:js2-mode)
           (bind-keys
             :map js2-mode-map
@@ -144,7 +144,7 @@
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package jorbi-key-chord
+(use-package jordon-key-chord
   :config (progn (key-chord-mode t)
                  (setq key-chord-two-keys-delay .020
                        key-chord-one-key-delay .020)))
@@ -188,7 +188,7 @@
   :ensure t)
 
 (use-package multiple-cursors
-  :config (progn (defun jorbi/mc/mark-until-line-change (&optional up)
+  :config (progn (defun jordon/mc/mark-until-line-change (&optional up)
                    (interactive "P")
                    (unless (save-excursion
                              (let ((col (current-column)))
@@ -197,11 +197,11 @@
                              (looking-at "\\( +\\| *$\\)"))
                      (when up (next-line -1))
                      (mc/mark-next-lines 1)
-                     (jorbi/mc/mark-until-line-change up)))
-                 (push 'jorbi/mc/mark-until-line-change mc/cmds-to-run-once)
+                     (jordon/mc/mark-until-line-change up)))
+                 (push 'jordon/mc/mark-until-line-change mc/cmds-to-run-once)
                  (bind-key "C-c n" 'mc/insert-numbers mc/keymap))
   :bind (("C-c m" . mc/mark-next-like-this)
-         ("C-c C-m" . jorbi/mc/mark-until-line-change))
+         ("C-c C-m" . jordon/mc/mark-until-line-change))
   :ensure t)
 
 (use-package expand-region
@@ -274,14 +274,14 @@
   :chords ("io" . imenu-anywhere)
   :config (progn
             (use-package cl)
-            (defun jorbi/imenu-show-used-packages ()
+            (defun jordon/imenu-show-used-packages ()
               (add-to-list 'imenu-generic-expression
                            '("Used Packages"
                              "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
             (add-late-hook '((lisp-mode lisp-mode-hook)
                              (emacs-lisp-mode emacs-lisp-mode-hook)
                              (lisp-interaction-mode lisp-interaction-mode-hook))
-                           'jorbi/imenu-show-used-packages)
+                           'jordon/imenu-show-used-packages)
             (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
               (pulse-momentary-highlight-one-line (point))))
   :ensure t)
@@ -361,7 +361,7 @@
 (use-package php-mode
   :mode ("\\.php$" . php-mode)
   :config (add-hook 'php-mode-hook
-                    (defun jorbi/php-mode-setup ()
+                    (defun jordon/php-mode-setup ()
                       (setq-local c-basic-offset 4)
                       (setq-local indent-tabs-mode nil)
                       (setq-local tab-width 4)))
@@ -390,11 +390,11 @@
   :mode ("\\.cs$" . csharp-mode)
   :config (progn
             (add-hook 'csharp-mode-hook
-                      (defun jorbi/csharp-setup-function ()
+                      (defun jordon/csharp-setup-function ()
                         (setq c-basic-offset 4
                               indent-tabs-mode nil)
                         (hs-minor-mode t)
-                        (jorbi/dont-truncate-lines)))
+                        (jordon/dont-truncate-lines)))
             (font-lock-add-keywords
              'csharp-mode
              '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
@@ -405,13 +405,13 @@
   :ensure t)
 
 (use-package omnisharp
-  :bind (("M-i" . jorbi/omnisharp-go-to-definition-smart)
+  :bind (("M-i" . jordon/omnisharp-go-to-definition-smart)
          ("M-m" . omnisharp-find-usages))
   :config (progn
             (setq omnisharp-eldoc-support t)
             (add-hook 'csharp-mode-hook 'eldoc-mode)
 
-            (defun jorbi/omnisharp-go-to-definition-smart (&optional force-ow)
+            (defun jordon/omnisharp-go-to-definition-smart (&optional force-ow)
               "Goto definition at point, choose window intelligently."
               (interactive "P")
               (let* ((json-result (omnisharp-post-message-curl-as-json
@@ -427,7 +427,7 @@
                                             (buffer-file-name)))))
                   (pulse-momentary-highlight-one-line (point)))))
 
-            (defun jorbi/reload-csharp-buffers ()
+            (defun jordon/reload-csharp-buffers ()
               "Restart `csharp-mode' on all `csharp-mode' buffers."
               (interactive)
               (dolist (b (buffer-list))
@@ -486,13 +486,13 @@
   :defer t
   :config
   (progn
-    (defun jorbi-haml/setup-hook ()
+    (defun jordon-haml/setup-hook ()
       (flycheck-mode t)
       (setq truncate-lines nil)
       (visual-line-mode t)
       (adaptive-wrap-prefix-mode t)
       (electric-indent-mode -1))
-    (add-hook 'haml-mode-hook 'jorbi-haml/setup-hook))
+    (add-hook 'haml-mode-hook 'jordon-haml/setup-hook))
   :ensure t)
 
 (use-package robe
@@ -501,7 +501,7 @@
             (after (:ruby-mode)
               (add-hook 'ruby-mode-hook 'robe-mode))
             (add-hook 'robe-mode-hook
-                      (defun jorbi-robe/setup-completeion()
+                      (defun jordon-robe/setup-completeion()
                         (company-mode t)))
             (after (:company)
               (lambda () (progn (push 'company-robe company-backends)))))
@@ -511,7 +511,7 @@
   :defer t
   :commands js2-mode
   :config (progn
-            (defun jorbi-moz/refresh ()
+            (defun jordon-moz/refresh ()
               (interactive)
               (if (ignore-errors
                     (comint-send-string
@@ -519,7 +519,7 @@
                      "setTimeout(BrowserReload(), \"1000\");") t)
                   (message "Moz Refreshing...")))
 
-            (define-key moz-minor-mode-map (kbd "C-M-o") 'jorbi-moz/refresh)
+            (define-key moz-minor-mode-map (kbd "C-M-o") 'jordon-moz/refresh)
             (after (:js2-mode)
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
             (after (:ruby-mode)
@@ -654,7 +654,7 @@
 
 (use-package grep
   :defer t
-  :config (add-hook 'grep-mode-hook 'jorbi/truncate-lines))
+  :config (add-hook 'grep-mode-hook 'jordon/truncate-lines))
 
 (use-package window
   :defer t
@@ -693,7 +693,7 @@
 
 (use-package eww
   :defer t
-  :config (add-hook 'eww-mode-hook 'jorbi/dont-truncate-lines))
+  :config (add-hook 'eww-mode-hook 'jordon/dont-truncate-lines))
 
 (use-package electric
   :config (progn))
@@ -710,7 +710,7 @@
 (use-package make-mode
   :init (add-hook
          'makefile-mode-hook
-         (defun jorbi/makefile-mode-setup ()
+         (defun jordon/makefile-mode-setup ()
            (setq-local indent-tabs-mode t)))
   :defer t)
 
@@ -807,7 +807,7 @@
 (use-package ruby-mode
   :defer t
   :config (progn
-            (add-hook 'ruby-mode-hook 'jorbi/truncate-lines)
+            (add-hook 'ruby-mode-hook 'jordon/truncate-lines)
             (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
             (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 

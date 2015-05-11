@@ -1,4 +1,4 @@
-;;; bind-key.el --- A simple way to manage personal keybindings
+;;; jordon-bind-key.el --- A simple way to manage personal keybindings
 
 ;; Copyright (C) 2012 John Wiegley
 
@@ -84,7 +84,7 @@
 ;; your binding it with `bind-key', and what it was rebound it to.
 
 (require 'easy-mmode)
-(require 'jorbi-key-chord)
+(require 'jordon-key-chord)
 
 (defgroup bind-key nil
   "A simple way to manage personal keybindings"
@@ -327,8 +327,8 @@ function symbol (unquoted)."
 
         (setq last-binding binding)))))
 
-(provide 'jorbi-bind-key)
+(provide 'jordon-bind-key)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
-;;; bind-key.el ends here
+;;; jordon-bind-key.el ends here

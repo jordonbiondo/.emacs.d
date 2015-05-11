@@ -1,11 +1,11 @@
-;;; jorbi-use-package.el --- A use-package declaration for simplifying your .emacs
+;;; jordon-use-package.el --- A use-package declaration for simplifying your .emacs
 
 ;; Copyright (C) 2012 John Wiegley
 
 ;; Author: John Wiegley <jwiegley@gmail.com>
 ;; Created: 17 Jun 2012
 ;; Version: 1.0
-;; Package-Requires: ((jorbi-bind-key "1.0") (diminish "0.44"))
+;; Package-Requires: ((jordon-bind-key "1.0") (diminish "0.44"))
 ;; Keywords: dotemacs startup speed config package
 ;; X-URL: https://github.com/jwiegley/use-package
 
@@ -37,7 +37,7 @@
 
 ;;; Code:
 
-(require 'jorbi-bind-key)
+(require 'jordon-bind-key)
 (require 'bytecomp)
 (require 'diminish nil t)
 
@@ -345,7 +345,7 @@ For full documentation. please see commentary.
           (setq idle-priority 5))
         (setq init-body
               `(progn
-                 (require 'jorbi-use-package)
+                 (require 'jordon-use-package)
                  (use-package-init-on-idle (lambda () ,idle-body) ,idle-priority)
                  ,init-body)))
 
@@ -453,8 +453,8 @@ For full documentation. please see commentary.
 
 (font-lock-add-keywords 'emacs-lisp-mode use-package-font-lock-keywords)
 
-(provide 'jorbi-use-package)
+(provide 'jordon-use-package)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
-;;; jorbi-use-package.el ends here
+;;; jordon-use-package.el ends here

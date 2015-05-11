@@ -1,4 +1,4 @@
-;;; jorbi-key-chord.el --- map pairs of simultaneously pressed keys to commands
+;;; jordon-key-chord.el --- map pairs of simultaneously pressed keys to commands
 ;;-------------------------------------------------------------------
 ;;
 ;; Copyright (C) 2003,2005,2008,2012 David Andersson
@@ -40,7 +40,7 @@
 ;;
 ;; Add to your ~/.emacs
 ;;
-;;      (require 'jorbi-key-chord)
+;;      (require 'jordon-key-chord)
 ;;      (key-chord-mode 1)
 ;;
 ;; and some chords, for example
@@ -360,6 +360,6 @@ Please ignore that."
 (defadvice end-kbd-macro (after key-chord activate)
   (setq key-chord-in-last-kbd-macro key-chord-defining-kbd-macro))
 
-(provide 'jorbi-key-chord)
+(provide 'jordon-key-chord)
 
-;;; jorbi-key-chord.el ends here
+;;; jordon-key-chord.el ends here

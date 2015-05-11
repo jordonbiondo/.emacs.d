@@ -1,6 +1,6 @@
-;;; jorbi-mode-line.el --- Personal mode-line format
+;;; jordon-mode-line.el --- Personal mode-line format
 ;;
-;; Filename: jorbi-mode-line.el
+;; Filename: jordon-mode-line.el
 ;; Description: Personal mode-line format
 ;; Author: Jordon Biondo <jordonbiondo@gmail.com>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -25,7 +25,7 @@
 ;;; Code:
 
 
-(defun jorbi/fancy-mode-line-render (left center right &optional lpad rpad)
+(defun jordon/fancy-mode-line-render (left center right &optional lpad rpad)
   "Return a string the width of the current window with 
 LEFT, CENTER, and RIGHT spaced out accordingly, LPAD and RPAD,
 can be used to add a number of spaces to the front and back of the string."
@@ -45,8 +45,8 @@ can be used to add a number of spaces to the front and back of the string."
                   right)))
     (error (format "[%s]: (%s) (%s) (%s)" err left center right))))
 
-(defvar jorbi/mode-line-format
-  '((:eval (jorbi/fancy-mode-line-render
+(defvar jordon/mode-line-format
+  '((:eval (jordon/fancy-mode-line-render
             (format-mode-line (format " %s (%%l/%d) %%c "
                                       (downcase mode-name)
                                       (line-number-at-pos (point-max))))
@@ -57,6 +57,6 @@ can be used to add a number of spaces to the front and back of the string."
                      (t " ")))
             " " 1 3))))
 
-(provide 'jorbi-mode-line)
+(provide 'jordon-mode-line)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; jorbi-mode-line.el ends here
+;;; jordon-mode-line.el ends here
