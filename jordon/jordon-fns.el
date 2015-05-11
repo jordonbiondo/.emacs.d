@@ -1,7 +1,7 @@
-(defun jordon/truncate-lines ()
+(defun jordon-truncate-lines ()
   (setq truncate-lines t))
 
-(defun jordon/dont-truncate-lines ()
+(defun jordon-dont-truncate-lines ()
   (setq truncate-lines nil))
 
 (defmacro Windows ()
@@ -26,14 +26,14 @@
   (declare (indent defun))
   `(font-lock-add-keywords ',mode ',keywords))
 
-(defun jordon/indent-repeat()
+(defun jordon-indent-repeat()
   "Indent the current line and move to the next."
   (interactive)
   ;;(call-interactively 'indent-for-tab-command)
   (indent-according-to-mode)
   (forward-line 1))
 
-(defun jordon/toggle-comment(&optional duplicate)
+(defun jordon-toggle-comment(&optional duplicate)
   (interactive "P")
   (if (region-active-p)
       (call-interactively 'comment-or-uncomment-region)
@@ -47,7 +47,7 @@
           (move-to-column col))
       (comment-or-uncomment-region (point-at-bol) (point-at-eol)))))
 
-(defun jordon/c-doc-comment()
+(defun jordon-c-doc-comment()
   "Insert a c style doc comment on the current line."
   (interactive)
   (goto-char (point-at-bol))
@@ -55,7 +55,7 @@
   (forward-line -2)
   (goto-char (point-at-eol)))
 
-(defun jordon/date()
+(defun jordon-date()
   "Insert the date at point."
   (interactive)
   (insert (format-time-string "%h %d %Y, %I:%M %p")))
@@ -85,11 +85,11 @@
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(defun jordon/find-init-file ()
+(defun jordon-find-init-file ()
   (interactive)
   (find-file user-init-file))
 
-(defun jordon/holy-buffer-cleanse (&optional allow-tabs)
+(defun jordon-holy-buffer-cleanse (&optional allow-tabs)
   (interactive "*P")
   (save-excursion
     (replace-string "\t" " " nil (point-min) (point-max))
@@ -293,7 +293,7 @@ functions it contains."
        (setq truncate-lines nil)
        (current-buffer)))))
 
-(defun jordon/init.el-jump (&optional package)
+(defun jordon-init.el-jump (&optional package)
   "Jump to the top level use-package definition in the init file."
   (interactive)
   (unless package

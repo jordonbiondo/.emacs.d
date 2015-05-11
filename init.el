@@ -70,11 +70,11 @@
 (use-package jordon-fns
   :chords ((" =" . winstack-push)
            (" -" . winstack-pop)
-           ("nv" . jordon/find-init-file)
-           (" \\". jordon/toggle-comment))
-  :bind (("C-\\" . jordon/toggle-comment)
-         ("C-<tab>" . jordon/indent-repeat)
-         ("C-M-k" . jordon/c-doc-comment)
+           ("nv" . jordon-find-init-file)
+           (" \\". jordon-toggle-comment))
+  :bind (("C-\\" . jordon-toggle-comment)
+         ("C-<tab>" . jordon-indent-repeat)
+         ("C-M-k" . jordon-c-doc-comment)
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
   :config (when (OSX) (push "/usr/local/bin/" exec-path))
@@ -98,7 +98,7 @@
   :defer t)
 
 (use-package jordon-mode-line
-  :config (setq-default mode-line-format jordon/mode-line-format))
+  :config (setq-default mode-line-format jordon-mode-line-format))
 
 (use-package jordon-magit
   :commands 'jordon-magit/cleanup-this-hunk
@@ -122,11 +122,11 @@
       :config
       (progn
         (after (:projectile)
-          (defun jordon/redspot-activate-rvm-once ()
+          (defun jordon-redspot-activate-rvm-once ()
             (when (equal (projectile-project-name) "redspot")
               (rvm-activate-corresponding-ruby)
-              (remove-hook 'ruby-mode-hook 'jordon/redspot-activate-rvm-once)))
-          (add-hook 'ruby-mode-hook 'jordon/redspot-activate-rvm-once))
+              (remove-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once)))
+          (add-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once))
         (after (:js2-mode)
           (bind-keys
             :map js2-mode-map
@@ -188,7 +188,7 @@
   :ensure t)
 
 (use-package multiple-cursors
-  :config (progn (defun jordon/mc/mark-until-line-change (&optional up)
+  :config (progn (defun jordon-mc-mark-until-line-change (&optional up)
                    (interactive "P")
                    (unless (save-excursion
                              (let ((col (current-column)))
@@ -197,11 +197,11 @@
                              (looking-at "\\( +\\| *$\\)"))
                      (when up (next-line -1))
                      (mc/mark-next-lines 1)
-                     (jordon/mc/mark-until-line-change up)))
-                 (push 'jordon/mc/mark-until-line-change mc/cmds-to-run-once)
+                     (jordon-mc-mark-until-line-change up)))
+                 (push 'jordon-mc-mark-until-line-change mc/cmds-to-run-once)
                  (bind-key "C-c n" 'mc/insert-numbers mc/keymap))
   :bind (("C-c m" . mc/mark-next-like-this)
-         ("C-c C-m" . jordon/mc/mark-until-line-change))
+         ("C-c C-m" . jordon-mc-mark-until-line-change))
   :ensure t)
 
 (use-package expand-region
@@ -274,14 +274,14 @@
   :chords ("io" . imenu-anywhere)
   :config (progn
             (use-package cl)
-            (defun jordon/imenu-show-used-packages ()
+            (defun jordon-imenu-show-used-packages ()
               (add-to-list 'imenu-generic-expression
                            '("Used Packages"
                              "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
             (add-late-hook '((lisp-mode lisp-mode-hook)
                              (emacs-lisp-mode emacs-lisp-mode-hook)
                              (lisp-interaction-mode lisp-interaction-mode-hook))
-                           'jordon/imenu-show-used-packages)
+                           'jordon-imenu-show-used-packages)
             (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
               (pulse-momentary-highlight-one-line (point))))
   :ensure t)
@@ -361,7 +361,7 @@
 (use-package php-mode
   :mode ("\\.php$" . php-mode)
   :config (add-hook 'php-mode-hook
-                    (defun jordon/php-mode-setup ()
+                    (defun jordon-php-mode-setup ()
                       (setq-local c-basic-offset 4)
                       (setq-local indent-tabs-mode nil)
                       (setq-local tab-width 4)))
@@ -390,11 +390,11 @@
   :mode ("\\.cs$" . csharp-mode)
   :config (progn
             (add-hook 'csharp-mode-hook
-                      (defun jordon/csharp-setup-function ()
+                      (defun jordon-csharp-setup-function ()
                         (setq c-basic-offset 4
                               indent-tabs-mode nil)
                         (hs-minor-mode t)
-                        (jordon/dont-truncate-lines)))
+                        (jordon-dont-truncate-lines)))
             (font-lock-add-keywords
              'csharp-mode
              '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
@@ -405,13 +405,13 @@
   :ensure t)
 
 (use-package omnisharp
-  :bind (("M-i" . jordon/omnisharp-go-to-definition-smart)
+  :bind (("M-i" . jordon-omnisharp-go-to-definition-smart)
          ("M-m" . omnisharp-find-usages))
   :config (progn
             (setq omnisharp-eldoc-support t)
             (add-hook 'csharp-mode-hook 'eldoc-mode)
 
-            (defun jordon/omnisharp-go-to-definition-smart (&optional force-ow)
+            (defun jordon-omnisharp-go-to-definition-smart (&optional force-ow)
               "Goto definition at point, choose window intelligently."
               (interactive "P")
               (let* ((json-result (omnisharp-post-message-curl-as-json
@@ -427,7 +427,7 @@
                                             (buffer-file-name)))))
                   (pulse-momentary-highlight-one-line (point)))))
 
-            (defun jordon/reload-csharp-buffers ()
+            (defun jordon-reload-csharp-buffers ()
               "Restart `csharp-mode' on all `csharp-mode' buffers."
               (interactive)
               (dolist (b (buffer-list))
@@ -555,7 +555,6 @@
   :config
   (progn
     (use-package ac-slime :ensure t)
-
     (setq inferior-lisp-program "sbcl")
     (slime-setup)
     (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -654,7 +653,7 @@
 
 (use-package grep
   :defer t
-  :config (add-hook 'grep-mode-hook 'jordon/truncate-lines))
+  :config (add-hook 'grep-mode-hook 'jordon-truncate-lines))
 
 (use-package window
   :defer t
@@ -693,7 +692,7 @@
 
 (use-package eww
   :defer t
-  :config (add-hook 'eww-mode-hook 'jordon/dont-truncate-lines))
+  :config (add-hook 'eww-mode-hook 'jordon-dont-truncate-lines))
 
 (use-package electric
   :config (progn))
@@ -710,7 +709,7 @@
 (use-package make-mode
   :init (add-hook
          'makefile-mode-hook
-         (defun jordon/makefile-mode-setup ()
+         (defun jordon-makefile-mode-setup ()
            (setq-local indent-tabs-mode t)))
   :defer t)
 
@@ -807,7 +806,7 @@
 (use-package ruby-mode
   :defer t
   :config (progn
-            (add-hook 'ruby-mode-hook 'jordon/truncate-lines)
+            (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
             (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
             (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 

@@ -25,7 +25,7 @@
 ;;; Code:
 
 
-(defun jordon/fancy-mode-line-render (left center right &optional lpad rpad)
+(defun jordon-fancy-mode-line-render (left center right &optional lpad rpad)
   "Return a string the width of the current window with 
 LEFT, CENTER, and RIGHT spaced out accordingly, LPAD and RPAD,
 can be used to add a number of spaces to the front and back of the string."
@@ -45,8 +45,8 @@ can be used to add a number of spaces to the front and back of the string."
                   right)))
     (error (format "[%s]: (%s) (%s) (%s)" err left center right))))
 
-(defvar jordon/mode-line-format
-  '((:eval (jordon/fancy-mode-line-render
+(defvar jordon-mode-line-format
+  '((:eval (jordon-fancy-mode-line-render
             (format-mode-line (format " %s (%%l/%d) %%c "
                                       (downcase mode-name)
                                       (line-number-at-pos (point-max))))
