@@ -771,11 +771,10 @@
 (use-package dired-subtree
   :commands dired
   :config (after (:dired)
-            (bind-keys
-             :map dired-mode-map
-             ("C-c C-i" . dired-subtree-insert)
-             ("C-c C-r" . dired-subtree-remove)
-             ("C-c C-g" . dired-subtree-revert)))
+            (bind-keys :map dired-mode-map
+              ("C-c C-i" . dired-subtree-insert)
+              ("C-c C-r" . dired-subtree-remove)
+              ("C-c C-g" . dired-subtree-revert)))
   :ensure t)
 
 (use-package rust-mode
