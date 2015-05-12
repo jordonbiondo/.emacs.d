@@ -141,6 +141,198 @@
             (kbd "C-c n p") 'redspot:haml-find-partial-at-point))))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; built-ins
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package simple
+  :chords (" g" . goto-line))
+
+(use-package flymake
+  :commands flymake-mode)
+
+(use-package custom
+  :init (setq custom-file "~/.emacs.d/custom.el"))
+
+(use-package shell
+  :defer t
+  :chords (" x" . shell))
+
+(use-package files
+  :chords (" s" . save-buffer)
+  :config (setq backup-directory-alist `(("." . "~/.saves"))
+                version-control t
+                kept-new-versions 10
+                kept-old-versions 0
+                delete-old-versions t
+                backup-by-copying t))
+
+(use-package grep
+  :defer t
+  :config (add-hook 'grep-mode-hook 'jordon-truncate-lines))
+
+(use-package window
+  :defer t
+  :chords ((" 0" . delete-window)
+           (" 1" . delete-other-windows)
+           (" 2" . split-window-below)
+           (" 3" . split-window-right)))
+
+(use-package whitespace
+  :defer t
+  :chords (" w" . whitespace-mode))
+
+(use-package frame
+  :defer t
+  :chords ((" i" . previous-multiframe-window)
+           (" o" . next-multiframe-window))
+  :bind (("C-c i" . previous-multiframe-window)
+         ("C-c o" . next-multiframe-window)))
+
+(use-package ibuffer
+  :defer t
+  :chords ((" l" . ibuffer))
+  :bind (("C-x l" . ibuffer)))
+
+(use-package dired
+  :defer t
+  :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+
+(use-package pulse
+  :commands pulse-momentary-highlight-one-line
+  :config (progn
+            (setq pulse-iterations 7
+                  pulse-delay .01)
+            (set-face-background 'pulse-highlight-start-face
+                                 (face-foreground 'font-lock-keyword-face))))
+
+(use-package eww
+  :defer t
+  :config (add-hook 'eww-mode-hook 'jordon-dont-truncate-lines))
+
+(use-package electric
+  :config (progn))
+
+(use-package prog-mode
+  :init (progn
+          (after (:electric)
+            (add-hook 'prog-mode-hook 'electric-indent-mode))
+          (add-hook 'prog-mode-hook
+                    (defun indent-tabs-mode-off ()
+                      (interactive)
+                      (setq indent-tabs-mode nil)))))
+
+(use-package make-mode
+  :init (add-hook
+         'makefile-mode-hook
+         (defun jordon-makefile-mode-setup ()
+           (setq-local indent-tabs-mode t)))
+  :defer t)
+
+(use-package python
+  :mode ("\\<SConstruct\\>$" . python-mode)
+  :config (progn
+            (use-package elpy
+              :config (elpy-enable)
+              :ensure t))
+  :defer t)
+
+(use-package savehist
+  :idle (savehist-mode t))
+
+;; (use-package desktop
+;;   :config (progn (desktop-save-mode t)
+;;                  (setq desktop-path '("~/.emacs.d/"))))
+
+(use-package hideshow
+  :bind ("C-c h" . hs-toggle-hiding)
+  :commands hs-toggle-hiding
+  :defer t)
+
+
+(use-package ispell
+  :bind (("C-c s w" . ispell-word)
+         ("C-c s b" . ispell-buffer))
+  :defer t)
+
+(use-package eldoc
+  :commands eldoc-mode)
+
+(use-package lisp-mode
+  :config (progn
+            (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+            (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
+
+(use-package cc-mode
+  :defer t
+  :config (progn
+            (font-lock-add-keywords
+             'c-mode
+             '(("\\<\\([A-Z_]\\([A-Z_0-9]\\)*\\)\\>"
+                . font-lock-constant-face)
+               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>"
+                . font-lock-preprocessor-face)))
+
+            (defun c-maybe-insert-semicolon()
+              "Insert a semicolon a the end of a line only if there isn't one."
+              (interactive)
+              (if (looking-at " *; *$")
+                  (progn (delete-region (point) (point-at-eol))
+                         (call-interactively 'self-insert-command))
+                (call-interactively 'self-insert-command)))
+
+            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
+
+(use-package autoinsert
+  :init (progn (auto-insert-mode t)
+               (setq auto-insert-prompt "insert %s? ")))
+
+(use-package ido
+  :idle (require 'ido)
+  :chords ((" b" . ido-switch-buffer)
+           (" f" . ido-find-file))
+  :config (progn
+            (ido-everywhere t)
+            (ido-mode t))
+  :defer t)
+
+(use-package erc
+  :defer t
+  :config (progn (setq erc-hide-list '("JOIN" "PART" "QUIT")
+                       erc-nick "jordonbiondo"
+                       erc-port 6665
+                       erc-server "irc.freenode.net")))
+
+(use-package ediff
+  :defer t
+  :config (progn
+            (add-hook 'ediff-before-setup-windows-hook 'winstack-push)
+            (add-hook 'ediff-cleanup-hook 'winstack-pop)
+            (setq ediff-split-window-function 'split-window-horizontally)
+            (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
+
+(use-package compile
+  :defer t
+  :chords (" r" . recompile)
+  :config (progn (setq compilation-scroll-output t)))
+
+(use-package hl-line
+  :config (global-hl-line-mode t))
+
+(use-package ruby-mode
+  :defer t
+  :config (progn
+            (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
+            (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
+            (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
+
+(use-package org
+  :defer t
+  :config (setq org-confirm-elisp-link-function nil
+                org-export-html-postamble  nil
+                org-export-html-date-format-string "%d %B %Y"
+                org-export-html-preamble-format `(("en" "%a : %d"))))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -629,198 +821,6 @@
   :init (after (:ido)
           (ido-ubiquitous-mode t))
   :ensure t)
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; built-ins
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package simple
-  :chords (" g" . goto-line))
-
-(use-package flymake
-  :commands flymake-mode)
-
-(use-package custom
-  :init (setq custom-file "~/.emacs.d/custom.el"))
-
-(use-package shell
-  :defer t
-  :chords (" x" . shell))
-
-(use-package files
-  :chords (" s" . save-buffer)
-  :config (setq backup-directory-alist `(("." . "~/.saves"))
-                version-control t
-                kept-new-versions 10
-                kept-old-versions 0
-                delete-old-versions t
-                backup-by-copying t))
-
-(use-package grep
-  :defer t
-  :config (add-hook 'grep-mode-hook 'jordon-truncate-lines))
-
-(use-package window
-  :defer t
-  :chords ((" 0" . delete-window)
-           (" 1" . delete-other-windows)
-           (" 2" . split-window-below)
-           (" 3" . split-window-right)))
-
-(use-package whitespace
-  :defer t
-  :chords (" w" . whitespace-mode))
-
-(use-package frame
-  :defer t
-  :chords ((" i" . previous-multiframe-window)
-           (" o" . next-multiframe-window))
-  :bind (("C-c i" . previous-multiframe-window)
-         ("C-c o" . next-multiframe-window)))
-
-(use-package ibuffer
-  :defer t
-  :chords ((" l" . ibuffer))
-  :bind (("C-x l" . ibuffer)))
-
-(use-package dired
-  :defer t
-  :config (add-hook 'dired-mode-hook 'dired-hide-details-mode))
-
-(use-package pulse
-  :commands pulse-momentary-highlight-one-line
-  :config (progn
-            (setq pulse-iterations 7
-                  pulse-delay .01)
-            (set-face-background 'pulse-highlight-start-face
-                                 (face-foreground 'font-lock-keyword-face))))
-
-(use-package eww
-  :defer t
-  :config (add-hook 'eww-mode-hook 'jordon-dont-truncate-lines))
-
-(use-package electric
-  :config (progn))
-
-(use-package prog-mode
-  :init (progn
-          (after (:electric)
-            (add-hook 'prog-mode-hook 'electric-indent-mode))
-          (add-hook 'prog-mode-hook
-                    (defun indent-tabs-mode-off ()
-                      (interactive)
-                      (setq indent-tabs-mode nil)))))
-
-(use-package make-mode
-  :init (add-hook
-         'makefile-mode-hook
-         (defun jordon-makefile-mode-setup ()
-           (setq-local indent-tabs-mode t)))
-  :defer t)
-
-(use-package python
-  :mode ("\\<SConstruct\\>$" . python-mode)
-  :config (progn
-            (use-package elpy
-              :config (elpy-enable)
-              :ensure t))
-  :defer t)
-
-(use-package savehist
-  :idle (savehist-mode t))
-
-;; (use-package desktop
-;;   :config (progn (desktop-save-mode t)
-;;                  (setq desktop-path '("~/.emacs.d/"))))
-
-(use-package hideshow
-  :bind ("C-c h" . hs-toggle-hiding)
-  :commands hs-toggle-hiding
-  :defer t)
-
-
-(use-package ispell
-  :bind (("C-c s w" . ispell-word)
-         ("C-c s b" . ispell-buffer))
-  :defer t)
-
-(use-package eldoc
-  :commands eldoc-mode)
-
-(use-package lisp-mode
-  :config (progn
-            (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-            (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)))
-
-(use-package cc-mode
-  :defer t
-  :config (progn
-            (font-lock-add-keywords
-             'c-mode
-             '(("\\<\\([A-Z_]\\([A-Z_0-9]\\)*\\)\\>"
-                . font-lock-constant-face)
-               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>"
-                . font-lock-preprocessor-face)))
-
-            (defun c-maybe-insert-semicolon()
-              "Insert a semicolon a the end of a line only if there isn't one."
-              (interactive)
-              (if (looking-at " *; *$")
-                  (progn (delete-region (point) (point-at-eol))
-                         (call-interactively 'self-insert-command))
-                (call-interactively 'self-insert-command)))
-
-            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
-
-(use-package autoinsert
-  :init (progn (auto-insert-mode t)
-               (setq auto-insert-prompt "insert %s? ")))
-
-(use-package ido
-  :idle (require 'ido)
-  :chords ((" b" . ido-switch-buffer)
-           (" f" . ido-find-file))
-  :config (progn
-            (ido-everywhere t)
-            (ido-mode t))
-  :defer t)
-
-(use-package erc
-  :defer t
-  :config (progn (setq erc-hide-list '("JOIN" "PART" "QUIT")
-                       erc-nick "jordonbiondo"
-                       erc-port 6665
-                       erc-server "irc.freenode.net")))
-
-(use-package ediff
-  :defer t
-  :config (progn
-            (add-hook 'ediff-before-setup-windows-hook 'winstack-push)
-            (add-hook 'ediff-cleanup-hook 'winstack-pop)
-            (setq ediff-split-window-function 'split-window-horizontally)
-            (setq ediff-window-setup-function 'ediff-setup-windows-plain)))
-
-(use-package compile
-  :defer t
-  :chords (" r" . recompile)
-  :config (progn (setq compilation-scroll-output t)))
-
-(use-package hl-line
-  :config (global-hl-line-mode t))
-
-(use-package ruby-mode
-  :defer t
-  :config (progn
-            (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
-            (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
-            (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
-
-(use-package org
-  :defer t
-  :config (setq org-confirm-elisp-link-function nil
-                org-export-html-postamble  nil
-                org-export-html-date-format-string "%d %B %Y"
-                org-export-html-preamble-format `(("en" "%a : %d"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
