@@ -3,28 +3,6 @@
 ;; Filename: jordon-package.el
 ;; Description:
 ;; Author: Jordon Biondo
-;; Maintainer:
-;; Created: Thu Aug 28 09:23:05 2014 (-0400)
-;; Version:
-;; Package-Requires: ()
-;; Last-Updated: Thu Aug 28 09:24:51 2014 (-0400)
-;;           By: Jordon Biondo
-;;     Update #: 2
-;; URL:
-;; Doc URL:
-;; Keywords:
-;; Compatibility:
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Commentary:
-;;
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change Log:
-;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -43,7 +21,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;; Code:
+
 (require 'package)
 ;; make this go away
 (defalias 'package--ensure-init-file #'ignore)

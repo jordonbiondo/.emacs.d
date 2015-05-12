@@ -3,12 +3,6 @@
 ;; Filename: jordon-jabber.el
 ;; Description: Function overrides for jabber display.
 ;; Author: Jordon Biondo
-;; Created: Thu Dec 12 08:45:38 2013 (-0500)
-;; Version: 0.1.1
-;; Package-Requires: ()
-;; Last-Updated: Thu Dec 12 08:48:20 2013 (-0500)
-;;           By: jordon.biondo
-;;     Update #: 3
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

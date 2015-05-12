@@ -24,7 +24,6 @@
 ;;
 ;;; Code:
 
-
 (defun jordon-fancy-mode-line-render (left center right &optional lpad rpad)
   "Return a string the width of the current window with 
 LEFT, CENTER, and RIGHT spaced out accordingly, LPAD and RPAD,
