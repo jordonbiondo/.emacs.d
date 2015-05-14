@@ -408,7 +408,7 @@
 
 (use-package switch-window
   :defer t
-  :chords (("jf" . switch-window))
+  :chords (("u " . switch-window))
   :config (setq switch-window-shortcut-style 'qwerty
                 switch-window-qwerty-shortcuts
                 '("a" "w" "e" "f" "j" "i" "o" ";" "s" "d" "k" "l"))
