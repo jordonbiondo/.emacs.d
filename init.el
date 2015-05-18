@@ -327,10 +327,13 @@
 
 (use-package org
   :defer t
-  :config (setq org-confirm-elisp-link-function nil
-                org-export-html-postamble  nil
-                org-export-html-date-format-string "%d %B %Y"
-                org-export-html-preamble-format `(("en" "%a : %d"))))
+  :config
+  (progn
+    (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
+    (setq org-confirm-elisp-link-function nil
+          org-export-html-postamble  nil
+          org-export-html-date-format-string "%d %B %Y"
+          org-export-html-preamble-format `(("en" "%a : %d")))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
