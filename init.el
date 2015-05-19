@@ -688,6 +688,7 @@
   :ensure t)
 
 (use-package adaptive-wrap
+  :commands adaptive-wrap-prefix-mode
   :defer t
   :ensure t)
 
