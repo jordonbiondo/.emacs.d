@@ -456,6 +456,11 @@
   :bind ("C-c g m" . git-messenger:popup-message)
   :ensure t)
 
+(use-package git-timemachine
+  :defer t
+  :bind ("C-c g t" . git-timemachine)
+  :ensure t)
+
 (use-package gh
   :defer t
   :ensure t)
