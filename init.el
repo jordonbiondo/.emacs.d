@@ -336,9 +336,10 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package jordon-key-chord
-  :config (progn (key-chord-mode t)
-                 (setq key-chord-two-keys-delay .020
-                       key-chord-one-key-delay .020)))
+  :config
+  (progn (key-chord-mode t)
+         (setq key-chord-two-keys-delay .020
+               key-chord-one-key-delay .020)))
 
 (use-package ample-theme
   :init (progn (load-theme 'ample t t)
@@ -463,9 +464,10 @@
 
 (use-package helm
   :defer t
-  :init (use-package helm-grep
-          :defer t
-          :chords ("hf" . helm-do-grep))
+  :init
+  (use-package helm-grep
+    :defer t
+    :chords ("hf" . helm-do-grep))
   :ensure t)
 
 (use-package imenu-anywhere
