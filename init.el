@@ -34,11 +34,6 @@
 ;; Initial setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun jordonp ()
-  "Are you jordon?"
-  (or (equal (getenv "USER") "jordon")
-      (equal (getenv "USERNAME") "jordon")))
-
 (mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode menu-bar-mode scroll-bar-mode))
 
@@ -101,16 +96,18 @@
                     magit-status-mode-map))
   :defer t)
 
-;; work related
-(when (OSX)
-  (ignore-errors
-    (set-default-font "Envy Code R")
-    (set-face-attribute 'default nil :height 125))
-  (global-unset-key (kbd "s-t"))
-  (setq user-mail-address "jordon.biondo@parelio.com")
-  (setq-default scroll-margin 5)
-  (setq-default scroll-step 1)
-  (when (jordonp)
+;; system specific
+(user-config
+  ("kerbin"
+   (:everyone
+    (ignore-errors
+      (set-default-font "Envy Code R")
+      (set-face-attribute 'default nil :height 125))
+    (global-unset-key (kbd "s-t"))
+    (setq-default scroll-margin 5)
+    (setq-default scroll-step 1))
+   ("jordon"
+    (setq user-mail-address "jordon.biondo@parelio.com")
     (add-to-list 'load-path "~/src/redspot-emacs/")
     (use-package redspot
       :config
@@ -132,7 +129,7 @@
             ("C-c n a" . redspot:application.js-go)))
         (after (:haml-mode)
           (define-key haml-mode-map
-            (kbd "C-c n p") 'redspot:haml-find-partial-at-point))))))
+            (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins

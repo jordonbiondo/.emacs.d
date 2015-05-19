@@ -1,3 +1,23 @@
+(defmacro user-config (&rest systems)
+  "Config per workstation per user.
+
+  (user-config
+    (\"computer-name\"
+      (\"user-name\" (do-stuff))
+      (\"other-user\" (do-other-stuff))))"
+  (declare (indent defun))
+  (cons 'progn (mapcar
+                (lambda (sys)
+                  `(when (equal (system-name) ,(car sys))
+                     ,@(mapcar (lambda (user)
+                                 `(when ,(or (equal (car user)
+                                                    :everyone)
+                                             `(equal (user-login-name)
+                                                     ,(car user)))
+                                    ,@(cdr user)))
+                               (cdr sys))))
+                systems)))
+
 (defun jordon-truncate-lines ()
   (setq truncate-lines t))
 
