@@ -267,11 +267,7 @@
   :config (progn
             (font-lock-add-keywords
              'c-mode
-             '(("\\<\\([A-Z_]\\([A-Z_0-9]\\)*\\)\\>"
-                . font-lock-constant-face)
-               ("\\(\\<\\(def_\\)?rs\\$ *\\)\\>"
-                . font-lock-preprocessor-face)))
-
+             '(("\\<\\([A-Z_]\\([A-Z_0-9]\\)*\\)\\>" . font-lock-constant-face)))
             (defun c-maybe-insert-semicolon()
               "Insert a semicolon a the end of a line only if there isn't one."
               (interactive)
