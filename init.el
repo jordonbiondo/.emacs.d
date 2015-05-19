@@ -547,16 +547,24 @@
 
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
-  :config (defun web-indirect-this-thing()
-            (interactive)
-            (let ((beg 0) (end 0))
-              (save-excursion
-                (setq beg (progn (web-mode-forward-sexp -1)
-                                 (call-interactively 'web-mode-tag-end)
-                                 (point)))
-                (setq end (progn  (web-mode-forward-sexp 1)
-                                  (point))))
-              (indirect-region beg end)))
+  :config
+  (progn
+    (add-hook 'web-mode-hook
+              (defun jordon-web-mode-setup ()
+                (setq web-mode-code-indent-offset 2
+                      web-mode-markup-indent-offset 2
+                      web-mode-attr-indent-offset 2
+                      web-mode-css-indent-offset 2)))
+    (defun web-indirect-this-thing()
+      (interactive)
+      (let ((beg 0) (end 0))
+        (save-excursion
+          (setq beg (progn (web-mode-forward-sexp -1)
+                           (call-interactively 'web-mode-tag-end)
+                           (point)))
+          (setq end (progn  (web-mode-forward-sexp 1)
+                            (point))))
+        (indirect-region beg end))))
   :ensure t)
 
 (use-package php-mode
@@ -572,7 +580,7 @@
 (use-package skewer-mode
   :defer t
   :init (after (:web-mode)
-          (add-hook 'web-mode-hook 'skewer-mode))
+          (add-late-hook '((web-mode web-mode-hook)) 'skewer-mode))
   :config (skewer-setup)
   :ensure t)
 
