@@ -275,8 +275,8 @@
                   (progn (delete-region (point) (point-at-eol))
                          (call-interactively 'self-insert-command))
                 (call-interactively 'self-insert-command)))
-
-            (define-key c-mode-map (kbd ";") 'c-maybe-insert-semicolon)))
+            (bind-keys :map c-mode-map
+              (";" . c-maybe-insert-semicolon))))
 
 (use-package autoinsert
   :init (progn (auto-insert-mode t)
