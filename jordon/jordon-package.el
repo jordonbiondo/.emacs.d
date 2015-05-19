@@ -43,7 +43,9 @@
 
 (require 'jordon-use-package)
 (use-package jordon-use-package
-  :config (setq use-package-idle-interval 0))
+  :config (progn
+            (setq use-package-idle-interval 0)
+            (prefer-coding-system 'utf-8)))
 
 (defmacro lambda-once (args &rest body)
   "Like lambda but body will only once, subsequent calls just return nil.
