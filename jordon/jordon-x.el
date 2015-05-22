@@ -74,3 +74,24 @@ Function `enabled-important-minor-modes' is what you are probably looking for."
                                  (insert output)
                                  (buffer-substring (point-min) (1- (point-max)))))
                           (error "tmux error: %s" output))))
+
+(defun scons/compile(&rest args)
+  (interactive "sscons: ")
+  (compile (apply 'concat "scons" (mapcar (lambda(s) (concat " " s)) args))))
+
+(defun scons/tree (&rest args)
+  (interactive "sscons --tree=all: ")
+  (apply 'scons/compile "--tree=all" args))
+
+(defun scons()
+  (interactive)
+  (scons/compile))
+
+(defun scons/clean()
+  (interactive)
+  (scons/compile "-c"))
+
+(defun scons/clean-compile()
+  (interactive)
+  (scons/compile "-c" "&&" "scons"))
+

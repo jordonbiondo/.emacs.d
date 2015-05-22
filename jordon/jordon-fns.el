@@ -80,26 +80,6 @@
   (interactive)
   (insert (format-time-string "%h %d %Y, %I:%M %p")))
 
-(defun scons/compile(&rest args)
-  (interactive "sscons: ")
-  (compile (apply 'concat "scons" (mapcar (lambda(s) (concat " " s)) args))))
-
-(defun scons/tree (&rest args)
-  (interactive "sscons --tree=all: ")
-  (apply 'scons/compile "--tree=all" args))
-
-(defun scons()
-  (interactive)
-  (scons/compile))
-
-(defun scons/clean()
-  (interactive)
-  (scons/compile "-c"))
-
-(defun scons/clean-compile()
-  (interactive)
-  (scons/compile "-c" "&&" "scons"))
-
 (defun scratch ()
   "Open the *scratch* buffer, create on if needed."
   (interactive)
