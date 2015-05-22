@@ -314,7 +314,7 @@ BUDDY is a JID symbol."
   "Set up an idle task to send an email to myself with the message if I've \
 been idle for a little bit when the message comes in."
   ;; mail only happens if I've been idle for 30 seconds!
-  (when (> (time-to-seconds (or (current-idle-time) (seconds 0)))
+  (when (> (time-to-seconds (or (current-idle-time) (seconds-to-time 0)))
            (or jordon-jabber/send-mail-idle-time 120))
     (run-with-timer
      2 nil

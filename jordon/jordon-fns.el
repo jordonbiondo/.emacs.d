@@ -33,23 +33,9 @@
 (defmacro guip ()
   `(window-system))
 
-(defsubst seconds (n)
-  "N seconds to time object."
-  (seconds-to-time n))
-
-(defsubst minutes (n)
-  "N minutes to time object"
-  (seconds (* n 60.0)))
-
-(defmacro add-keywords (mode &rest keywords)
-  "Add KEYWORDS to font-lock for MODE."
-  (declare (indent defun))
-  `(font-lock-add-keywords ',mode ',keywords))
-
 (defun jordon-indent-repeat()
   "Indent the current line and move to the next."
   (interactive)
-  ;;(call-interactively 'indent-for-tab-command)
   (indent-according-to-mode)
   (forward-line 1))
 
@@ -115,31 +101,33 @@
     (goto-char (point-min))
     (shrink-window-if-larger-than-buffer)))
 
-(defun net-flush-dns ()
-  "Flush the DNS cache on windows."
-  (interactive)
-  (let ((ifconfig-program-options '("/flushdns")))
-    (ifconfig)))
+(when (windowsp)
+  (defun net-flush-dns ()
+    "Flush the DNS cache on windows."
+    (interactive)
+    (let ((ifconfig-program-options '("/flushdns")))
+      (ifconfig)))
 
-(defun w32-browser (doc)
-  (interactive "fOpen File: ")
-  (w32-shell-execute 1 doc))
+  (defun w32-browser (doc)
+    (interactive "fOpen File: ")
+    (w32-shell-execute 1 doc)))
 
 (defun align-after-thing (beg end str)
   "Inside region BEG END, Align text after STR."
   (interactive "r\nsAlign After: ")
   (align-regexp beg end (format "%s\\(\\s-*\\)" str)1 1 t))
 
-(defun random-word ()
-  (unless (OSX) (error "OS not supported"))
-  (with-temp-buffer
-    (insert-file-contents "/usr/share/dict/words")
-    (forward-line (random (count-lines (point-min) (point-max)) ))
-    (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+(defun random-word (&optional capitalize)
+  (unless (osxp) (error "OS not supported"))
+  (let* ((file "/usr/share/dict/words")
+         (action (if capitalize 'capitalize 'downcase))
+         (command (format "head -n $(jot -r 1 1 $(wc -l < %s)) %s | tail -1"
+                          file file)))
+    (funcall action (string-trim (shell-command-to-string command)))))
 
-(defun insert-random-word ()
-  (interactive)
-  (insert (random-word)))
+(defun insert-random-word (&optional capitalize)
+  (interactive "P")
+  (insert (random-word capitalize)))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Color theme helpers
