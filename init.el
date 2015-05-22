@@ -626,15 +626,6 @@
                    (or force-ow (not (equal (omnisharp--convert-backslashes-to-forward-slashes filename)
                                             (buffer-file-name)))))
                   (pulse-momentary-highlight-one-line (point)))))
-
-            (defun jordon-reload-csharp-buffers ()
-              "Restart `csharp-mode' on all `csharp-mode' buffers."
-              (interactive)
-              (dolist (b (buffer-list))
-                (with-current-buffer b
-                  (when (eql major-mode 'csharp-mode)
-                    (csharp-mode)))))
-
             (after (:company :csharp-mode)
               (add-to-list 'company-backends 'company-omnisharp)
               (add-hook 'csharp-mode-hook 'company-mode)
