@@ -93,7 +93,7 @@
   :commands 'jordon-magit/cleanup-this-hunk
   :init (after (:magit)
           (bind-keys :map magit-status-mode-map
-            ("C-c s d" 'jordon-magit/cleanup-this-hunk)))
+            ("C-c s d" . jordon-magit/cleanup-this-hunk)))
   :defer t)
 
 ;; system specific
