@@ -66,7 +66,7 @@
          ("C-M-k" . jordon-c-doc-comment)
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
-  :config (when (OSX) (push "/usr/local/bin/" exec-path))
+  :config (when (osxp) (push "/usr/local/bin/" exec-path))
   :demand t)
 
 (use-package jordon-jabber
@@ -76,10 +76,10 @@
              (setq jabber-chat-header-line-format
                    jordon-jabber/chat-header-line-format)
              (cond
-              ((OSX)
+              ((osxp)
                (add-hook 'jabber-alert-message-hooks
                          'jordon-jabber/terminal-notification))
-              ((Windows)
+              ((windowsp)
                (add-hook 'jabber-alert-message-hooks
                          'jordon-jabber/toast-notification)
                (add-hook 'jabber-alert-message-hooks
@@ -422,7 +422,7 @@
   :config (progn
             (bind-keys :map magit-status-mode-map
               ("C-c g o" . magit-checkout))
-            (when (OSX) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+            (when (osxp) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
                   magit-completing-read-function 'magit-ido-completing-read))
   :ensure t)
@@ -764,7 +764,7 @@
 
 (use-package exec-path-from-shell
   :defer t
-  :if (OSX)
+  :if (osxp)
   :idle (exec-path-from-shell-initialize)
   :ensure t)
 

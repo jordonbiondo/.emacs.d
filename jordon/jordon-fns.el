@@ -24,13 +24,13 @@
 (defun jordon-dont-truncate-lines ()
   (setq truncate-lines nil))
 
-(defmacro Windows ()
+(defmacro windowsp ()
   `(equal system-type 'windows-nt))
 
-(defmacro OSX ()
+(defmacro osxp ()
   `(equal system-type 'darwin))
 
-(defmacro GUI ()
+(defmacro guip ()
   `(window-system))
 
 (defsubst seconds (n)
