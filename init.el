@@ -98,6 +98,10 @@
 
 ;; system specific
 (user-config
+  ("eeloo"
+   (:everyone
+    (after (:smex)
+      (setq smex-flex-matching nil))))
   ("kerbin"
    (:everyone
     (ignore-errors
@@ -333,10 +337,13 @@
                key-chord-one-key-delay .020)))
 
 (use-package ample-theme
-  :init (progn (load-theme 'ample t t)
-               (load-theme 'ample-flat t t)
-               (load-theme 'ample-light t t)
-               (enable-theme 'ample-flat))
+  :init (user-config
+          ("kerbin"
+           (:everyone
+            (load-theme 'ample t t)
+            (load-theme 'ample-flat t t)
+            (load-theme 'ample-light t t)
+            (enable-theme 'ample-flat))))
   :defer t
   :ensure t)
 
@@ -630,6 +637,7 @@
               (add-to-list 'company-backends 'company-omnisharp)
               (add-hook 'csharp-mode-hook 'company-mode)
               (add-hook 'csharp-mode-hook 'omnisharp-mode)))
+  :if (not (systemp "eeloo" "pi"))
   :ensure t)
 
 (use-package flycheck
@@ -805,8 +813,8 @@
 
 (use-package flx-ido
   :defer t
-  :init (after (:ido)
-          (flx-ido-mode t))
+  :init (user-config
+          ("kerbin" (:everyone (after (:ido) (flx-ido-mode t)))))
   :ensure t)
 
 (use-package ido-vertical-mode
