@@ -18,6 +18,12 @@
                                (cdr sys))))
                 systems)))
 
+(defmacro systemp (user-or-host &optional user)
+  (if user
+      `(and (equal (system-name) ,user-or-host)
+            (equal (user-login-name) ,user))
+    `(equal (user-login-name) ,user-or-host)))
+
 (defun jordon-truncate-lines ()
   (setq truncate-lines t))
 
