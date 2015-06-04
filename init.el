@@ -742,11 +742,6 @@
   :config (progn
             (setq-default js2-basic-offset 2
                           js2-global-externs '("clearTimeout" "setTimeout"))
-            (font-lock-add-keywords
-             'js2-mode
-             '(("\\(console\\)\\(\.\\)\\(log\\|trace\\)"
-                (1 font-lock-warning-face t)
-                (3 font-lock-warning-face t))))
             (use-package ac-js2
               :ensure t)
 
