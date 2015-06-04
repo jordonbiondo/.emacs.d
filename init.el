@@ -813,8 +813,9 @@
 
 (use-package flx-ido
   :defer t
-  :init (user-config
-          ("kerbin" (:everyone (after (:ido) (flx-ido-mode t)))))
+  :init (after (:ido)
+          (unless (systemp "eeloo" "pi")
+            (flx-ido-mode t)))
   :ensure t)
 
 (use-package ido-vertical-mode
