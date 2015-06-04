@@ -320,7 +320,7 @@
   :defer t
   :config
   (progn
-    (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
+    (add-hook 'org-mode-hook 'jordon-nice-wrap-mode)
     (setq org-confirm-elisp-link-function nil
           org-export-html-postamble  nil
           org-export-html-date-format-string "%d %B %Y"
@@ -678,7 +678,12 @@
   :ensure t)
 
 (use-package adaptive-wrap
-  :commands adaptive-wrap-prefix-mode
+  :commands (adaptive-wrap-prefix-mode jordon-nice-wrap-mode)
+  :config (defun jordon-nice-wrap-mode ()
+            (setq truncate-lines nil)
+            (visual-line-mode t)
+            (adaptive-wrap-prefix-mode t)
+            (electric-indent-mode -1))
   :defer t
   :ensure t)
 
@@ -686,13 +691,8 @@
   :defer t
   :config
   (progn
-    (defun jordon-haml/setup-hook ()
-      (flycheck-mode t)
-      (setq truncate-lines nil)
-      (visual-line-mode t)
-      (adaptive-wrap-prefix-mode t)
-      (electric-indent-mode -1))
-    (add-hook 'haml-mode-hook 'jordon-haml/setup-hook))
+    (add-hook 'haml-mode-hook 'flycheck-mode)
+    (add-hook 'haml-mode-hook 'jordon-nice-wrap-mode))
   :ensure t)
 
 (use-package robe
