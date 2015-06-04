@@ -697,14 +697,14 @@
 
 (use-package robe
   :defer t
-  :config (progn
-            (after (:ruby-mode)
-              (add-hook 'ruby-mode-hook 'robe-mode))
-            (add-hook 'robe-mode-hook
-                      (defun jordon-robe/setup-completeion()
-                        (company-mode t)))
-            (after (:company)
-              (lambda () (progn (push 'company-robe company-backends)))))
+  :commands (robe-mode)
+  :init
+  (progn
+    (add-hook 'ruby-mode-hook 'robe-mode)
+    (add-hook 'robe-mode-hook
+              (defun jordon-robe-setup ()
+                (company-mode t)
+                (add-to-list 'company-backends 'company-robe))))
   :ensure t)
 
 (use-package moz
