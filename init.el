@@ -74,26 +74,26 @@
           (require 'jordon-jabber))
   :config  (progn
              (setq jabber-chat-header-line-format
-                   jordon-jabber/chat-header-line-format)
+                   jordon-jabber-chat-header-line-format)
              (cond
               ((osxp)
                (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber/terminal-notification))
+                         'jordon-jabber-terminal-notification))
               ((windowsp)
                (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber/toast-notification)
+                         'jordon-jabber-toast-notification)
                (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber/send-mail-notification))))
+                         'jordon-jabber-send-mail-notification))))
   :defer t)
 
 (use-package jordon-mode-line
   :config (setq-default mode-line-format jordon-mode-line-format))
 
 (use-package jordon-magit
-  :commands 'jordon-magit/cleanup-this-hunk
+  :commands 'jordon-magit-cleanup-this-hunk
   :init (after (:magit)
           (bind-keys :map magit-status-mode-map
-            ("C-c s d" . jordon-magit/cleanup-this-hunk)))
+            ("C-c s d" . jordon-magit-cleanup-this-hunk)))
   :defer t)
 
 ;; system specific
@@ -391,8 +391,9 @@
                      (when up (next-line -1))
                      (mc/mark-next-lines 1)
                      (jordon-mc-mark-until-line-change up)))
-                 (push 'jordon-mc-mark-until-line-change mc/cmds-to-run-once)
-                 (bind-key "C-c n" 'mc/insert-numbers mc/keymap))
+                 (add-to-list 'mc/cmds-to-run-once 'jordon-mc-mark-until-line-change)
+                 (bind-keys :map mc/keymap
+                   ("C-c n" . mc/insert-numbers)))
   :bind (("C-c m" . mc/mark-next-like-this)
          ("C-c C-m" . jordon-mc-mark-until-line-change))
   :ensure t)
@@ -711,7 +712,7 @@
   :defer t
   :commands js2-mode
   :config (progn
-            (defun jordon-moz/refresh ()
+            (defun jordon-moz-refresh ()
               (interactive)
               (if (ignore-errors
                     (comint-send-string
@@ -719,7 +720,7 @@
                      "setTimeout(BrowserReload(), \"1000\");") t)
                   (message "Moz Refreshing...")))
 
-            (define-key moz-minor-mode-map (kbd "C-M-o") 'jordon-moz/refresh)
+            (define-key moz-minor-mode-map (kbd "C-M-o") 'jordon-moz-refresh)
             (after (:js2-mode)
               (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
             (after (:ruby-mode)

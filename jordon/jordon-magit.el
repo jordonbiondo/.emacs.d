@@ -13,7 +13,7 @@
 
 (require 'magit)
 
-(defun jordon-magit/-line-region-of-section-at-point ()
+(defun jordon-magit-line-region-of-section-at-point ()
   "If point is in a hunk return a list of info about the hunk.
 
 The info is like (expanded-file-name starting-line number-of-lines-show)"
@@ -71,7 +71,7 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
     `(defun ,name ()
        ,docstring
        (interactive)
-       (let ((,area-sym (jordon-magit/-line-region-of-section-at-point)))
+       (let ((,area-sym (jordon-magit-line-region-of-section-at-point)))
          (if (and ,area-sym (cl-member 'unstaged (magit-section-context-type (magit-current-section))))
              (cl-destructuring-bind (,file-sym ,start-line-sym ,total-lines-sym) ,area-sym
                (save-some-buffers)
@@ -87,13 +87,13 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
                (magit-refresh))
            (message "Cannot perform. Point is not on an unstaged hunk."))))))
 
-(defconst jordon-magit/font-lock-keywords
+(defconst jordon-magit-font-lock-keywords
   '(("\\((\\)\\(define-magit-unstaged-hunk-action\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
      (2 font-lock-keyword-face)
      (3 font-lock-function-name-face nil t))))
-(font-lock-add-keywords 'emacs-lisp-mode jordon-magit/font-lock-keywords)
+(font-lock-add-keywords 'emacs-lisp-mode jordon-magit-font-lock-keywords)
 
-(define-magit-unstaged-hunk-action jordon-magit/cleanup-this-hunk (beg end)
+(define-magit-unstaged-hunk-action jordon-magit-cleanup-this-hunk (beg end)
   "Delete trailing whitespace in the current unstaged magit hunk."
   (delete-trailing-whitespace beg end))
 

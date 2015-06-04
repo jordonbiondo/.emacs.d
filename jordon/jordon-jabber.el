@@ -271,7 +271,7 @@ BUDDY is a JID symbol."
       (mail-send))))
 
 
-(defun jordon-jabber/toast-notification (from buffer text title)
+(defun jordon-jabber-toast-notification (from buffer text title)
   "Show a toast notification if chat buffer not visible."
   (if (not (get-buffer-window buffer))
       (toast (format "%s\n%s" title text))
@@ -293,29 +293,29 @@ BUDDY is a JID symbol."
                  "-message" message
                  "-activate" "org.gnu.Emacs"))
 
-(defun jordon-jabber/terminal-notification (from buffer text title)
+(defun jordon-jabber-terminal-notification (from buffer text title)
   "Show a osx notification if chat buffer not visible."
   (if (not (get-buffer-window buffer))
       (terminal-notifier-notify title text)))
 
 
 
-(defvar jordon-jabber/pending-mail-msgs '()
+(defvar jordon-jabber-pending-mail-msgs '()
   "List of messages not yet sent via email.")
 
-(defvar jordon-jabber/mail-timer nil
+(defvar jordon-jabber-mail-timer nil
   "Timer waiting to send message mail.")
 
-(defvar jordon-jabber/send-mail-idle-time 120
+(defvar jordon-jabber-send-mail-idle-time 120
   "Emacs must be idle for this many seconds in order to send mail for jabber messages.")
 
 
-(defun jordon-jabber/send-mail-notification (from buffer text title)
+(defun jordon-jabber-send-mail-notification (from buffer text title)
   "Set up an idle task to send an email to myself with the message if I've \
 been idle for a little bit when the message comes in."
   ;; mail only happens if I've been idle for 30 seconds!
   (when (> (time-to-seconds (or (current-idle-time) (seconds-to-time 0)))
-           (or jordon-jabber/send-mail-idle-time 120))
+           (or jordon-jabber-send-mail-idle-time 120))
     (run-with-timer
      2 nil
      (lambda (from buffer text title)
@@ -328,7 +328,7 @@ been idle for a little bit when the message comes in."
         from buffer text title))
      from buffer text title)))
 
-(defvar jordon-jabber/chat-header-line-format
+(defvar jordon-jabber-chat-header-line-format
   '(""
     (:eval (jabber-jid-displayname jabber-chatting-with))
     "       "
@@ -348,7 +348,7 @@ been idle for a little bit when the message comes in."
     "       "
     jabber-chatstates-message))
 
-(defun jordon-jabber/im-online ()
+(defun jordon-jabber-im-online ()
   (interactive)
   (jabber-send-presence "" "" 1))
 

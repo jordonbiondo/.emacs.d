@@ -74,7 +74,7 @@ HOOK is run if either `major-mode' equals MODE-SYMBOL or MODE-SYMBOL is bound an
                 (buffer-list)))
         hook-modes))
 
-(defun jordon-package/sanitize-package-name (name)
+(defun jordon-package-sanitize-package-name (name)
   ":keyword => 'keyword, ensure normal things are passed to `eval-after-load'."
   (cond
    ((keywordp name) (list 'quote (intern (substring (symbol-name name) 1))))
@@ -104,7 +104,7 @@ of the LIBS."
   (let ((form (cons 'progn body)))
     (mapc (lambda-once (lib)
             (setq form 
-                  `(eval-after-load ,(jordon-package/sanitize-package-name lib)
+                  `(eval-after-load ,(jordon-package-sanitize-package-name lib)
                      (lambda-once () ,form))))
           libs)
     form))
