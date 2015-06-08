@@ -32,14 +32,10 @@
 
 (package-initialize)
 
-(if (package-installed-p 'use-package)
-    (when (and (member "--" command-line-args)
-               (member "-refresh" command-line-args))
-      (delete "-refresh" command-line-args)
-      (package-refresh-contents))
-  (progn
-    (package-refresh-contents)
-    (package-install 'use-package)))
+(when (and (member "--" command-line-args)
+           (member "-refresh" command-line-args))
+  (delete "-refresh" command-line-args)
+  (package-refresh-contents))
 
 (require 'jordon-use-package)
 (use-package jordon-use-package
