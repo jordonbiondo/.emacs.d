@@ -105,11 +105,6 @@ of the LIBS."
           libs)
     form))
 
-(defconst jordon-package-font-lock-keywords
-  '(("\\((\\)\\(after\\) "
-     (2 font-lock-keyword-face))))
-(font-lock-add-keywords 'emacs-lisp-mode jordon-package-font-lock-keywords)
-
 (provide 'jordon-package)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; jordon-package.el ends here
