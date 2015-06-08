@@ -86,6 +86,7 @@
                          'jordon-jabber-send-mail-notification))))
   :defer t)
 
+
 (use-package jordon-mode-line
   :config (setq-default mode-line-format jordon-mode-line-format))
 
@@ -113,6 +114,7 @@
    ("jordon"
     (setq user-mail-address "jordon.biondo@parelio.com")
     (add-to-list 'load-path "~/src/redspot-emacs/")
+    (setq initial-scratch-message "\n;; Welcome Back\n\n")
     (use-package redspot
       :config
       (progn
