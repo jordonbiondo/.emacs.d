@@ -1,3 +1,4 @@
+;;;###autoload
 (defmacro user-config (&rest systems)
   "Config per workstation per user.
 
@@ -17,7 +18,7 @@
                                     ,@(cdr user)))
                                (cdr sys))))
                 systems)))
-
+;;;###autoload
 (defmacro systemp (user-or-host &optional user)
   (if user
       `(and (equal (system-name) ,user-or-host)

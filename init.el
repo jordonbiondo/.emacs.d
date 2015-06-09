@@ -57,6 +57,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package jordon-fns
+  :commands (user-config systemp)
   :chords ((" =" . winstack-push)
            (" -" . winstack-pop)
            ("nv" . jordon-find-init-file)
@@ -67,7 +68,7 @@
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
   :config (when (osxp) (push "/usr/local/bin/" exec-path))
-  :demand t)
+  :defer t)
 
 (use-package jordon-jabber
   :init (after (:jabber)
