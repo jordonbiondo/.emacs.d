@@ -341,13 +341,11 @@
                key-chord-one-key-delay .020)))
 
 (use-package ample-theme
-  :init (user-config
-          ("kerbin"
-           (:everyone
-            (load-theme 'ample t t)
-            (load-theme 'ample-flat t t)
-            (load-theme 'ample-light t t)
-            (enable-theme 'ample-flat))))
+  :init (unless (systemp "eeloo")
+          (load-theme 'ample t t)
+          (load-theme 'ample-flat t t)
+          (load-theme 'ample-light t t)
+          (enable-theme 'ample-flat))
   :defer t
   :ensure t)
 
