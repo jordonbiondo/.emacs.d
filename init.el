@@ -738,7 +738,7 @@
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :init (add-hook 'js2-mode-hook
-                  (defun jorbi-js2-mode-setup ()
+                  (defun jordon-js2-mode-setup ()
                     (flycheck-mode t)
                     (when (executable-find "eslint")
                       (flycheck-select-checker 'javascript-eslint))))
