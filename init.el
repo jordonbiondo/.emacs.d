@@ -313,10 +313,11 @@
 
 (use-package ruby-mode
   :defer t
-  :config (progn
-            (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
-            (after (:flycheck) (add-hook 'ruby-mode-hook 'flycheck-mode))
-            (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
+  :config
+  (progn
+    (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
+    (add-hook 'ruby-mode-hook 'flycheck-mode)
+    (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
 
 (use-package org
   :defer t
