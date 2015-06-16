@@ -149,6 +149,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package simple
+  :config (setq save-interprogram-paste-before-kill t)
   :chords (" g" . goto-line))
 
 (use-package flymake
