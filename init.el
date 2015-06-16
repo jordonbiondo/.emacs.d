@@ -244,15 +244,10 @@
 (use-package savehist
   :idle (savehist-mode t))
 
-;; (use-package desktop
-;;   :config (progn (desktop-save-mode t)
-;;                  (setq desktop-path '("~/.emacs.d/"))))
-
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)
   :commands hs-toggle-hiding
   :defer t)
-
 
 (use-package ispell
   :bind (("C-c s w" . ispell-word)
