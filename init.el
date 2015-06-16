@@ -70,6 +70,12 @@
   :config (when (osxp) (push "/usr/local/bin/" exec-path))
   :defer t)
 
+(use-package jordon-key-chord
+  :config
+  (progn (key-chord-mode t)
+         (setq key-chord-two-keys-delay .020
+               key-chord-one-key-delay .020)))
+
 (use-package jordon-jabber
   :init (after (:jabber)
           (require 'jordon-jabber))
@@ -333,12 +339,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package jordon-key-chord
-  :config
-  (progn (key-chord-mode t)
-         (setq key-chord-two-keys-delay .020
-               key-chord-one-key-delay .020)))
 
 (use-package ample-theme
   :init (unless (systemp "eeloo")
