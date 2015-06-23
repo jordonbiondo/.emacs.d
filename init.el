@@ -130,7 +130,8 @@
             (when (equal (projectile-project-name) "redspot")
               (rvm-activate-corresponding-ruby)
               (remove-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once)))
-          (add-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once))
+          (add-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once)
+          (add-hook 'haml-mode-hook 'jordon-redspot-activate-rvm-once))
         (after (:js2-mode)
           (bind-keys
             :map js2-mode-map
