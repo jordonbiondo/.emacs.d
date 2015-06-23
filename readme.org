@@ -1,5 +1,5 @@
 * My ~/.emacs.d
-  This is my Emacs configuration, it makes have use of a customized use-package which supports key chord declarations.
+  This is my Emacs configuration, it makes use of a customized use-package which supports key chord declarations.
 
   If you'd like to see how any package is configured or what bindings and chords are defined, just search for the corresponding use-package block in the file init.el
 
