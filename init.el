@@ -490,6 +490,7 @@
   :ensure t)
 
 (use-package projectile
+  :commands (projectile-project-type)
   :init (add-hook 'prog-mode-hook 'projectile-mode)
   :defer t
   :ensure t)
@@ -729,6 +730,19 @@
   :ensure t)
 
 (use-package d-mode
+  :defer t
+  :ensure t)
+
+(use-package scala-mode2
+  :defer t
+  :ensure t)
+
+(use-package ensime
+  :commands (ensime-mode)
+  :init (add-hook 'scala-mode-hook
+                  (defun jordon-maybe-ensime-mode ()
+                    (when (equal (projectile-project-type) 'sbt)
+                      (ensime-mode t))))
   :defer t
   :ensure t)
 
