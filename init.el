@@ -425,13 +425,13 @@
   :bind ("C-x m" . magit-status)
   :chords (" m" . magit-status)
   :commands magit-status
-  :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn
             (bind-keys :map magit-status-mode-map
               ("C-c g o" . magit-checkout))
             (when (osxp) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
-                  magit-completing-read-function 'magit-ido-completing-read))
+                  magit-completing-read-function 'magit-ido-completing-read
+                  magit-revert-buffers 'ask))
   :ensure t)
 
 (use-package git-gutter
