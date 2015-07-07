@@ -18,26 +18,30 @@
 
 The info is like (expanded-file-name starting-line number-of-lines-show)"
   (let* ((section (magit-current-section))
-         (context-type (magit-section-context-type section)))
-    (when (and (cl-member 'hunk context-type))
+         (context-type (magit-section-type section)))
+    (when (and (equal 'hunk context-type))
       (let* ((info
               (mapcar 'string-to-number
                       (split-string
-                       (cl-second (split-string
-                                (magit-section-info
-                                 (magit-current-section))
-                                "[ @]" t))
+                       (cl-third
+                        (magit-section-value
+                         (magit-current-section)))
                        ",")))
              (start-line (car info))
              (line-count (or (and (cdr info) (cadr info)) 1)))
         (let ((parent (magit-section-parent section)))
           (while (and parent
                       (not (equal (magit-section-type parent)
-                                  'diff)))
+                                  'file)))
             (setq magit-section-parent parent))
-          (list (expand-file-name (magit-section-info parent))
+          (list (expand-file-name (magit-section-value parent))
                 start-line
                 line-count))))))
+
+(defun jordon-magit-section-child-of-unstaged-p (section)
+  (when section
+    (or (equal 'unstaged (magit-section-type section))
+        (jordon-magit-section-child-of-unstaged-p (magit-section-parent section)))))
 
 (defmacro define-magit-unstaged-hunk-action (name args &optional docstring &rest body)
   "NAME will be command that executes BODY in a way that has access to the beginning
@@ -57,7 +61,7 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
     (delete-trailing-whitespace beg end))
 
 \(fn NAME (BEG END) &optional DOCSTRING &rest BODY)"
-  (declare (indent-defun) (doc-string 3))
+  (declare (indent defun) (doc-string 3))
   (unless (and (= (length args) 2)
                (symbolp (car args))
                (symbolp (cadr args)))
@@ -72,7 +76,7 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
        ,docstring
        (interactive)
        (let ((,area-sym (jordon-magit-line-region-of-section-at-point)))
-         (if (and ,area-sym (cl-member 'unstaged (magit-section-context-type (magit-current-section))))
+         (if (and ,area-sym (jordon-magit-section-child-of-unstaged-p (magit-current-section)))
              (cl-destructuring-bind (,file-sym ,start-line-sym ,total-lines-sym) ,area-sym
                (save-some-buffers)
                (with-current-buffer (find-file-noselect ,file-sym)
