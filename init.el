@@ -431,7 +431,7 @@
             (when (osxp) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
                   magit-completing-read-function 'magit-ido-completing-read
-                  magit-revert-buffers 'ask))
+                  magit-revert-buffers 1))
   :ensure t)
 
 (use-package git-gutter
