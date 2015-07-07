@@ -428,7 +428,16 @@
   :config (progn
             (bind-keys :map magit-status-mode-map
               ("C-c g o" . magit-checkout))
-            (when (osxp) (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+            (when (osxp)
+              (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+            (when (systemp "kerbin" "jordon")
+              (add-to-list 'magit-repository-directories
+                           (expand-file-name "~/src/")))
+            (after (:magit-blame)
+              (setq magit-blame-time-format "%m/%d/%Y"))
+            (when (guip)
+              (setq magit-log-format-graph-function
+                    'magit-log-format-unicode-graph))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
                   magit-completing-read-function 'magit-ido-completing-read
                   magit-revert-buffers 1))
