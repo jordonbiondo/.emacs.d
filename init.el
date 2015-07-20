@@ -110,7 +110,7 @@
    (:everyone
     (after (:smex)
       (setq smex-flex-matching nil))))
-  ("kerbin"
+  ("duna"
    (:everyone
     (ignore-errors
       (set-default-font "Envy Code R")
@@ -430,7 +430,7 @@
               ("C-c g o" . magit-checkout))
             (when (osxp)
               (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
-            (when (systemp "kerbin" "jordon")
+            (when (systemp "duna" "jordon")
               (add-to-list 'magit-repository-directories
                            (expand-file-name "~/src/")))
             (after (:magit-blame)
