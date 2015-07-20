@@ -762,8 +762,8 @@
                     (flycheck-mode t)
                     (when (executable-find "eslint")
                       (flycheck-select-checker 'javascript-eslint))))
-  :config (setq-default js2-basic-offset 2
-                        js2-global-externs '("clearTimeout" "setTimeout"))
+  :config (setq-default js2-basic-offset 4
+                        js2-global-externs '("clearTimeout" "setTimeout" "module" "require"))
   :ensure t)
 
 (use-package js2-refactor
