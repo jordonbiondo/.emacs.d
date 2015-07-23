@@ -763,14 +763,16 @@
                     (when (executable-find "eslint")
                       (flycheck-select-checker 'javascript-eslint))))
   :config (setq-default js2-basic-offset 4
-                        js2-global-externs '("clearTimeout" "setTimeout" "module" "require"))
+                        js2-global-externs '("clearTimeout" "setTimeout" "module" "require")
+                        js2-indent-switch-body t)
   :ensure t)
 
 (use-package js2-refactor
   :defer t
   :commands (js2r-add-keybindings-with-prefix)
   :init (after :js2-mode
-          (js2r-add-keybindings-with-prefix "C-c u"))
+          (js2r-add-keybindings-with-prefix "C-c u")
+          (add-hook 'js2-mode-hook 'js2-refactor-mode))
   :ensure t)
 
 (use-package ac-js2
