@@ -376,7 +376,7 @@
   :ensure t)
 
 (use-package avy
-  :bind ("C-c <SPC>" . avy-goto-char)
+  :bind ("C-c <SPC>" . avy-goto-word-1)
   :ensure t)
 
 (use-package multiple-cursors
