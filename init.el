@@ -121,29 +121,7 @@
    ("jordon"
     (setq user-mail-address "jordon.biondo@appropos.com")
     (add-to-list 'load-path "~/src/redspot-emacs/")
-    (setq initial-scratch-message "\n;; Welcome Back\n\n")
-    (use-package redspot
-      :config
-      (progn
-        (after (:projectile)
-          (defun jordon-redspot-activate-rvm-once ()
-            (when (equal (projectile-project-name) "redspot")
-              (rvm-activate-corresponding-ruby)
-              (remove-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once)))
-          (add-hook 'ruby-mode-hook 'jordon-redspot-activate-rvm-once)
-          (add-hook 'haml-mode-hook 'jordon-redspot-activate-rvm-once))
-        (after (:js2-mode)
-          (bind-keys
-            :map js2-mode-map
-            ("M-." . redspot:find-js-definition-here)
-            ("C-c n m" . redspot:mvp-mode)
-            ("C-c n t" . redspot:mvp-triplet-select)
-            ("C-c n c" . redspot:js-console-this-line)
-            ("C-c n l" . redspot:js-log-arguments)
-            ("C-c n a" . redspot:application.js-go)))
-        (after (:haml-mode)
-          (define-key haml-mode-map
-            (kbd "C-c n p") 'redspot:haml-find-partial-at-point)))))))
+    (setq initial-scratch-message "\n;; Welcome Back\n\n"))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
