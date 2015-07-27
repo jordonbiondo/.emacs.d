@@ -121,7 +121,6 @@
     (setq-default scroll-step 1))
    ("jordon"
     (setq user-mail-address "jordon.biondo@appropos.com")
-    (add-to-list 'load-path "~/src/redspot-emacs/")
     (setq initial-scratch-message "\n;; Welcome Back\n\n"))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
