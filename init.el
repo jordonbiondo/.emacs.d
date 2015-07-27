@@ -119,7 +119,7 @@
     (setq-default scroll-margin 5)
     (setq-default scroll-step 1))
    ("jordon"
-    (setq user-mail-address "jordon.biondo@parelio.com")
+    (setq user-mail-address "jordon.biondo@appropos.com")
     (add-to-list 'load-path "~/src/redspot-emacs/")
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
     (use-package redspot
@@ -366,9 +366,6 @@
                   jabber-backlog-days 30
                   jabber-account-list
                   '(("jordonbiondo@gmail.com"
-                     (:network-server . "talk.google.com")
-                     (:connection-type . ssl))
-                    ("jordon.biondo@parelio.com"
                      (:network-server . "talk.google.com")
                      (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
