@@ -115,7 +115,8 @@
     (ignore-errors
       (set-default-font "Envy Code R")
       (set-face-attribute 'default nil :height 125))
-    (global-unset-key (kbd "s-t"))
+    (when (guip)
+      (global-unset-key (kbd "s-t")))
     (setq-default scroll-margin 5)
     (setq-default scroll-step 1))
    ("jordon"
