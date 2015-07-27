@@ -375,8 +375,8 @@
             (setq jabber-chat-buffer-format "Chat: %n"))
   :ensure t)
 
-(use-package ace-jump-mode
-  :bind ("C-c <SPC>" . ace-jump-mode)
+(use-package avy
+  :bind ("C-c <SPC>" . avy-goto-char)
   :ensure t)
 
 (use-package multiple-cursors
