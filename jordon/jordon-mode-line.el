@@ -47,7 +47,7 @@ can be used to add a number of spaces to the front and back of the string."
 (defvar jordon-mode-line-format
   '((:eval (jordon-fancy-mode-line-render
             (format-mode-line (format " %s (%%l/%d) %%c "
-                                      (downcase mode-name)
+                                      (downcase (format-mode-line mode-name))
                                       (line-number-at-pos (point-max))))
             (concat (buffer-name)
                     (cond
