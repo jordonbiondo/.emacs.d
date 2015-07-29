@@ -740,9 +740,20 @@
                     (flycheck-mode t)
                     (when (executable-find "eslint")
                       (flycheck-select-checker 'javascript-eslint))))
-  :config (setq-default js2-basic-offset 4
-                        js2-global-externs '("clearTimeout" "setTimeout" "module" "require")
-                        js2-indent-switch-body t)
+  :config
+  (progn
+    (setq-default js2-basic-offset 4
+                  js2-indent-switch-body t)
+    (setq-default
+     js2-global-externs
+     '("clearTimeout" "setTimeout" "module" "require"))
+    (mapc (lambda (abp)
+            (define-abbrev js2-mode-abbrev-table (car abp) (cdr abp)))
+          '(("fn" . "function")
+            ("tn" . "then")
+            ("pr" . "Promise")
+            ("re" . "require")
+            ("gro" . "global.rootRequire"))))
   :ensure t)
 
 (use-package js2-refactor
