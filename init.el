@@ -590,6 +590,7 @@
             (font-lock-add-keywords
              'csharp-mode
              '(("\\(// *\\)\\(todo\\)\\(.*$\\)" 2 'font-lock-warning-face t))))
+  :defer t
   :ensure t)
 
 (use-package company
