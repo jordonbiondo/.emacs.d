@@ -598,9 +598,11 @@
   :ensure t)
 
 (use-package omnisharp
-  :bind (("M-i" . jordon-omnisharp-go-to-definition-smart)
-         ("M-m" . omnisharp-find-usages))
   :config (progn
+            (after (:csharp-mode)
+              (bind-keys :map csharp-mode-map
+                ("M-i" . jordon-omnisharp-go-to-definition-smart)
+                ("M-m" . omnisharp-find-usages)))
             (setq omnisharp-eldoc-support t)
             (add-hook 'csharp-mode-hook 'eldoc-mode)
 
