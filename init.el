@@ -754,7 +754,8 @@
             ("tn" . "then")
             ("pr" . "Promise")
             ("re" . "require")
-            ("gro" . "global.rootRequire"))))
+            ("gro" . "global.rootRequire")))
+    (add-hook 'js2-mode-hook 'abbrev-mode))
   :ensure t)
 
 (use-package js2-refactor
