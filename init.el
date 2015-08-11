@@ -743,6 +743,21 @@
                       (flycheck-select-checker 'javascript-eslint))))
   :config
   (progn
+    (defun jordon-js2-log-arguments ()
+      (interactive)
+      (save-excursion
+        (when (and (beginning-of-defun) (search-forward "function") (search-forward "("))
+          (let ((args (buffer-substring-no-properties
+                       (point)
+                       (progn (backward-char 1) (forward-sexp 1) (1- (point))))))
+            (search-forward "{")
+            (insert "\nconsole.log({"
+                    (mapconcat (lambda (arg) (format "%s: %s" (s-trim arg) (s-trim arg)))
+                               (split-string args ", " t) ", ")
+                    "});")
+            (call-interactively 'indent-for-tab-command)))))
+    (bind-keys :map js2-mode-map
+      ("C-c n l" . jordon-js2-log-arguments))
     (setq-default js2-basic-offset 4
                   js2-indent-switch-body t)
     (setq-default
