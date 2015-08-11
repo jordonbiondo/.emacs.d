@@ -415,7 +415,8 @@
                     'magit-log-format-unicode-graph))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
                   magit-completing-read-function 'magit-ido-completing-read
-                  magit-revert-buffers 1))
+                  magit-revert-buffers 1
+                  magit-push-always-verify nil))
   :ensure t)
 
 (use-package git-gutter
