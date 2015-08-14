@@ -426,7 +426,8 @@
   :commands magit-status
   :config (progn
             (bind-keys :map magit-status-mode-map
-              ("C-c g o" . magit-checkout))
+              ("C-c g o" . magit-checkout)
+              ("C-c g h" . github-browse-file))
             (when (osxp)
               (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
             (when (systemp "duna" "jordon")
