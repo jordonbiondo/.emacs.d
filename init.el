@@ -121,7 +121,16 @@
     (setq-default scroll-step 1))
    ("jordon"
     (setq user-mail-address "jordon.biondo@appropos.com")
-    (setq initial-scratch-message "\n;; Welcome Back\n\n"))))
+    (setq initial-scratch-message "\n;; Welcome Back\n\n")
+    (use-package awt
+      :load-path "~/src/awt-emacs"
+      :init (after (:js2-mode)
+              (bind-keys :map js2-mode-map
+                ("C-c n f m" . awt-find-model)
+                ("C-c n r m" . awt-require-model)
+                ("C-c n f c" . awt-find-controller)))
+      :defer t))))
+
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
