@@ -443,6 +443,11 @@
                   magit-push-always-verify nil))
   :ensure t)
 
+(use-package github-browse-file
+  :commands (github-browse-file)
+  :defer t
+  :ensure t)
+
 (use-package git-gutter
   :defer t
   :config
