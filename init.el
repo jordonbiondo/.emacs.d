@@ -446,6 +446,7 @@
 
 (use-package github-browse-file
   :commands (github-browse-file)
+  :bind ("C-c g h" . github-browse-file)
   :defer t
   :ensure t)
 
