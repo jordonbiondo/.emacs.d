@@ -70,19 +70,18 @@
    (point)
    (progn 
      (let ((h (face-attribute 'default :height)))
-       (mapc (lambda(w) (insert " " w (if (< (random 10) 4) "\n""")))
+       (mapc (lambda(w) (insert " " w (if (< (random 25) 4) "\n""")))
              (sort 
               (mapcar (lambda (w)
                         (propertize (car w) 'face
-                                    `(:foreground ,(color-lighten-name "firebrick"
-                                                                       (* (cdr w) 8))
-                                                  :height ,(round (* 2 (expt (cdr w) 1.4) h)))))
+                                    `(:foreground ,(color-lighten-name "skyblue2"
+                                                                       (* (cdr w) 3))
+                                                  :height ,(round (* .4 (expt (cdr w) 1.1) h)))))
                       (reduce (lambda (a b)
                                 (incf (cdr (or (assoc b a) (car (setq a (cons (cons b 0) a)))))) a)
                               (split-string str "[^a-z0-9]" t) :initial-value nil))
               (lambda(a b) (= 0 (random 2))))))
      (point))))
-
 
 (font-lock-add-keywords 
  'c-mode
