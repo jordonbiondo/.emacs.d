@@ -765,9 +765,10 @@
                     "});")
             (call-interactively 'indent-for-tab-command)))))
     (bind-keys :map js2-mode-map
-      ("C-c n l" . jordon-js2-log-arguments))
-    (setq-default js2-basic-offset 4
-                  js2-indent-switch-body t)
+      ("C-c n l" . jordon-js2-log-arguments)
+      ("C-c n f a" . ffap))
+    (setq-default js2-basic-offset 4)
+    (setq js-switch-indent-offset js2-basic-offset)
     (setq-default
      js2-global-externs
      '("clearTimeout" "setTimeout" "module" "require"))
