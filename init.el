@@ -742,6 +742,13 @@
   :defer t
   :ensure t)
 
+(use-package restclient
+  :init (add-hook 'restclient-mode-hook
+                  (defun jordon-setup-restclient-mode ()
+                    (require 'js)
+                    (setq-local indent-line-function 'js-indent-line)))
+  :defer t)
+
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :init (add-hook 'js2-mode-hook
