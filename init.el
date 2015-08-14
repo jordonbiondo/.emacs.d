@@ -146,6 +146,13 @@
 (use-package custom
   :init (setq custom-file "~/.emacs.d/custom.el"))
 
+(use-package indent
+  :bind (("C-c n i" . indent-region))
+  :init (defadvice indent-region (around no-message activate)
+          (let ((inhibit-message t))
+            ad-do-it))
+  :defer t)
+
 (use-package shell
   :defer t
   :chords (" x" . shell))
