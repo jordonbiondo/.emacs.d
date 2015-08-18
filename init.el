@@ -210,7 +210,7 @@
   :config (add-hook 'eww-mode-hook 'jordon-dont-truncate-lines))
 
 (use-package electric
-  :config (progn))
+  :defer t)
 
 (use-package prog-mode
   :init (progn
