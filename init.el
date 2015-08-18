@@ -769,6 +769,17 @@
                   (defun jordon-setup-restclient-mode ()
                     (require 'js)
                     (setq-local indent-line-function 'js-indent-line)))
+  :config
+  (add-hook 'restclient-response-loaded-hook
+            (defun maybe-prettify-restclient-errors ()
+              (let ((things '("&lt;" "error" "<br>" "&nbsp;")))
+                (when (-all?
+                       (lambda (str)
+                         (save-excursion (search-forward str nil t 1)))
+                       things)
+                  (let ((reps '(("<br>" . "\n") ("&nbsp;" . " "))))
+                    (dolist (rep reps)
+                      (replace-string (car rep) (cdr rep) nil 1 (point-max))))))))
   :defer t)
 
 (use-package js2-mode
