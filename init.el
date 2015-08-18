@@ -819,7 +819,8 @@
             ("pr" . "Promise")
             ("re" . "require")
             ("gro" . "global.rootRequire")))
-    (add-hook 'js2-mode-hook 'abbrev-mode))
+    (add-hook 'js2-mode-hook 'abbrev-mode)
+    (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t))
   :ensure t)
 
 (use-package js2-refactor
