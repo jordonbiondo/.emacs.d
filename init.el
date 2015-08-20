@@ -774,16 +774,28 @@
                     (require 'js)
                     (setq-local indent-line-function 'js-indent-line)))
   :config
-  (add-hook 'restclient-response-loaded-hook
-            (defun maybe-prettify-restclient-errors ()
-              (let ((things '("&lt;" "error" "<br>" "&nbsp;")))
-                (when (-all?
-                       (lambda (str)
-                         (save-excursion (search-forward str nil t 1)))
-                       things)
-                  (let ((reps '(("<br>" . "\n") ("&nbsp;" . " "))))
-                    (dolist (rep reps)
-                      (replace-string (car rep) (cdr rep) nil 1 (point-max))))))))
+  (progn
+    (add-hook 'restclient-response-loaded-hook
+              (defun maybe-prettify-restclient-errors ()
+                (let ((things '("&lt;" "<br>" "&nbsp;" "\\n")))
+                  (when (-any?
+                         (lambda (str)
+                           (save-excursion (search-forward str nil t 1)))
+                         things)
+                    (let ((reps '(("<br>" . "\n") ("&nbsp;" . " ") ("\\n" . "\n"))))
+                      (dolist (rep reps)
+                        (replace-string (car rep) (cdr rep) nil 1 (point-max))))))))
+    (add-hook 'restclient-response-loaded-hook
+              (defun jordon-restclient-delete-headers-when-ok ()
+                (when (equal major-mode 'js-mode)
+                  (save-excursion
+                    (goto-char (point-max))
+                    (when (and (search-backward "200 OK" nil t)
+                               (search-backward "}" nil t))
+                      (forward-char 1)
+                      (delete-region (point) (point-max))
+                      (json-mode))))))
+    (add-hook 'restclient-response-loaded-hook 'jordon-nice-wrap-mode))
   :defer t)
 
 (use-package js2-mode
