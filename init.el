@@ -347,6 +347,7 @@
 (use-package neotree
   :commands (neotree)
   :config (progn
+            (setq neo-theme 'nerd)
             (setq neo-window-width 30)
             (setq neo-vc-integration '(face)))
   :defer t
