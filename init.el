@@ -764,6 +764,10 @@
   :defer t
   :ensure t)
 
+(use-package json-mode
+  :defer t
+  :ensure t)
+
 (use-package restclient
   :init (add-hook 'restclient-mode-hook
                   (defun jordon-setup-restclient-mode ()
