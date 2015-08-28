@@ -827,7 +827,7 @@
     (setq js-switch-indent-offset js2-basic-offset)
     (setq-default
      js2-global-externs
-     '("clearTimeout" "setTimeout" "module" "require"))
+     '("clearTimeout" "setTimeout" "module" "require" "describe" "it" "beforeEach"))
     (mapc (lambda (abp)
             (define-abbrev js2-mode-abbrev-table (car abp) (cdr abp)))
           '(("fn" . "function")
