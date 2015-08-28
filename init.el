@@ -507,6 +507,7 @@
 (use-package projectile
   :commands (projectile-project-type)
   :init (add-hook 'prog-mode-hook 'projectile-mode)
+  :config (setq projectile-enable-caching t)
   :defer t
   :ensure t)
 
