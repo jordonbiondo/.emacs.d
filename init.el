@@ -417,6 +417,7 @@
 (use-package smex
   :bind (("M-x" . smex)
          ("C-c M-x" . execute-extended-command))
+  :chords ("io" . smex)
   :commands smex
   :ensure t)
 
@@ -486,7 +487,7 @@
 
 (use-package imenu-anywhere
   :defer t
-  :chords ("io" . imenu-anywhere)
+  :chords ("jo" . imenu-anywhere)
   :config (progn
             (use-package cl)
             (defun jordon-imenu-show-used-packages ()
@@ -551,10 +552,6 @@
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
          ("C-c ;" . undo-tree-visualize))
-  :chords (("ji" . undo-tree-undo)
-           ("jo" . undo-tree-redo)
-           ("jk" . undo-tree-switch-branch)
-           ("j;" . undo-tree-visualize))
   :ensure t)
 
 (use-package google-this
