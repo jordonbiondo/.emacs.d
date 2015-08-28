@@ -120,6 +120,7 @@
     (setq-default scroll-margin 5)
     (setq-default scroll-step 1))
    ("jordon"
+    (fset 'yes-or-no-p 'y-or-n-p)
     (setq user-mail-address "jordon.biondo@appropos.com")
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
     (use-package awt
