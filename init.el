@@ -422,7 +422,8 @@
   :ensure t)
 
 (use-package magit
-  :bind ("C-x m" . magit-status)
+  :bind (("C-x m" . magit-status)
+         ("C-c g b" . magit-blame))
   :chords (" m" . magit-status)
   :commands magit-status
   :config (progn
