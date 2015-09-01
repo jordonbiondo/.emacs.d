@@ -129,7 +129,8 @@
               (bind-keys :map js2-mode-map
                 ("C-c n f m" . awt-find-model)
                 ("C-c n r m" . awt-require-model)
-                ("C-c n f c" . awt-find-controller)))))))
+                ("C-c n f c" . awt-find-controller)
+                ("C-c n t" . awt-run-test-file)))))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; built-ins
