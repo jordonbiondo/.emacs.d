@@ -305,6 +305,23 @@
   :chords (" r" . recompile)
   :config (progn (setq compilation-scroll-output t)))
 
+(use-package comint
+  :defer t
+  :config
+  (progn
+    (add-hook
+     'comint-mode-hook
+     (defun jordon-comint-mode-setup ()
+       (add-to-list
+        'comint-preoutput-filter-functions
+        (lambda (output)
+          (replace-regexp-in-string "\033\\[[0-9]+[GK]" "" output)))))
+    (add-hook 'comint-mode-hook 'ansi-color-for-comint-mode-on)))
+
+(use-package ansi-color
+  :commands (ansi-color-for-comint-mode-on)
+  :defer t)
+
 (use-package hl-line
   :config (global-hl-line-mode t))
 
