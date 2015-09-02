@@ -818,13 +818,35 @@
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
-  :init (add-hook 'js2-mode-hook
-                  (defun jordon-js2-mode-setup ()
-                    (flycheck-mode t)
-                    (when (executable-find "eslint")
-                      (flycheck-select-checker 'javascript-eslint))))
+  :init
+  (progn
+    (add-hook 'js2-mode-hook 'abbrev-mode)
+    (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t)
+    (add-hook 'js2-mode-hook
+              (defun jordon-js2-mode-setup ()
+                (flycheck-mode t)
+                (when (executable-find "eslint")
+                  (flycheck-select-checker 'javascript-eslint))))
+    (add-hook 'js2-mode-hook
+              (defun jordon-js2-setup-for-tests ()
+                (when (string-match-p "^.*\\(-\\|_\\)test\\(s\\)?\\.js" (buffer-file-name))
+                  (push "msg.no.side.effects" jordon-js2-ignored-warnings)
+                  (dolist (extern '("after" "before" "beforeEach" "afterEach" "describe" "it" "run"))
+                    (add-to-list 'js2-global-externs extern))))))
   :config
   (progn
+    (defvar-local jordon-js2-ignored-warnings nil)
+    (defadvice js2-report-warning (around ignore-some-warnings activate)
+      (unless (member (ad-get-arg 0) jordon-js2-ignored-warnings)
+        ad-do-it))
+    (bind-keys :map js2-mode-map
+      ("C-c n l" . jordon-js2-log-arguments)
+      ("C-c n f a" . ffap))
+    (setq-default js2-basic-offset 4)
+    (setq js-switch-indent-offset js2-basic-offset)
+    (set-default
+     (make-variable-buffer-local 'js2-global-externs)
+     '("clearTimeout" "setTimeout" "module" "require"))
     (defun jordon-js2-log-arguments ()
       (interactive)
       (save-excursion
@@ -838,23 +860,14 @@
                                (split-string args ", " t) ", ")
                     "});")
             (call-interactively 'indent-for-tab-command)))))
-    (bind-keys :map js2-mode-map
-      ("C-c n l" . jordon-js2-log-arguments)
-      ("C-c n f a" . ffap))
-    (setq-default js2-basic-offset 4)
-    (setq js-switch-indent-offset js2-basic-offset)
-    (setq-default
-     js2-global-externs
-     '("clearTimeout" "setTimeout" "module" "require" "describe" "it" "beforeEach"))
     (mapc (lambda (abp)
             (define-abbrev js2-mode-abbrev-table (car abp) (cdr abp)))
           '(("fn" . "function")
             ("tn" . "then")
             ("pr" . "Promise")
             ("re" . "require")
-            ("gro" . "global.rootRequire")))
-    (add-hook 'js2-mode-hook 'abbrev-mode)
-    (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t))
+            ("gro" . "global.rootRequire"))))
+  :defer t
   :ensure t)
 
 (use-package js2-refactor
