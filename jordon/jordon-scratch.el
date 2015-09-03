@@ -7,10 +7,8 @@
 
 (defvar bt/last-break-minutes 60)
 
-
 (defvar bt/snooze-time 5
   "Amount of time in minutes to use for snoozes")
-
 
 (defun bt/exit-and-repeat-last ()
   (interactive)
@@ -39,27 +37,28 @@
   (interactive "NMinutes between breaks: ")
   (lexical-let ((minutes (abs minutes)))
     (setq bt/last-break-minutes minutes)
-    (run-with-timer (* 60 minutes) nil
-                    (lambda(&rest args)
-                      (winstack-push)
-                      (switch-to-buffer "*Break Taker*")
-                      (read-only-mode t)
-                      (let ((inhibit-read-only t)
-                            (fill-column (frame-width)))
-                        (delete-other-windows)
-                        (delete-region (point-min) (point-max))
-                        (insert "\n\n\n")
-                        (insert (propertize "Time to take a break, walk around a bit!" 'face
-                                            `(:inherit font-lock-function-name-face)))
-                        (insert "\n\n\n")
-                        (insert "Press 'C-c C-k' to resume\n\n")
-                        (insert (format (concat "Press 'C-c C-c' to resume and take another break in %d minutes\n\n"
-                                                "Press 'C-c C-w' to postpone your break %d minutes") minutes bt/snooze-time))
-                        (set-justification-center (point-min) (point-max))
-                        (with-current-buffer "*Break Taker*"
-                          (local-set-key (kbd "C-c C-k") 'bt/exit)
-                          (local-set-key (kbd "C-c C-c") 'bt/exit-and-repeat-last)
-                          (local-set-key (kbd "C-c C-w") 'bt/exit-and-snooze)))))))
+    (run-with-timer
+     (* 60 minutes) nil
+     (lambda(&rest args)
+       (winstack-push)
+       (switch-to-buffer "*Break Taker*")
+       (read-only-mode t)
+       (let ((inhibit-read-only t)
+             (fill-column (frame-width)))
+         (delete-other-windows)
+         (delete-region (point-min) (point-max))
+         (insert "\n\n\n")
+         (insert (propertize "Time to take a break, walk around a bit!" 'face
+                             `(:inherit font-lock-function-name-face)))
+         (insert "\n\n\n")
+         (insert "Press 'C-c C-k' to resume\n\n")
+         (insert (format (concat "Press 'C-c C-c' to resume and take another break in %d minutes\n\n"
+                                 "Press 'C-c C-w' to postpone your break %d minutes") minutes bt/snooze-time))
+         (set-justification-center (point-min) (point-max))
+         (with-current-buffer "*Break Taker*"
+           (local-set-key (kbd "C-c C-k") 'bt/exit)
+           (local-set-key (kbd "C-c C-c") 'bt/exit-and-repeat-last)
+           (local-set-key (kbd "C-c C-w") 'bt/exit-and-snooze)))))))
 
 
 
@@ -68,10 +67,10 @@
   (setq word-wrap t)
   (center-region
    (point)
-   (progn 
+   (progn
      (let ((h (face-attribute 'default :height)))
        (mapc (lambda(w) (insert " " w (if (< (random 25) 4) "\n""")))
-             (sort 
+             (sort
               (mapcar (lambda (w)
                         (propertize (car w) 'face
                                     `(:foreground ,(color-lighten-name "skyblue2"
@@ -83,7 +82,7 @@
               (lambda(a b) (= 0 (random 2))))))
      (point))))
 
-(font-lock-add-keywords 
+(font-lock-add-keywords
  'c-mode
  '(("\\(\\<[A-Z_][A-Z_0-9]+\\)\\( \\)?\\((\\)"
     1 'font-lock-constant-face)
@@ -114,5 +113,6 @@
   `(setq ,list (if (member ,element ,list)
                    (cl-remove-if (lambda(s) (equal s ,element)) ,list)
                  (cl-adjoin ,element ,list))))
+
 
 
