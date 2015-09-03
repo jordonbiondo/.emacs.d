@@ -67,7 +67,13 @@
          ("C-M-k" . jordon-c-doc-comment)
          ("C-c f u" . winstack-push)
          ("C-c f o" . winstack-pop))
-  :config (when (osxp) (push "/usr/local/bin/" exec-path))
+  :config
+  (progn
+    (when (osxp)
+      (push "/usr/local/bin/" exec-path))
+    (after (:lisp-mode)
+      (bind-keys :map lisp-interaction-mode-map
+        ("C-c C-j" . eval-and-replace-sexp))))
   :defer t)
 
 (use-package jordon-key-chord
