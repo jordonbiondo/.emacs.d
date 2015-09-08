@@ -363,6 +363,15 @@
   :defer t
   :ensure t)
 
+(use-package persistent-scratch
+  :commands (persistent-scratch-restore)
+  :idle (progn
+          (persistent-scratch-restore)
+          (persistent-scratch-autosave-mode t)
+          (setq persistent-scratch-autosave-interval 240))
+  :defer t
+  :ensure t)
+
 (use-package s
   :defer t
   :ensure t)
