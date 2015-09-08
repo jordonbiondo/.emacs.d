@@ -844,9 +844,10 @@
                   (flycheck-select-checker 'javascript-eslint))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-setup-for-tests ()
-                (when (string-match-p "^.*\\(-\\|_\\)test\\(s\\)?\\.js" (buffer-file-name))
+                (when (string-match-p "^.*tests?\\.js" (buffer-file-name))
                   (push "msg.no.side.effects" jordon-js2-ignored-warnings)
-                  (dolist (extern '("after" "before" "beforeEach" "afterEach" "describe" "it" "run"))
+                  (dolist (extern '("after" "before" "beforeEach" "afterEach"
+                                    "describe" "it" "run" "xit" "xdescribe"))
                     (add-to-list 'js2-global-externs extern))))))
   :config
   (progn
