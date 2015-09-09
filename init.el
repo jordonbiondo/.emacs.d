@@ -367,6 +367,7 @@
 (use-package persistent-scratch
   :commands (persistent-scratch-restore)
   :idle (progn
+          (setq persistent-scratch-what-to-save '(major-mode))
           (persistent-scratch-restore)
           (persistent-scratch-autosave-mode t)
           (setq persistent-scratch-autosave-interval 240))
