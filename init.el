@@ -690,6 +690,7 @@
               (add-to-list 'company-backends 'company-omnisharp)
               (add-hook 'csharp-mode-hook 'company-mode)
               (add-hook 'csharp-mode-hook 'omnisharp-mode)))
+  :defer t
   :if (not (systemp "eeloo" "pi"))
   :ensure t)
 
