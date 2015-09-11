@@ -153,7 +153,7 @@
 (use-package custom
   :init (setq custom-file "~/.emacs.d/custom.el"))
 
-(use-package indent
+(use-package "indent"
   :bind (("C-c n i" . indent-region))
   :init (defadvice indent-region (around no-message activate)
           (let ((inhibit-message t))
@@ -177,7 +177,7 @@
   :defer t
   :config (add-hook 'grep-mode-hook 'jordon-truncate-lines))
 
-(use-package window
+(use-package "window"
   :defer t
   :chords ((" 0" . delete-window)
            (" 1" . delete-other-windows)
