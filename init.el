@@ -865,7 +865,7 @@
     (setq js-switch-indent-offset js2-basic-offset)
     (set-default
      (make-variable-buffer-local 'js2-global-externs)
-     '("clearTimeout" "setTimeout" "module" "require"))
+     '("clearTimeout" "setTimeout" "module" "require" "_"))
     (defun jordon-js2-log-arguments ()
       (interactive)
       (save-excursion
