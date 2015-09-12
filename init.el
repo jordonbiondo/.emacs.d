@@ -129,6 +129,9 @@
     (fset 'yes-or-no-p 'y-or-n-p)
     (setq user-mail-address "jordon.biondo@appropos.com")
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
+    (use-package promises
+      :load-path "~/src/promises.el/"
+      :defer nil)
     (use-package awt
       :load-path "~/src/awt-emacs/"
       :init (after (:js2-mode)
