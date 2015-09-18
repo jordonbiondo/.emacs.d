@@ -54,7 +54,7 @@ can be used to add a number of spaces to the front and back of the string."
                      ((not (buffer-file-name)) " ")
                      ((buffer-modified-p) "*")
                      (t " ")))
-            " " 1 3))))
+            (format-mode-line mode-line-process) 1 3))))
 
 (provide 'jordon-mode-line)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
