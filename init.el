@@ -132,6 +132,8 @@
     (use-package promises
       :load-path "~/src/promises.el/"
       :defer nil)
+    (use-package spinner
+      :defer t)
     (use-package awt
       :load-path "~/src/awt-emacs/"
       :init (after (:js2-mode)
