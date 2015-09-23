@@ -461,7 +461,8 @@
 
 (use-package magit
   :bind (("C-x m" . magit-status)
-         ("C-c g b" . magit-blame))
+         ("C-c g b" . magit-blame)
+         ("C-c g l" . magit-log-buffer-file))
   :chords (" m" . magit-status)
   :commands magit-status
   :config (progn
