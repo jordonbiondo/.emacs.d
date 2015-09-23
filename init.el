@@ -362,9 +362,7 @@
 
 (use-package ample-theme
   :init (unless (systemp "eeloo")
-          (load-theme 'ample t t)
           (load-theme 'ample-flat t t)
-          (load-theme 'ample-light t t)
           (enable-theme 'ample-flat))
   :defer t
   :ensure t)
