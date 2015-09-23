@@ -49,11 +49,15 @@ can be used to add a number of spaces to the front and back of the string."
             (format-mode-line (format " %s (%%l/%d) %%c "
                                       (downcase (format-mode-line mode-name))
                                       (line-number-at-pos (point-max))))
-            (concat (buffer-name)
-                    (cond
-                     ((not (buffer-file-name)) " ")
-                     ((buffer-modified-p) "*")
-                     (t " ")))
+            (concat
+             (cond
+              ((and default-directory (file-remote-p default-directory)) "@ ")
+              (t ""))
+             (buffer-name)
+             (cond
+              ((not (buffer-file-name)) " ")
+              ((buffer-modified-p) "*")
+              (t " ")))
             (format-mode-line mode-line-process) 1 3))))
 
 (provide 'jordon-mode-line)
