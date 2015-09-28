@@ -420,14 +420,18 @@
 (use-package multiple-cursors
   :config (progn (defun jordon-mc-mark-until-line-change (&optional up)
                    (interactive "P")
-                   (unless (save-excursion
-                             (let ((col (current-column)))
-                               (forward-line (if up -1 1))
-                               (move-to-column col))
-                             (looking-at "\\( +\\| *$\\)"))
-                     (when up (next-line -1))
-                     (mc/mark-next-lines 1)
-                     (jordon-mc-mark-until-line-change up)))
+                   (let ((lines 0)
+                         (col (current-column)))
+                     (save-excursion
+                       (forward-line 1)
+                       (move-to-column col)
+                       (while (not (looking-at "\\( +\\| *$\\)"))
+                         (incf lines)
+                         (forward-line 1)
+                         (move-to-column col)))
+                     (unless (zerop lines)
+                       (mc/keyboard-quit)
+                       (mc/mark-next-like-this lines))))
                  (add-to-list 'mc/cmds-to-run-once 'jordon-mc-mark-until-line-change)
                  (bind-keys :map mc/keymap
                    ("C-c n" . mc/insert-numbers)))
