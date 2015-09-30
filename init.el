@@ -136,13 +136,18 @@
       :defer t)
     (use-package awt
       :load-path "~/src/awt-emacs/"
-      :init (after (:js2-mode)
-              (bind-keys :map js2-mode-map
-                ("C-c n f m" . awt-find-model)
-                ("C-c n r m" . awt-require-model)
-                ("C-c n f c" . awt-find-controller)
-                ("C-c n t" . awt-run-test-file)
-                ("C-c n s" . awt-run-current-test-in-file)))
+      :init
+      (progn
+        (after (:js2-mode)
+          (bind-keys :map js2-mode-map
+            ("C-c n f m" . awt-find-model)
+            ("C-c n r m" . awt-require-model)
+            ("C-c n f c" . awt-find-controller)
+            ("C-c n t" . awt-run-test-file)
+            ("C-c n s" . awt-run-current-test-in-file)))
+        (after (:magit)
+          (bind-keys :map git-commit-mode-map
+            ("C-c g x" . axof))))
       :defer t))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
