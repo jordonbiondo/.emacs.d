@@ -147,7 +147,7 @@
             ("C-c n s" . awt-run-current-test-in-file)))
         (after (:magit)
           (bind-keys :map git-commit-mode-map
-            ("C-c g x" . axof))))
+            ("C-c n x" . axof))))
       :defer t))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
