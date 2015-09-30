@@ -479,6 +479,11 @@
             (when (systemp "duna" "jordon")
               (add-to-list 'magit-repository-directories
                            (expand-file-name "~/src/")))
+            (add-hook
+             'magit-section-set-visibility-hook
+             (defun jordon-magit-section-visibility (section)
+               (and (member (magit-section-type section) '(stashes))
+                    'hide)))
             (after (:magit-blame)
               (setq magit-blame-time-format "%m/%d/%Y"))
             (when (guip)
