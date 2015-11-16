@@ -397,8 +397,17 @@
   :ensure t)
 
 (use-package neotree
-  :commands (neotree)
+  :commands (neotree jordon-neotree-toggle-project)
+  :chords ((" 8" . jordon-neotree-toggle-project))
   :config (progn
+            (defun jordon-neotree-toggle-project ()
+              (interactive)
+              (if (and (neo-global--window-exists-p)
+                       (equal (projectile-project-root)
+                              (with-current-buffer (neo-global--get-buffer)
+                                default-directory)))
+                  (neotree-hide)
+                (neotree-projectile-action)))
             (setq neo-theme 'nerd)
             (setq neo-window-width 30)
             (setq neo-vc-integration '(face)))
