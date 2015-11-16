@@ -628,15 +628,20 @@
   :ensure t)
 
 (use-package web-mode
-  :mode ("\\.html$" . web-mode)
+  :mode ("\\.\\(html\\|hbs\\)$" . web-mode)
   :config
   (progn
     (add-hook 'web-mode-hook
               (defun jordon-web-mode-setup ()
-                (setq web-mode-code-indent-offset 2
-                      web-mode-markup-indent-offset 2
-                      web-mode-attr-indent-offset 2
-                      web-mode-css-indent-offset 2)))
+                (let ((offset
+                       (if (and (buffer-file-name)
+                                (string-match-p  "\.hbs$" (buffer-file-name)))
+                           2
+                         2)))
+                  (setq web-mode-code-indent-offset offset
+                        web-mode-markup-indent-offset offset
+                        web-mode-attr-indent-offset offset
+                        web-mode-css-indent-offset offset))))
     (defun web-indirect-this-thing()
       (interactive)
       (let ((beg 0) (end 0))
