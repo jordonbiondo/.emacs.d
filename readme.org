@@ -3,6 +3,6 @@
 
   If you'd like to see how any package is configured or what bindings and chords are defined, just search for the corresponding use-package block in the file init.el
 
-  I do Rails for work, and mainly C for fun, so that is what my config is geared towards. A lot of Railsy things are part of the config, like yaml, haml, sass, projectile-rails, rspec, js2-mode, and more.
+  I do web for work, and mainly C and lisp for fun, so that is what my config is geared towards. A lot of Railsy things are part of the config, like yaml, haml, sass, projectile-rails, rspec, js2-mode, and more.
 
   I am usually running the latest dev build, so I can't guarantee that this is compatible with even the latest stable releases.
