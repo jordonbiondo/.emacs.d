@@ -118,6 +118,11 @@
       (setq smex-flex-matching nil))))
   ("duna"
    (:everyone
+    (bind-chord
+     "m5"
+     (defun jordon-buffer-md5 ()
+       (interactive)
+       (print (md5 (current-buffer)))))
     (ignore-errors
       (set-default-font "Envy Code R")
       (set-face-attribute 'default nil :height 125))
