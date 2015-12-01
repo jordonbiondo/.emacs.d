@@ -102,7 +102,7 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
   "Delete trailing whitespace in the current unstaged magit hunk."
   (delete-trailing-whitespace beg end))
 
-(define-magit-unstaged-hunk-action jordon-spellcheck-this-hunk (beg end)
+(define-magit-unstaged-hunk-action jordon-ispell-this-hunk (beg end)
   "Delete trailing whitespace in the current unstaged magit hunk."
   (display-buffer (current-buffer))
   (goto-char beg)
