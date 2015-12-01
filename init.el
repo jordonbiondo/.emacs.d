@@ -538,8 +538,9 @@
   :ensure t)
 
 (use-package git-timemachine
-  :defer t
+  :commands (git-timemachine)
   :bind ("C-c g t" . git-timemachine)
+  :defer t
   :ensure t)
 
 (use-package gh
@@ -1024,3 +1025,4 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
+(put 'downcase-region 'disabled nil)
