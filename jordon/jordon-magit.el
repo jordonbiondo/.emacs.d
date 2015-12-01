@@ -80,13 +80,14 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
              (cl-destructuring-bind (,file-sym ,start-line-sym ,total-lines-sym) ,area-sym
                (save-some-buffers)
                (with-current-buffer (find-file-noselect ,file-sym)
-                 (save-excursion
-                   (let ((,(car args) (progn (goto-char (point-min))
-                                             (forward-line (1- ,start-line-sym))
-                                             (point-at-bol)))
-                         (,(cadr args) (progn (forward-line (1- ,total-lines-sym))
-                                              (point-at-eol))))
-                     ,@body))
+                 (save-window-excursion
+                   (save-mark-and-excursion
+                    (let ((,(car args) (progn (goto-char (point-min))
+                                              (forward-line (1- ,start-line-sym))
+                                              (point-at-bol)))
+                          (,(cadr args) (progn (forward-line (1- ,total-lines-sym))
+                                               (point-at-eol))))
+                      ,@body)))
                  (save-buffer))
                (magit-refresh))
            (message "Cannot perform. Point is not on an unstaged hunk."))))))
@@ -100,6 +101,12 @@ that deletes the trailing whitespace in the current unstaged magit hunk:
 (define-magit-unstaged-hunk-action jordon-magit-cleanup-this-hunk (beg end)
   "Delete trailing whitespace in the current unstaged magit hunk."
   (delete-trailing-whitespace beg end))
+
+(define-magit-unstaged-hunk-action jordon-spellcheck-this-hunk (beg end)
+  "Delete trailing whitespace in the current unstaged magit hunk."
+  (display-buffer (current-buffer))
+  (goto-char beg)
+  (ispell-region beg end))
 
 (provide 'jordon-magit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
