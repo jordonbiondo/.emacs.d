@@ -859,7 +859,24 @@
                          things)
                     (let ((reps '(("<br>" . "\n") ("&nbsp;" . " ") ("\\n" . "\n"))))
                       (dolist (rep reps)
-                        (replace-string (car rep) (cdr rep) nil 1 (point-max))))))))
+                        (replace-string (car rep) (cdr rep) nil 1 (point-max)))))
+                  (when (save-excursion
+                          (goto-char (point-min))
+                          (search-forward "<!DOCTYPE html>" (line-end-position) t 1))
+                    (message "Rendering html...")
+                    (let ((file (make-temp-file "restreponse" nil ".html"))
+                          (str (buffer-string)))
+                      (with-temp-file file (insert str))
+                      (let ((response-text
+                             (save-window-excursion
+                               (eww-open-file file)
+                               (let ((str (buffer-string)))
+                                 (kill-buffer (current-buffer))
+                                 str))))
+                        (setf (buffer-string) response-text)
+                        (goto-char (point-min))
+                        (when (save-excursion (search-forward-regexp "\\_<def " nil t 1))
+                          (ruby-mode))))))))
     (add-hook 'restclient-response-loaded-hook
               (defun jordon-restclient-delete-headers-when-ok ()
                 (when (equal major-mode 'js-mode)
