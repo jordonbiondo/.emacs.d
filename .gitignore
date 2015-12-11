@@ -1,6 +1,7 @@
 *.elc
 *.*~
 elpa/*
+quelpa/*
 /ac-comphist.dat
 url/*
 .#*

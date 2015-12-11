@@ -34,6 +34,8 @@
 ;; Initial setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;(package-initialize)
+
 (mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode menu-bar-mode scroll-bar-mode))
 
@@ -76,7 +78,7 @@
         ("C-c C-j" . eval-and-replace-sexp))))
   :defer t)
 
-(use-package jordon-key-chord
+(use-package key-chord
   :config
   (progn (key-chord-mode t)
          (setq key-chord-two-keys-delay .020
@@ -134,9 +136,6 @@
     (fset 'yes-or-no-p 'y-or-n-p)
     (setq user-mail-address "jordon.biondo@appropos.com")
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
-    (use-package promises
-      :load-path "~/src/promises.el/"
-      :defer nil)
     (use-package spinner
       :defer t)
     (use-package awt
@@ -260,7 +259,7 @@
   :defer t)
 
 (use-package savehist
-  :idle (savehist-mode t))
+  :later (savehist-mode t))
 
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)
@@ -301,7 +300,7 @@
                (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
-  :idle (require 'ido)
+  :later (require 'ido)
   :chords ((" b" . ido-switch-buffer)
            (" f" . ido-find-file))
   :config (progn
@@ -380,7 +379,7 @@
 
 (use-package persistent-scratch
   :commands (persistent-scratch-restore)
-  :idle (progn
+  :later (progn
           (setq persistent-scratch-what-to-save '(major-mode))
           (persistent-scratch-restore)
           (persistent-scratch-autosave-mode t)
@@ -430,6 +429,7 @@
                      (:connection-type . ssl))))
             (add-hook 'jabber-chat-mode 'visual-line-mode)
             (setq jabber-chat-buffer-format "Chat: %n"))
+  :defer t
   :ensure t)
 
 (use-package avy
@@ -617,7 +617,7 @@
   :ensure t)
 
 (use-package undo-tree
-  :idle (global-undo-tree-mode 1)
+  :later (global-undo-tree-mode 1)
   :bind (("C-c j" . undo-tree-undo)
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
@@ -699,7 +699,7 @@
   :ensure t)
 
 (use-package company
-  :idle (global-company-mode t)
+  :later (global-company-mode t)
   :ensure t)
 
 (use-package omnisharp
@@ -958,7 +958,7 @@
 (use-package exec-path-from-shell
   :defer t
   :if (osxp)
-  :idle (exec-path-from-shell-initialize)
+  :later (exec-path-from-shell-initialize)
   :ensure t)
 
 (use-package dired-subtree

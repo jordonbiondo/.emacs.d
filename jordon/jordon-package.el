@@ -32,16 +32,34 @@
 
 (package-initialize)
 
+(defvar jordon-package-refresh-archives nil)
+
 (when (and (member "--" command-line-args)
            (member "-refresh" command-line-args))
+  (setq jordon-package-refresh-archives t)
   (delete "-refresh" command-line-args)
   (package-refresh-contents))
 
-(require 'jordon-use-package)
-(use-package jordon-use-package
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
+
+(use-package use-package-chords
+  :ensure t)
+
+(use-package quelpa-use-package
+  :config (unless jordon-package-refresh-archives
+            (setq quelpa-update-melpa-p nil))
+  :ensure t)
+
+(use-package jordon-use-package-later)
+
+(use-package use-package
   :config (progn
-            (setq use-package-idle-interval 0)
-            (prefer-coding-system 'utf-8)))
+            (require 'use-package-chords)
+            (require 'quelpa-use-package)
+            (require 'jordon-use-package-later)))
 
 (defmacro lambda-once (args &rest body)
   "Like lambda but body will only once, subsequent calls just return nil.
@@ -99,9 +117,9 @@ of the LIBS."
   (when (symbolp libs) (setq libs (list libs)))
   (let ((form (cons 'progn body)))
     (mapc (lambda-once (lib)
-            (setq form 
-                  `(eval-after-load ,(jordon-package-sanitize-package-name lib)
-                     (lambda-once () ,form))))
+                       (setq form
+                             `(eval-after-load ,(jordon-package-sanitize-package-name lib)
+                                (lambda-once () ,form))))
           libs)
     form))
 
