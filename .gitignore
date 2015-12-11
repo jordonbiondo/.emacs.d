@@ -49,3 +49,10 @@ keys/*
 /games/
 /recentf
 /profile-dotemacs.el
+xkcd/*
+var/*
+/smex-items
+/rake.cache
+/.persistent-scratch
+/abbrev_defs
+/notes
