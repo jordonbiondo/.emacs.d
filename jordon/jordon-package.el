@@ -53,6 +53,11 @@
             (setq quelpa-update-melpa-p nil))
   :ensure t)
 
+(use-package promises
+  :quelpa (promises :fetcher github :repo "jordonbiondo/promises.el")
+  :commands (promise promise* promise-later promise-later*)
+  :defer nil)
+
 (use-package jordon-use-package-later)
 
 (use-package use-package

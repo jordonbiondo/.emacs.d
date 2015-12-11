@@ -11,14 +11,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 
-;; (eval-when-compile
-;;   (require 'use-package)
-;;   (require 'promises))
-
-(use-package promises
-  :quelpa (promises :fetcher github :repo "jordonbiondo/promises.el")
-  :commands (promise promise* promise-later promise-later*)
-  :defer nil)
+(eval-when-compile
+  (require 'use-package)
+  (require 'promises))
 
 (add-to-list 'use-package-keywords :later t)
 
@@ -26,10 +21,12 @@
 
 (defun use-package-handler/:later (name keyword arg rest state)
   "Handler for `:later' keyword in `use-package'."
-  `((promise-later* (resolve reject)
-      (condition-case err
-          (progn ,@arg)
-        (error (message "Error in %S :later evaluation: %S" ',name err))))))
-
+  (let ((wrapped-arg
+         `((promise-later* (resolve reject)
+             (condition-case err
+                 (progn ,@arg)
+               (error
+                (message "Error in %S :later evaluation: %S" ',name err)))))))
+    (use-package-handler/:preface name keyword wrapped-arg rest state)))
 
 (provide 'jordon-use-package-later)
