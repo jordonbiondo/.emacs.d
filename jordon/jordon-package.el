@@ -45,9 +45,6 @@
 
 (require 'use-package)
 
-(use-package use-package-chords
-  :ensure t)
-
 (use-package quelpa-use-package
   :config (unless jordon-package-refresh-archives
             (setq quelpa-update-melpa-p nil))
@@ -59,10 +56,11 @@
   :defer nil)
 
 (use-package jordon-use-package-later)
+(use-package jordon-use-package-chords)
 
 (use-package use-package
   :config (progn
-            (require 'use-package-chords)
+            (require 'jordon-use-package-chords)
             (require 'quelpa-use-package)
             (require 'jordon-use-package-later)))
 
