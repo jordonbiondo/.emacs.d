@@ -185,7 +185,9 @@ Use `winstack-push' and
 (defun osx-copy-region(beg end)
   "Stick the region on yer pastin' board."
   (interactive "r")
-  (shell-command (concat "echo " (json-encode-string (buffer-substring beg end)) " | pbcopy")))
+  (when (zerop (let ((inhibit-message t))
+                 (shell-command-on-region (region-beginning) (region-end) "pbcopy")))
+    (message "copied")))
 
 (defun osx-safe-paste()
   "Insert the contents from `pbpaste'. Won't trigger chords."
