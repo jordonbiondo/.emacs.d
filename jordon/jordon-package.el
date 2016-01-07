@@ -51,9 +51,10 @@
   :ensure t)
 
 (use-package promises
-  :quelpa (promises :fetcher github :repo "jordonbiondo/promises.el")
   :commands (promise promise* promise-later promise-later*)
-  :defer nil)
+  :defer nil
+  :if (not (package-installed-p 'promises))
+  :quelpa (promises :fetcher github :repo "jordonbiondo/promises.el"))
 
 (use-package jordon-use-package-later)
 (use-package jordon-use-package-chords)
