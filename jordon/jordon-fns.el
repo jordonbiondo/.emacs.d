@@ -308,4 +308,56 @@ functions it contains."
   (recenter-top-bottom)
   (pulse-momentary-highlight-one-line (point)))
 
+(defun jordon-get-list-bounds (start-char)
+  (let ((start (save-excursion
+                 (while (and (ignore-errors (backward-up-list nil t) t)
+                             (not (eq (char-after) start-char))))
+                 (when (eq (char-after) start-char)
+                   (point)))))
+    (when start
+      (cons start
+            (save-excursion
+              (goto-char start)
+              (forward-sexp)
+              (point))))))
+
+(defun jordon-mark-a-thing (char)
+  "Mark a specified thing.
+
+Thing is specified by the next pressed character.
+
+i: current line without indentation
+l: entire current line
+w: current word
+s: current string
+p: current parens
+b: current brackets
+c: current curlies"
+  (interactive "cMark a thing: ")
+  (let* ((bounds
+          (case char
+            (?p (progn (jordon-get-list-bounds ?\()))
+            (?s (progn (let ((syntax (syntax-ppss)))
+                         (when (eq (syntax-ppss-context syntax) 'string)
+                           (goto-char (nth 8 syntax))
+                           (cons (point) (progn (forward-sexp) (point)))))))
+            (?w (bounds-of-thing-at-point 'word))
+            (?y (bounds-of-thing-at-point 'symbol))
+            (?b (progn (jordon-get-list-bounds ?\[)))
+            (?c (progn (jordon-get-list-bounds ?\{)))
+            (?l (cons (line-beginning-position)
+                      (line-end-position)))
+            (?i (cons (save-excursion
+                        (goto-char (line-beginning-position))
+                        (backward-to-indentation 0)
+                        (point))
+                      (line-end-position))))))
+    (when bounds
+      (setq bounds (sort
+                    (list (car bounds) (cdr bounds))
+                    (lambda (a b) (> (abs (- a (point))) (abs (- b (point)))))))
+      (goto-char (car bounds))
+      (set-mark-command nil)
+      (goto-char (cadr bounds)))))
+
 (provide 'jordon-fns)

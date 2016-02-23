@@ -63,6 +63,7 @@
   :chords ((" =" . winstack-push)
            (" -" . winstack-pop)
            ("nv" . jordon-find-init-file)
+           (" e" . jordon-mark-a-thing)
            (" \\". jordon-toggle-comment))
   :bind (("C-\\" . jordon-toggle-comment)
          ("C-<tab>" . jordon-indent-repeat)
@@ -460,7 +461,6 @@
 
 (use-package expand-region
   :bind ("C-c e" . er/expand-region)
-  :chords (" e" . er/expand-region)
   :ensure t)
 
 (use-package cmake-mode
