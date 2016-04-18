@@ -223,8 +223,8 @@
 (use-package pulse
   :commands pulse-momentary-highlight-one-line
   :config (progn
-            (setq pulse-iterations 7
-                  pulse-delay .01)
+            (setq pulse-iterations 8
+                  pulse-delay .05)
             (set-face-background 'pulse-highlight-start-face
                                  (face-foreground 'font-lock-keyword-face))))
 
