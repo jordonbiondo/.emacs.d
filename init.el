@@ -887,7 +887,12 @@
                       (forward-char 1)
                       (delete-region (point) (point-max))
                       (json-mode))))))
-    (add-hook 'restclient-response-loaded-hook 'jordon-nice-wrap-mode))
+    (add-hook 'restclient-response-loaded-hook 'jordon-nice-wrap-mode)
+    (add-hook 'restclient-response-loaded-hook
+              (defun pulse-entire-buffer ()
+                (save-excursion
+                  (goto-char (point-min))
+                  (pulse-momentary-highlight-region (point-min) (point-max))))))
   :defer t)
 
 (use-package js2-mode
