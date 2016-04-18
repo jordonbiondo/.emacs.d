@@ -907,7 +907,11 @@
                   (push "msg.no.side.effects" jordon-js2-ignored-warnings)
                   (dolist (extern '("after" "before" "beforeEach" "afterEach"
                                     "describe" "it" "run" "xit" "xdescribe"))
-                    (add-to-list 'js2-global-externs extern))))))
+                    (add-to-list 'js2-global-externs extern)))
+                (dolist (ig '("msg.return.inconsistent"
+                              "msg.anon.no.return.value"
+                              "msg.no.return.value"))
+                  (push ig jordon-js2-ignored-warnings)))))
   :config
   (progn
     (defvar-local jordon-js2-ignored-warnings nil)
