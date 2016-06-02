@@ -297,7 +297,7 @@ functions it contains."
     (setq package
           (ido-completing-read
            "Package: "
-           (mapcar (lambda (p) (symbol-name (cadr p)))
+           (mapcar (lambda (p) (format "%s" (cadr p)))
                    (remove-if-not (lambda (f) (equal (car-safe f) 'use-package))
                                   (with-temp-buffer
                                     (insert-file-contents user-init-file)
