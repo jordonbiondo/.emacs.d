@@ -167,3 +167,18 @@ provided for debugging purposes."
                 (remove-hook hook hook-sym)
                 (message "removed %s from %s" hook-name hook)))))
     (add-hook hook hook-sym)))
+
+(defun jordon-js2-log-arguments ()
+  "This has been mostly replaced by js2r functions"
+  (interactive)
+  (save-excursion
+    (when (and (beginning-of-defun) (search-forward "function") (search-forward "("))
+      (let ((args (buffer-substring-no-properties
+                   (point)
+                   (progn (backward-char 1) (forward-sexp 1) (1- (point))))))
+        (search-forward "{")
+        (insert "\nconsole.log({"
+                (mapconcat (lambda (arg) (format "%s: %s" (s-trim arg) (s-trim arg)))
+                           (split-string args ", " t) ", ")
+                "});")
+        (call-interactively 'indent-for-tab-command)))))

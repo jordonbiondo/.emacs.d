@@ -897,9 +897,11 @@
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
+  :bind (:map js2-mode-map
+              ("C-c n l" . jordon-js2-log-arguments)
+              ("C-c n f a" . ffap))
   :init
   (progn
-    (add-hook 'js2-mode-hook 'abbrev-mode)
     (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t)
     (add-hook 'js2-mode-hook
               (defun jordon-js2-mode-setup ()
@@ -920,37 +922,21 @@
   :config
   (progn
     (defvar-local jordon-js2-ignored-warnings nil)
-    (defadvice js2-report-warning (around ignore-some-warnings activate)
-      (unless (member (ad-get-arg 0) jordon-js2-ignored-warnings)
-        ad-do-it))
-    (bind-keys :map js2-mode-map
-      ("C-c n l" . jordon-js2-log-arguments)
-      ("C-c n f a" . ffap))
+    (defun jordon-filter-js2-warnings ()
+      "Filter out warnings from `js2-parsed-warnings'."
+      (setq js2-parsed-warnings
+            (cl-remove-if
+             (lambda (warning)
+               (let ((msg (caar warning)))
+                 (and msg (member msg jordon-js2-ignored-warnings))))
+             js2-parsed-warnings)))
+    (add-hook 'js2-post-parse-callbacks
+              'jordon-filter-js2-warnings)
     (setq-default js2-basic-offset 4)
     (setq js-switch-indent-offset js2-basic-offset)
     (set-default
      (make-variable-buffer-local 'js2-global-externs)
-     '("clearTimeout" "setTimeout" "module" "require" "_"))
-    (defun jordon-js2-log-arguments ()
-      (interactive)
-      (save-excursion
-        (when (and (beginning-of-defun) (search-forward "function") (search-forward "("))
-          (let ((args (buffer-substring-no-properties
-                       (point)
-                       (progn (backward-char 1) (forward-sexp 1) (1- (point))))))
-            (search-forward "{")
-            (insert "\nconsole.log({"
-                    (mapconcat (lambda (arg) (format "%s: %s" (s-trim arg) (s-trim arg)))
-                               (split-string args ", " t) ", ")
-                    "});")
-            (call-interactively 'indent-for-tab-command)))))
-    (mapc (lambda (abp)
-            (define-abbrev js2-mode-abbrev-table (car abp) (cdr abp)))
-          '(("fn" . "function")
-            ("tn" . "then")
-            ("pr" . "Promise")
-            ("re" . "require")
-            ("gro" . "global.rootRequire"))))
+     '("clearTimeout" "setTimeout" "module" "require" "_")))
   :defer t
   :ensure t)
 
