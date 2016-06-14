@@ -643,6 +643,12 @@
   :config
   (progn
     (add-hook 'web-mode-hook
+              (defun jordon-web-guess-engine ()
+                (save-excursion
+                  (goto-char (point-min))
+                  (when (search-forward-regexp " ng-[a-z-]+=" nil t 1)
+                    (web-mode-set-engine "angular")))))
+    (add-hook 'web-mode-hook
               (defun jordon-web-mode-setup ()
                 (let ((offset
                        (if (and (buffer-file-name)
