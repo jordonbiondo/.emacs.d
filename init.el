@@ -437,6 +437,16 @@
   :bind ("C-c <SPC>" . avy-goto-word-1)
   :ensure t)
 
+(use-package dumb-jump
+  :chords (("j " . dumb-jump-go)
+           ("k " . dumb-jump-back)
+           ("h " . dumb-jump-quick-look))
+  :config
+  (add-hook 'dumb-jump-after-jump-hook
+            (defun jordon-dumb-jump-pulse-line ()
+              (pulse-momentary-highlight-one-line (point))))
+  :ensure t)
+
 (use-package multiple-cursors
   :config (progn (defun jordon-mc-mark-until-line-change (&optional up)
                    (interactive "P")
