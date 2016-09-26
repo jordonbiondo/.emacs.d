@@ -194,6 +194,18 @@ Use `winstack-push' and
   (interactive)
   (insert (shell-command-to-string "pbpaste -Prefer txt")))
 
+(defun soft-caps-capitalize ()
+  (upcase-region (1- (point)) (point)))
+
+(define-minor-mode soft-caps-lock-mode
+  "A mode for software capslock"
+  :init-value nil
+  :lighter " softcaps"
+  :keymap nil
+  (if soft-caps-lock-mode
+      (add-hook 'post-self-insert-hook 'soft-caps-capitalize nil t)
+    (remove-hook 'post-self-insert-hook 'soft-caps-capitalize t)))
+
 (defun shell-clear()
   "Clear a shell buffer."
   (interactive)
