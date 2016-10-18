@@ -35,6 +35,7 @@
         jordon-indent-repeat
         jordon-toggle-comment
         jordon-toggle-comment-line
+        js2r-expand-object
         kill-region
         kill-visual-line
         nxml-electric-slash
