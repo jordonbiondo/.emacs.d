@@ -260,7 +260,8 @@
   :defer t)
 
 (use-package savehist
-  :later (savehist-mode t))
+  :defer 1
+  :config (savehist-mode t))
 
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)
@@ -301,13 +302,12 @@
                (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
-  :later (require 'ido)
   :chords ((" b" . ido-switch-buffer)
            (" f" . ido-find-file))
   :config (progn
             (ido-everywhere t)
             (ido-mode t))
-  :defer t)
+  :defer 1)
 
 (use-package erc
   :defer t
@@ -378,15 +378,15 @@
   :defer t
   :ensure t)
 
-(use-package persistent-scratch
-  :commands (persistent-scratch-restore)
-  :later (progn
-           (setq persistent-scratch-what-to-save '(major-mode))
-           (persistent-scratch-restore)
-           (persistent-scratch-autosave-mode t)
-           (setq persistent-scratch-autosave-interval 240))
-  :defer t
-  :ensure t)
+;; (use-package persistent-scratch
+;;   :commands (persistent-scratch-restore)
+;;   :config (progn
+;;             (setq persistent-scratch-what-to-save '(major-mode))
+;;             (persistent-scratch-restore)
+;;             (persistent-scratch-autosave-mode t)
+;;             (setq persistent-scratch-autosave-interval 240))
+;;   :defer t
+;;   :ensure t)
 
 (use-package s
   :defer t
@@ -627,7 +627,8 @@
   :ensure t)
 
 (use-package undo-tree
-  :later (global-undo-tree-mode 1)
+  :defer 1
+  :config (global-undo-tree-mode 1)
   :bind (("C-c j" . undo-tree-undo)
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
@@ -715,7 +716,8 @@
   :ensure t)
 
 (use-package company
-  :later (global-company-mode t)
+  :config (global-company-mode t)
+  :defer 2
   :ensure t)
 
 (use-package omnisharp
@@ -984,9 +986,9 @@
   :ensure t)
 
 (use-package exec-path-from-shell
-  :defer t
+  :defer 1
   :if (osxp)
-  :later (exec-path-from-shell-initialize)
+  :config (exec-path-from-shell-initialize)
   :ensure t)
 
 (use-package dired-subtree
