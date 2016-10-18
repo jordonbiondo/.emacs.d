@@ -861,6 +861,10 @@
   :defer t
   :ensure t)
 
+(use-package dedicated
+  :defer 2
+  :ensure t)
+
 (use-package restclient
   :init (add-hook 'restclient-mode-hook
                   (defun jordon-setup-restclient-mode ()
