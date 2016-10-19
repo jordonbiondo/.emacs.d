@@ -149,6 +149,7 @@
             ("C-c n r m" . awt-require-model)
             ("C-c n f c" . awt-find-controller)
             ("C-c n t" . awt-run-test-file)
+            ("C-c n r" . awt-reload-tabs)
             ("C-c n s" . awt-run-current-test-in-file)))
         (after (:magit)
           (bind-keys :map git-commit-mode-map
