@@ -85,22 +85,22 @@
          (setq key-chord-two-keys-delay .020
                key-chord-one-key-delay .020)))
 
-(use-package jordon-jabber
-  :init (after (:jabber)
-          (require 'jordon-jabber))
-  :config  (progn
-             (setq jabber-chat-header-line-format
-                   jordon-jabber-chat-header-line-format)
-             (cond
-              ((osxp)
-               (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber-terminal-notification))
-              ((windowsp)
-               (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber-toast-notification)
-               (add-hook 'jabber-alert-message-hooks
-                         'jordon-jabber-send-mail-notification))))
-  :defer t)
+;; (use-package jordon-jabber
+;;   :init (after (:jabber)
+;;           (require 'jordon-jabber))
+;;   :config  (progn
+;;              (setq jabber-chat-header-line-format
+;;                    jordon-jabber-chat-header-line-format)
+;;              (cond
+;;               ((osxp)
+;;                (add-hook 'jabber-alert-message-hooks
+;;                          'jordon-jabber-terminal-notification))
+;;               ((windowsp)
+;;                (add-hook 'jabber-alert-message-hooks
+;;                          'jordon-jabber-toast-notification)
+;;                (add-hook 'jabber-alert-message-hooks
+;;                          'jordon-jabber-send-mail-notification))))
+;;   :defer t)
 
 
 (use-package jordon-mode-line
