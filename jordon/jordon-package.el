@@ -34,8 +34,9 @@
 
 (defvar jordon-package-refresh-archives nil)
 
-(when (and (member "--" command-line-args)
-           (member "-refresh" command-line-args))
+(when (or (not package-archive-contents)
+	  (and (member "--" command-line-args)
+	       (member "-refresh" command-line-args)))
   (setq jordon-package-refresh-archives t)
   (delete "-refresh" command-line-args)
   (package-refresh-contents))

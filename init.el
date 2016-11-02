@@ -80,28 +80,11 @@
   :defer t)
 
 (use-package key-chord
+  :ensure t
   :config
   (progn (key-chord-mode t)
          (setq key-chord-two-keys-delay .020
                key-chord-one-key-delay .020)))
-
-;; (use-package jordon-jabber
-;;   :init (after (:jabber)
-;;           (require 'jordon-jabber))
-;;   :config  (progn
-;;              (setq jabber-chat-header-line-format
-;;                    jordon-jabber-chat-header-line-format)
-;;              (cond
-;;               ((osxp)
-;;                (add-hook 'jabber-alert-message-hooks
-;;                          'jordon-jabber-terminal-notification))
-;;               ((windowsp)
-;;                (add-hook 'jabber-alert-message-hooks
-;;                          'jordon-jabber-toast-notification)
-;;                (add-hook 'jabber-alert-message-hooks
-;;                          'jordon-jabber-send-mail-notification))))
-;;   :defer t)
-
 
 (use-package jordon-mode-line
   :config (setq-default mode-line-format jordon-mode-line-format))
@@ -299,8 +282,9 @@
               (";" . c-maybe-insert-semicolon))))
 
 (use-package autoinsert
-  :init (progn (auto-insert-mode t)
-               (setq auto-insert-prompt "insert %s? ")))
+  :defer 1
+  :config (progn (auto-insert-mode t)
+                 (setq auto-insert-prompt "insert %s? ")))
 
 (use-package ido
   :chords ((" b" . ido-switch-buffer)
@@ -378,16 +362,6 @@
           (enable-theme 'ample-flat))
   :defer t
   :ensure t)
-
-;; (use-package persistent-scratch
-;;   :commands (persistent-scratch-restore)
-;;   :config (progn
-;;             (setq persistent-scratch-what-to-save '(major-mode))
-;;             (persistent-scratch-restore)
-;;             (persistent-scratch-autosave-mode t)
-;;             (setq persistent-scratch-autosave-interval 240))
-;;   :defer t
-;;   :ensure t)
 
 (use-package s
   :defer t
@@ -845,7 +819,7 @@
   :defer t
   :ensure t)
 
-(use-package scala-mode2
+(use-package scala-mode
   :defer t
   :ensure t)
 
