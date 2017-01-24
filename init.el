@@ -34,7 +34,7 @@
 ;; Initial setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;(package-initialize)
+;;(package-initialize)
 
 (mapc (lambda (mode) (when (fboundp mode) (apply mode '(-1))))
       '(tool-bar-mode menu-bar-mode scroll-bar-mode))
@@ -130,13 +130,13 @@
           (bind-keys :map js2-mode-map
             ("C-c n f m" . awt-find-model)
             ("C-c n r m" . awt-require-model)
+            ("C-c n r r" . awt-root-require)
             ("C-c n f c" . awt-find-controller)
             ("C-c n t" . awt-run-test-file)
-            ("C-c n r" . awt-reload-tabs)
             ("C-c n s" . awt-run-current-test-in-file)))
         (after (:magit)
           (bind-keys :map git-commit-mode-map
-            ("C-c n x" . axof))))
+            ("C-c n j" . jira-issues))))
       :defer t))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -630,7 +630,7 @@
                        (if (and (buffer-file-name)
                                 (string-match-p  "\.hbs$" (buffer-file-name)))
                            2
-                         2)))
+                         4)))
                   (setq web-mode-code-indent-offset offset
                         web-mode-markup-indent-offset offset
                         web-mode-attr-indent-offset offset
@@ -906,6 +906,15 @@
   :init
   (progn
     (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t)
+    (add-hook 'js2-mode-hook
+              (defun jordon-js2-determine-indent ()
+                (setq-local
+                 js2-basic-offset
+                 (let ((root (ignore-errors (projectile-project-root))))
+                   (if root
+                       (let ((default-directory root))
+                         (if (file-exists-p "ember-cli-build.js") 2 4))
+                     4)))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-mode-setup ()
                 (flycheck-mode t)

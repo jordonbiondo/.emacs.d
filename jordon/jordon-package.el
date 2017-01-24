@@ -32,11 +32,26 @@
 
 (package-initialize)
 
+(defun jordon-package-handle-initial-install ()
+  (switch-to-buffer "*Initial Setup*")
+  (insert "Please wait while the config initializes for the first time")
+  (justify-current-line 'center)
+  (add-hook
+   'after-init-hook
+   (lambda ()
+     (when (get-buffer "*Initial Setup*")
+       (switch-to-buffer "*Initial Setup*")
+       (delete-other-windows)
+       (setf (buffer-string) "Initial Install Complete! Enjoy!"))))
+  (sit-for .001))
+
 (defvar jordon-package-refresh-archives nil)
 
 (when (or (not package-archive-contents)
-	  (and (member "--" command-line-args)
-	       (member "-refresh" command-line-args)))
+          (and (member "--" command-line-args)
+               (member "-refresh" command-line-args)))
+  (when (not package-archive-contents)
+    (jordon-package-handle-initial-install))
   (setq jordon-package-refresh-archives t)
   (delete "-refresh" command-line-args)
   (package-refresh-contents))

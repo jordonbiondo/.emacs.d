@@ -9,7 +9,8 @@
   (declare (indent defun))
   (cons 'progn (mapcar
                 (lambda (sys)
-                  `(when (equal (system-name) ,(car sys))
+                  `(when (or (equal (system-name) ,(car sys))
+                             (equal (system-name) ,(concat (car sys) ".local")))
                      ,@(mapcar (lambda (user)
                                  `(when ,(or (equal (car user)
                                                     :everyone)
