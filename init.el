@@ -461,13 +461,6 @@
                 '("a" "w" "e" "f" "j" "i" "o" ";" "s" "d" "k" "l"))
   :ensure t)
 
-(use-package smex
-  :bind (("M-x" . smex)
-         ("C-c M-x" . execute-extended-command))
-  :chords ("io" . smex)
-  :commands smex
-  :ensure t)
-
 (use-package magit
   :bind (("C-x m" . magit-status)
          ("C-c g b" . magit-blame)
@@ -534,6 +527,13 @@
 
 (use-package helm
   :defer t
+  :bind (("M-x" . helm-M-x)
+         ("C-c M-x" . execute-extended-command))
+  :chords ("io" . helm-M-x)
+  :config
+  (progn
+    (require 'helm-command)
+    (setq helm-M-x-fuzzy-match t))
   :init
   (use-package helm-grep
     :defer t
