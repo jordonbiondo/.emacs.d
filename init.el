@@ -899,39 +899,54 @@
                   (pulse-momentary-highlight-region (point-min) (point-max))))))
   :defer t)
 
+(use-package rjsx-mode
+  :defer t
+  :ensure t)
+
 (use-package js2-mode
-  :mode ("\\.js$" . js2-mode)
   :bind (:map js2-mode-map
               ("C-c n l" . jordon-js2-log-arguments)
               ("C-c n f a" . ffap))
   :init
   (progn
+    (add-to-list
+     'auto-mode-alist
+     (cons "\.js$" (defun jordon-choose-js-type-mode ()
+                     (save-excursion
+                       (goto-char (point-min))
+                       (let ((buff (current-buffer)))
+                         (if (search-forward "React." nil t 1)
+                             (rjsx-mode)
+                           (js2-mode)))))))
     (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t)
     (add-hook 'js2-mode-hook
               (defun jordon-js2-determine-indent ()
-                (setq-local
-                 js2-basic-offset
-                 (let ((root (ignore-errors (projectile-project-root))))
-                   (if root
-                       (let ((default-directory root))
-                         (if (file-exists-p "ember-cli-build.js") 2 4))
-                     4)))))
+                (let ((indent
+                       (let ((root (ignore-errors (projectile-project-root))))
+                         (if root
+                             (let ((default-directory root))
+                               (if (file-exists-p "ember-cli-build.js") 2 4))
+                           4))))
+                  (setq-local js2-basic-offset indent)
+                  (setq-local sgml-basic-offset indent))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-mode-setup ()
-                (flycheck-mode t)
-                (when (executable-find "eslint")
-                  (flycheck-select-checker 'javascript-eslint))))
+                (when (buffer-file-name)
+                  (flycheck-mode t)
+                  (when (executable-find "eslint")
+                    (flycheck-select-checker 'javascript-eslint)))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-setup-for-tests ()
-                (when (string-match-p "^.*tests?\\.js" (buffer-file-name))
-                  (push "msg.no.side.effects" jordon-js2-ignored-warnings)
-                  (dolist (extern '("after" "before" "beforeEach" "afterEach"
-                                    "describe" "it" "run" "xit" "xdescribe"))
-                    (add-to-list 'js2-global-externs extern)))
-                (dolist (ig '("msg.return.inconsistent"
-                              "msg.anon.no.return.value"
-                              "msg.no.return.value"))
-                  (push ig jordon-js2-ignored-warnings)))))
+                (when (buffer-file-name)
+                  (when (string-match-p "^.*tests?\\.js" (buffer-file-name))
+                    (push "msg.no.side.effects" jordon-js2-ignored-warnings)
+                    (dolist (extern '("after" "before" "beforeEach" "afterEach"
+                                      "describe" "it" "run" "xit" "xdescribe"))
+                      (add-to-list 'js2-global-externs extern)))
+                  (dolist (ig '("msg.return.inconsistent"
+                                "msg.anon.no.return.value"
+                                "msg.no.return.value"))
+                    (push ig jordon-js2-ignored-warnings))))))
   :config
   (progn
     (defvar-local jordon-js2-ignored-warnings nil)
@@ -946,6 +961,8 @@
     (add-hook 'js2-post-parse-callbacks
               'jordon-filter-js2-warnings)
     (setq-default js2-basic-offset 4)
+    (setq-default js2-strict-trailing-comma-warning nil)
+    (setq-default js2-strict-missing-semi-warning nil)
     (setq js-switch-indent-offset js2-basic-offset)
     (set-default
      (make-variable-buffer-local 'js2-global-externs)
