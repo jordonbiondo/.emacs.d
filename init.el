@@ -482,6 +482,7 @@
                (and (member (magit-section-type section) '(stashes))
                     'hide)))
             (after (:magit-blame)
+              (setq magit-blame-heading-format "%-20a %A %s")
               (setq magit-blame-time-format "%m/%d/%Y"))
             (when (guip)
               (setq magit-log-format-graph-function
