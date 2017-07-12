@@ -27,7 +27,7 @@
 (defalias 'package--ensure-init-file #'ignore)
 
 (dolist (p '(;;("marmalade" . "http://marmalade-repo.org/packages/")
-             ("melpa" . "http://melpa.milkbox.net/packages/")))
+             ("melpa" . "https://melpa.org/packages/")))
   (add-to-list 'package-archives p))
 
 (package-initialize)
