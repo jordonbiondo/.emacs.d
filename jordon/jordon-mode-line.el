@@ -53,7 +53,15 @@ can be used to add a number of spaces to the front and back of the string."
              (cond
               ((and default-directory (file-remote-p default-directory)) "@ ")
               (t ""))
-             (buffer-name)
+             (if (and (fboundp 'flycheck-mode)
+                      (boundp 'flycheck-mode)
+                      flycheck-mode
+                      (equal flycheck-last-status-change 'finished)
+                      (> (length flycheck-current-errors) 0))
+                 (concat
+                  (propertize "*" 'face '(:inherit error))
+                  (buffer-name))
+               (buffer-name))
              (cond
               ((not (buffer-file-name)) " ")
               ((buffer-modified-p) "*")
