@@ -531,7 +531,8 @@
   :defer t
   :bind (("M-x" . helm-M-x)
          ("C-c M-x" . execute-extended-command))
-  :chords ("io" . helm-M-x)
+  :chords (("io" . helm-M-x)
+           ("jo" . helm-etags-select))
   :config
   (progn
     (require 'helm-command)
@@ -540,12 +541,17 @@
   (use-package helm-grep
     :defer t
     :chords ("hf" . helm-do-grep))
+  (use-package helm-tags
+    :defer t
+    :config
+    (setq helm-etags-fuzzy-match nil))
   :ensure t)
 
 (use-package imenu-anywhere
   :defer t
-  :chords ("jo" . imenu-anywhere)
+  ;;:chords ("jo" . helm-imenu-anywhere)
   :config (progn
+            (setq helm-imenu-fuzzy-match t)
             (use-package cl)
             (defun jordon-imenu-show-used-packages ()
               (add-to-list 'imenu-generic-expression
@@ -617,7 +623,7 @@
   :ensure t)
 
 (use-package web-mode
-  :mode ("\\.\\(html\\|hbs\\)$" . web-mode)
+  :mode ("\\.\\(html\\|hbs\\|vue\\)$" . web-mode)
   :config
   (progn
     (add-hook 'web-mode-hook
@@ -630,7 +636,7 @@
               (defun jordon-web-mode-setup ()
                 (let ((offset
                        (if (and (buffer-file-name)
-                                (string-match-p  "\.hbs$" (buffer-file-name)))
+                                (string-match-p  "\.\\(hbs\\|vue\\)$" (buffer-file-name)))
                            2
                          4)))
                   (setq web-mode-code-indent-offset offset
@@ -907,6 +913,7 @@
 (use-package js2-mode
   :bind (:map js2-mode-map
               ("C-c n l" . jordon-js2-log-arguments)
+              ("C-c n /" . xref-find-definitions)
               ("C-c n f a" . ffap))
   :init
   (progn
@@ -926,15 +933,28 @@
                        (let ((root (ignore-errors (projectile-project-root))))
                          (if root
                              (let ((default-directory root))
-                               (if (file-exists-p "ember-cli-build.js") 2 4))
+                               (if (or
+                                    (file-exists-p ".expo")
+                                    (file-exists-p "ember-cli-build.js"))
+                                   2 4))
                            4))))
                   (setq-local js2-basic-offset indent)
                   (setq-local sgml-basic-offset indent))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-mode-setup ()
-                (when (buffer-file-name)
-                  (flycheck-mode t)
+                (when (and (buffer-file-name)
+                           (not (string-match-p "^timemachine" (buffer-name))))
                   (when (executable-find "eslint")
+                    (when-let ((default-directory
+                                 (or
+                                  (ignore-errors (vc-root-dir))
+                                  (ignore-errors (magit-toplevel)))))
+                      (when (f-exists-p "node_modules/eslint/bin/eslint.js")
+                        (setq-local
+                         flycheck-javascript-eslint-executable
+                         (expand-file-name
+                          "./node_modules/eslint/bin/eslint.js"))))
+                    (flycheck-mode t)
                     (flycheck-select-checker 'javascript-eslint)))))
     (add-hook 'js2-mode-hook
               (defun jordon-js2-setup-for-tests ()
@@ -1069,3 +1089,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
 (put 'downcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)

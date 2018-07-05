@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         ac-clang-async-autocomplete-autotrigger
+        awt-run-test-file
         backward-sexp
         beginning-of-defun
         beginning-of-visual-line
@@ -24,23 +25,28 @@
         dired-do-kill-lines
         dired-find-file
         dired-flag-file-deletion
+        electric-newline-and-maybe-indent
         end-of-visual-line
         enh-ruby-electric-brace
         enh-ruby-forward-sexp
         eval-print-last-sexp
         forward-sexp
         haml-electric-backspace
+        helm-M-x
         ibuffer-mark-for-delete
         indent-for-tab-command
         jordon-indent-repeat
         jordon-toggle-comment
         jordon-toggle-comment-line
+        js2r-expand-node-at-point
         js2r-expand-object
         kill-region
         kill-visual-line
+        markdown-cycle
         nxml-electric-slash
         org-beginning-of-line
         org-cycle
+        org-delete-char
         org-end-of-line
         org-force-self-insert
         org-kill-line
@@ -62,10 +68,13 @@
         paredit-splice-sexp
         paredit-split-sexp
         python-indent-dedent-line-backspace
+        rjsx-electric-lt
         sh-assignment
         show-children
         slime-space
+        transpose-sexps
         transpose-words
+        undo-tree-visualize
         web-mode-comment-or-uncomment
         whitespace-mode
         yas-expand
@@ -85,5 +94,6 @@
         kmacro-end-and-call-macro
         kmacro-end-macro
         kmacro-start-macro
+        markdown-exdent-or-delete
         smex
         ))
