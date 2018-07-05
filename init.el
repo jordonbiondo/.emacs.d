@@ -479,8 +479,9 @@
             (add-hook
              'magit-section-set-visibility-hook
              (defun jordon-magit-section-visibility (section)
-               (and (member (magit-section-type section) '(stashes))
-                    'hide)))
+               (or
+                (and (arrayp section) (equal (aref section 1) 'stashes) 'hide)
+                'show)))
             (after (:magit-blame)
               (setq magit-blame-heading-format "%-20a %A %s")
               (setq magit-blame-time-format "%m/%d/%Y"))
