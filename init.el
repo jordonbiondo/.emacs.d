@@ -967,7 +967,7 @@
     (setq js-switch-indent-offset js2-basic-offset)
     (set-default
      (make-variable-buffer-local 'js2-global-externs)
-     '("clearTimeout" "setTimeout" "module" "require" "_")))
+     '("clearTimeout" "setTimeout" "module" "require" "rootRequire" "_")))
   :defer t
   :ensure t)
 
