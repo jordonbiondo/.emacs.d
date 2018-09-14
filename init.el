@@ -602,8 +602,8 @@
   :defer t
   :ensure t)
 
-(use-package header2
-  :ensure t)
+;; (use-package header2
+;;   :ensure t)
 
 (use-package lua-mode
   :defer t
@@ -950,10 +950,9 @@
                                   (ignore-errors (vc-root-dir))
                                   (ignore-errors (magit-toplevel)))))
                       (when (f-exists-p "node_modules/eslint/bin/eslint.js")
-                        (setq-local
-                         flycheck-javascript-eslint-executable
-                         (expand-file-name
-                          "./node_modules/eslint/bin/eslint.js"))))
+                        (flycheck-set-checker-executable
+                         "javascript-eslint"
+                         "./node_modules/eslint/bin/eslint.js")))
                     (flycheck-mode t)
                     (flycheck-select-checker 'javascript-eslint)))))
     (add-hook 'js2-mode-hook
@@ -1072,7 +1071,7 @@
           (ido-vertical-mode t))
   :ensure t)
 
-(use-package ido-ubiquitous
+(use-package ido-completing-read+
   :defer t
   :init (after (:ido)
           (ido-ubiquitous-mode t))
