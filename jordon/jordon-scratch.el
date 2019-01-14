@@ -182,3 +182,29 @@ provided for debugging purposes."
                            (split-string args ", " t) ", ")
                 "});")
         (call-interactively 'indent-for-tab-command)))))
+
+
+(defun jordon-get-weather-data ()
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://forecast.weather.gov/MapClick.php?&lat=42.9634&lon=-85.6681&FcstType=json" t t 15000)
+    (search-forward "\n\n")
+    (let ((data (json-read-from-string (buffer-substring-no-properties (point) (point-max)))))
+      (kill-buffer (current-buffer))
+      data)))
+
+(defun jordon-get-weather-message ()
+  (let* ((response (jordon-get-weather-data))
+         (data (alist-get 'data response))
+         (temp (alist-get 'temperature data))
+         (high (aref temp 0))
+         (low (aref temp 1))
+         (now (alist-get 'Temp (alist-get 'currentobservation response)))
+         (text (alist-get 'text data)))
+    (format "Now: %s, High: %s\nToday: %s\nTonight: %s"
+            now high (aref text 0) (aref text 1))))
+
+(defun jordon-weather ()
+  (interactive)
+  (message "%s" (jordon-get-weather-message)))
+
