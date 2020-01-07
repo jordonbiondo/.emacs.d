@@ -45,6 +45,9 @@
   "Indent the current line and move to the next."
   (interactive)
   (indent-according-to-mode)
+  (when (= (current-indentation)
+           (- (line-end-position) (line-beginning-position)))
+    (delete-trailing-whitespace (line-beginning-position) (line-end-position)))
   (forward-line 1))
 
 (defun jordon-toggle-comment(&optional duplicate)
