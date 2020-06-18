@@ -20,6 +20,8 @@
         c-indent-new-comment-line
         c-maybe-insert-semicolon
         comment-dwim
+        cperl-electric-brace
+        cperl-electric-lbrace
         csharp-maybe-insert-codedoc
         dabbrev-expand
         dired-do-kill-lines
@@ -43,6 +45,7 @@
         kill-region
         kill-visual-line
         markdown-cycle
+        ns-copy-including-secondary
         nxml-electric-slash
         org-beginning-of-line
         org-cycle
@@ -77,6 +80,7 @@
         undo-tree-visualize
         web-mode-comment-or-uncomment
         whitespace-mode
+        yaml-electric-dash-and-dot
         yas-expand
         ))
 
@@ -96,4 +100,5 @@
         kmacro-start-macro
         markdown-exdent-or-delete
         smex
+        yaml-electric-backspace
         ))
