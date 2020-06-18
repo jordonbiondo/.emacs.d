@@ -143,6 +143,18 @@
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package cperl-mode
+  :defer t
+  :init (defalias 'perl-mode- 'cperl-mode)
+  :config (progn
+            (add-hook
+             'cperl-mode-hook
+             (defun jordon-setup-cperl ()
+               (flycheck-mode 1)
+               (setq-local tab-width 2)
+               (defvaralias 'cperl-indent-level 'tab-width)
+               (setq-local cperl-indent-parens-as-block t)))))
+
 (use-package simple
   :config (setq save-interprogram-paste-before-kill t)
   :chords (" g" . goto-line))
