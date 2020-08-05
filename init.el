@@ -564,6 +564,8 @@
            ("jo" . helm-etags-select))
   :config
   (progn
+    (setq helm-completion-style 'emacs)
+    (setq completion-styles '(helm-flex))
     (require 'helm-command)
     (setq helm-M-x-fuzzy-match t))
   :init
