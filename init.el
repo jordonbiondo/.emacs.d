@@ -102,6 +102,23 @@
    (:everyone
     (after (:smex)
       (setq smex-flex-matching nil))))
+  ("jordonamb"
+   (:everyone
+    (bind-chord
+     "m5"
+     (defun jordon-buffer-md5 ()
+       (interactive)
+       (print (md5 (current-buffer)))))
+    (ignore-errors
+      (set-default-font "Envy Code R")
+      (set-face-attribute 'default nil :height 125))
+    (when (guip)
+      (global-unset-key (kbd "s-t")))
+    (setq-default scroll-margin 5)
+    (setq-default scroll-step 1))
+   ("jordonbiondo"
+    (fset 'yes-or-no-p 'y-or-n-p)
+    (setq initial-scratch-message "\n;; Welcome Back\n\n")))
   ("duna"
    (:everyone
     (bind-chord
