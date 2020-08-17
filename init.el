@@ -862,14 +862,14 @@
   :defer t
   :ensure t)
 
-(use-package ensime
-  :commands (ensime-mode)
-  :init (add-hook 'scala-mode-hook
-                  (defun jordon-maybe-ensime-mode ()
-                    (when (equal (projectile-project-type) 'sbt)
-                      (ensime-mode t))))
-  :defer t
-  :ensure t)
+;; (use-package ensime
+;;   :commands (ensime-mode)
+;;   :init (add-hook 'scala-mode-hook
+;;                   (defun jordon-maybe-ensime-mode ()
+;;                     (when (equal (projectile-project-type) 'sbt)
+;;                       (ensime-mode t))))
+;;   :defer t
+;;   :ensure t)
 
 (use-package json-mode
   :defer t
@@ -1116,9 +1116,9 @@
 ;; other
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package po-mode
-  :load-path "/usr/local/Cellar/gettext/0.19.5.1/share/emacs/site-lisp/"
-  :commands (po-mode))
+;; (use-package po-mode
+;;   :load-path "/usr/local/Cellar/gettext/0.19.5.1/share/emacs/site-lisp/"
+;;   :commands (po-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
