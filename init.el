@@ -1113,6 +1113,16 @@
   :defer t
   :ensure )
 
+(use-package coffee-mode
+  :defer t
+  :config
+  (progn
+    (add-hook
+     'coffee-mode-hook
+     (defun jordon-setup-coffe-indent ()
+       (setq-local coffee-tab-width 2))))
+  :ensure)
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; other
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
