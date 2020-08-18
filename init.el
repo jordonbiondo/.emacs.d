@@ -654,7 +654,7 @@
   :ensure t)
 
 (use-package web-mode
-  :mode ("\\.\\(html\\|hbs\\|vue\\)$" . web-mode)
+  :mode ("\\.\\(html\\|hbs\\|vue\\|erb\\)$" . web-mode)
   :config
   (progn
     (add-hook 'web-mode-hook
@@ -667,7 +667,7 @@
               (defun jordon-web-mode-setup ()
                 (let ((offset
                        (if (and (buffer-file-name)
-                                (string-match-p  "\.\\(hbs\\|vue\\)$" (buffer-file-name)))
+                                (string-match-p  "\.\\(hbs\\|vue\\|erb\\)$" (buffer-file-name)))
                            2
                          4)))
                   (setq web-mode-code-indent-offset offset
