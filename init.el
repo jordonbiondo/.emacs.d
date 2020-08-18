@@ -1119,8 +1119,10 @@
   (progn
     (add-hook
      'coffee-mode-hook
-     (defun jordon-setup-coffe-indent ()
-       (setq-local coffee-tab-width 2))))
+     (defun jordon-setup-coffee ()
+       (setq-local coffee-tab-width 2)
+       (flycheck-mode t)
+       (flycheck-select-checker 'coffee))))
   :ensure)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
