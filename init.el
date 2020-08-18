@@ -965,6 +965,7 @@
                          (if root
                              (let ((default-directory root))
                                (if (or
+                                    (file-exists-p "Gemfile")
                                     (file-exists-p ".expo")
                                     (file-exists-p "ember-cli-build.js"))
                                    2 4))
@@ -1011,7 +1012,7 @@
              js2-parsed-warnings)))
     (add-hook 'js2-post-parse-callbacks
               'jordon-filter-js2-warnings)
-    (setq-default js2-basic-offset 4)
+    (setq-default js2-basic-offset 2)
     (setq-default js2-strict-trailing-comma-warning nil)
     (setq-default js2-strict-missing-semi-warning nil)
     (setq js-switch-indent-offset js2-basic-offset)
