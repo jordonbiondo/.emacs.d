@@ -160,6 +160,13 @@
 ;; built-ins
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package less-css-mode
+  :defer t
+  :config
+  (add-hook 'less-css-mode-hook
+            (defun jordon-setup-less-css-mode ()
+              (setq-local css-indent-offset 2))))
+
 (use-package cperl-mode
   :defer t
   :init (defalias 'perl-mode- 'cperl-mode)
