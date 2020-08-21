@@ -961,7 +961,7 @@
                      (save-excursion
                        (goto-char (point-min))
                        (let ((buff (current-buffer)))
-                         (if (search-forward "React." nil t 1)
+                         (if (search-forward "React" nil t 1)
                              (rjsx-mode)
                            (js2-mode)))))))
     (add-hook 'js2-mode-hook 'jordon-nice-wrap-mode t)
