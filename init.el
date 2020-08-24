@@ -585,6 +585,11 @@
     (setq helm-etags-fuzzy-match nil))
   :ensure t)
 
+(use-package helm-ag
+  :chords ((" a" . helm-do-ag))
+  :defer t
+  :ensure t)
+
 (use-package imenu-anywhere
   :defer t
   ;;:chords ("jo" . helm-imenu-anywhere)
