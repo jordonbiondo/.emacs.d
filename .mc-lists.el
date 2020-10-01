@@ -72,6 +72,7 @@
         paredit-split-sexp
         python-indent-dedent-line-backspace
         rjsx-electric-lt
+        ruby-end-space
         sh-assignment
         show-children
         slime-space

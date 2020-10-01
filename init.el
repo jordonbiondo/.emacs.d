@@ -118,7 +118,8 @@
     (setq-default scroll-step 1))
    ("jordonbiondo"
     (fset 'yes-or-no-p 'y-or-n-p)
-    (setq initial-scratch-message "\n;; Welcome Back\n\n")))
+    (setq initial-scratch-message "\n;; Welcome Back\n\n")
+    (when (file-exists-p "~/.work.el") (load-library "~/.work.el"))))
   ("duna"
    (:everyone
     (bind-chord
@@ -165,6 +166,13 @@
   :config
   (add-hook 'less-css-mode-hook
             (defun jordon-setup-less-css-mode ()
+              (setq-local css-indent-offset 2))))
+
+(use-package css-mode
+  :defer t
+  :config
+  (add-hook 'css-mode-hook
+            (defun jordon-setup-css-mode ()
               (setq-local css-indent-offset 2))))
 
 (use-package cperl-mode
@@ -374,6 +382,7 @@
   :defer t
   :config
   (progn
+    (setq ruby-insert-encoding-magic-comment nil)
     (add-hook 'ruby-mode-hook 'jordon-truncate-lines)
     (add-hook 'ruby-mode-hook 'flycheck-mode)
     (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))))
@@ -633,10 +642,7 @@
   (progn
     (bind-keys :map rspec-mode-map
       ("C-c ," . rspec-verify-single)
-      ("C-c ." . rspec-verify))
-    (bind-chords :map rspec-mode-map
-      (" ," . rspec-verify-single)
-      (" ." . rspec-verify)))
+      ("C-c ." . rspec-verify)))
   :defer t
   :ensure t)
 
