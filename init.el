@@ -970,8 +970,8 @@
                                     (file-exists-p "Gemfile")
                                     (file-exists-p ".expo")
                                     (file-exists-p "ember-cli-build.js"))
-                                   2 4))
-                           4))))
+                                   2 2))
+                           2))))
                   (setq-local js2-basic-offset indent)
                   (setq-local sgml-basic-offset indent))))
     (add-hook 'js2-mode-hook
