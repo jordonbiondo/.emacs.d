@@ -656,7 +656,7 @@
   :ensure t)
 
 (use-package web-mode
-  :mode ("\\.\\(html\\|hbs\\|vue\\|erb\\)$" . web-mode)
+  :mode ("\\.\\(html\\|hbs\\|vue\\|erb\\|tsx\\)$" . web-mode)
   :config
   (progn
     (add-hook 'web-mode-hook
