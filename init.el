@@ -136,25 +136,9 @@
     (setq-default scroll-step 1))
    ("jordon"
     (fset 'yes-or-no-p 'y-or-n-p)
-    (setq user-mail-address "jordon.biondo@appropos.com")
+    (setq user-mail-address "jordonbiondo@gmail.com")
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
     (use-package spinner
-      :defer t)
-    (use-package awt
-      :load-path "~/src/awt-emacs/"
-      :init
-      (progn
-        (after (:js2-mode)
-          (bind-keys :map js2-mode-map
-            ("C-c n f m" . awt-find-model)
-            ("C-c n r m" . awt-require-model)
-            ("C-c n r r" . awt-root-require)
-            ("C-c n f c" . awt-find-controller)
-            ("C-c n t" . awt-run-test-file)
-            ("C-c n s" . awt-run-current-test-in-file)))
-        (after (:magit)
-          (bind-keys :map git-commit-mode-map
-            ("C-c n j" . jira-issues))))
       :defer t))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
