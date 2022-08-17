@@ -83,8 +83,8 @@
   :ensure t
   :config
   (progn (key-chord-mode t)
-         (setq key-chord-two-keys-delay .020
-               key-chord-one-key-delay .020)))
+         (setq key-chord-two-keys-delay .030
+               key-chord-one-key-delay .030)))
 
 (use-package jordon-mode-line
   :config (setq-default mode-line-format jordon-mode-line-format))
