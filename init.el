@@ -565,7 +565,7 @@
   :config
   (progn
     (setq helm-completion-style 'emacs)
-    (setq completion-styles '(helm-flex))
+    (setq completion-styles '(flex))
     (require 'helm-command)
     (setq helm-M-x-fuzzy-match t))
   :init
@@ -669,7 +669,7 @@
               (defun jordon-web-mode-setup ()
                 (let ((offset
                        (if (and (buffer-file-name)
-                                (string-match-p  "\.\\(hbs\\|vue\\|erb\\)$" (buffer-file-name)))
+                                (string-match-p  "\.\\(hbs\\|vue\\|erb\\|ts\\|tsx\\|js\\|jsx\\)$" (buffer-file-name)))
                            2
                          4)))
                   (setq web-mode-code-indent-offset offset
@@ -1126,6 +1126,16 @@
        (flycheck-mode t)
        (flycheck-select-checker 'coffee))))
   :ensure)
+
+(use-package typescript-mode
+  :config
+  (progn
+    (add-hook
+     'typescript-mode-hook
+     (defun jordon-setup-typescript ()
+       (setq-local typescript-indent-level 2))))
+  :ensure t
+  :defer t)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; other
