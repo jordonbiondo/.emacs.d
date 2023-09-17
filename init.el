@@ -102,7 +102,7 @@
    (:everyone
     (after (:smex)
       (setq smex-flex-matching nil))))
-  ("jordonamb"
+  ("jordonm2"
    (:everyone
     (bind-chord
      "m5"
@@ -110,7 +110,7 @@
        (interactive)
        (print (md5 (current-buffer)))))
     (ignore-errors
-      (set-default-font "Envy Code R")
+      (set-face-attribute 'default nil :font "Cousine")
       (set-face-attribute 'default nil :height 125))
     (when (guip)
       (global-unset-key (kbd "s-t")))
