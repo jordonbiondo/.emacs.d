@@ -381,6 +381,19 @@
           org-export-html-date-format-string "%d %B %Y"
           org-export-html-preamble-format `(("en" "%a : %d")))))
 
+(use-package treesit
+  :init (progn
+          (require 'tree-sitter-langs)
+          (add-to-list
+           'treesit-extra-load-path
+           (tree-sitter-langs--bin-dir)))
+  :defer t)
+
+(use-package typescript-ts-mode
+  :defer t
+  :config (add-hook 'typescript-ts-mode-hook 'lsp)
+  :mode ("\\.ts$" . typescript-ts-mode))
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hosted Packages
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -389,6 +402,10 @@
   :init (unless (systemp "eeloo")
           (load-theme 'ample t t)
           (enable-theme 'ample))
+  :config
+  (custom-theme-set-faces
+   'ample
+   '(header-line ((t (:background "black" :underline t)))))
   :defer t
   :ensure t)
 
@@ -446,6 +463,7 @@
            ("k " . dumb-jump-back)
            ("h " . dumb-jump-quick-look))
   :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   (add-hook 'dumb-jump-after-jump-hook
             (defun jordon-dumb-jump-pulse-line ()
               (pulse-momentary-highlight-one-line (point))))
@@ -772,6 +790,7 @@
   :init (after (:cc-mode)
           (add-hook 'c-mode-hook 'flycheck-mode)
           (add-hook 'c++-mode-hook 'flycheck-mode))
+  :config (setq flycheck-checker-error-threshold 3)
   :defer t
   :ensure t)
 
@@ -833,27 +852,6 @@
               (defun jordon-robe-setup ()
                 (company-mode t)
                 (add-to-list 'company-backends 'company-robe))))
-  :ensure t)
-
-(use-package moz
-  :defer t
-  :commands js2-mode
-  :config (progn
-            (defun jordon-moz-refresh ()
-              (interactive)
-              (if (ignore-errors
-                    (comint-send-string
-                     (inferior-moz-process)
-                     "setTimeout(BrowserReload(), \"1000\");") t)
-                  (message "Moz Refreshing...")))
-
-            (define-key moz-minor-mode-map (kbd "C-M-o") 'jordon-moz-refresh)
-            (after (:js2-mode)
-              (lambda () (add-hook 'js2-mode-hook 'moz-minor-mode)))
-            (after (:ruby-mode)
-              (lambda () (add-hook 'ruby-mode-hook 'moz-minor-mode)))
-            (after (:haml-mode)
-              (add-hook 'haml-mode-hook 'moz-minor-mode)))
   :ensure t)
 
 (use-package d-mode
@@ -980,9 +978,9 @@
                            (not (string-match-p "^timemachine" (buffer-name))))
                   (when (executable-find "eslint")
                     (when-let ((default-directory
-                                 (or
-                                  (ignore-errors (vc-root-dir))
-                                  (ignore-errors (magit-toplevel)))))
+                                (or
+                                 (ignore-errors (vc-root-dir))
+                                 (ignore-errors (magit-toplevel)))))
                       (when (f-exists-p "node_modules/eslint/bin/eslint.js")
                         (flycheck-set-checker-executable
                          "javascript-eslint"
@@ -1127,15 +1125,13 @@
        (flycheck-select-checker 'coffee))))
   :ensure)
 
-(use-package typescript-mode
-  :config
-  (progn
-    (add-hook
-     'typescript-mode-hook
-     (defun jordon-setup-typescript ()
-       (setq-local typescript-indent-level 2))))
-  :ensure t
-  :defer t)
+(use-package tree-sitter-langs
+  :commands (tree-sitter-langs--bin-dir)
+  :defer nil)
+
+(use-package lsp-mode
+  :commands (lsp lsp-mode)
+  :ensure t)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; other

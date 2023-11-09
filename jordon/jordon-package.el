@@ -48,14 +48,14 @@
 
 (defvar jordon-package-refresh-archives nil)
 
-(when (or (not package-archive-contents)
-          (and (member "--" command-line-args)
-               (member "-refresh" command-line-args)))
-  (when (not package-archive-contents)
-    (jordon-package-handle-initial-install))
-  (setq jordon-package-refresh-archives t)
-  (delete "-refresh" command-line-args)
-  (package-refresh-contents))
+;; (when (or (not package-archive-contents)
+;;           (and (member "--" command-line-args)
+;;                (member "-refresh" command-line-args)))
+;;   (when (not package-archive-contents)
+;;     (jordon-package-handle-initial-install))
+;;   (setq jordon-package-refresh-archives t)
+;;   (delete "-refresh" command-line-args)
+;;   (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))

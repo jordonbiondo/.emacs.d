@@ -23,6 +23,7 @@
         cperl-electric-brace
         cperl-electric-lbrace
         csharp-maybe-insert-codedoc
+        cycle-spacing
         dabbrev-expand
         dired-do-kill-lines
         dired-find-file
@@ -35,6 +36,7 @@
         forward-sexp
         haml-electric-backspace
         helm-M-x
+        helm-confirm-and-exit-minibuffer
         ibuffer-mark-for-delete
         indent-for-tab-command
         jordon-indent-repeat
@@ -101,5 +103,6 @@
         kmacro-start-macro
         markdown-exdent-or-delete
         smex
+        web-mode-mark-and-expand
         yaml-electric-backspace
         ))
