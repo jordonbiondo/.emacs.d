@@ -662,7 +662,13 @@
 
 (use-package undo-tree
   :defer 1
-  :config (global-undo-tree-mode 1)
+  :config
+  (progn
+   (global-undo-tree-mode 1)
+   (let ((my-dir "~/.undo-tree"))
+     (unless (file-exists-p my-dir)
+       (make-directory my-dir t))
+     (setq undo-tree-history-directory-alist (list (cons "." my-dir)))))
   :bind (("C-c j" . undo-tree-undo)
          ("C-c k" . undo-tree-redo)
          ("C-c l" . undo-tree-switch-branch)
