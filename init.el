@@ -387,6 +387,11 @@
           (add-to-list
            'treesit-extra-load-path
            (tree-sitter-langs--bin-dir)))
+  :config (progn
+            (setq treesit-language-source-alist
+                  '((vue "https://github.com/ikatyang/tree-sitter-vue")
+                    (css "https://github.com/tree-sitter/tree-sitter-css")
+                    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
   :defer t)
 
 (use-package typescript-ts-mode
@@ -523,12 +528,27 @@
             (when (systemp "duna" "jordon")
               (add-to-list 'magit-repository-directories
                            (expand-file-name "~/src/")))
-            (add-hook
-             'magit-section-set-visibility-hook
-             (defun jordon-magit-section-visibility (section)
-               (or
-                (and (arrayp section) (equal (aref section 1) 'stashes) 'hide)
-                'show)))
+            (setq magit-section-initial-visibility-alist
+                  '((stashes         . hide)
+                    ([file unstaged] . hide)
+                    ([file staged]   . hide)))
+            (defun jordon-magit-stash-stage-untracked-maybe (&rest _args)
+              "Offer to stage untracked files before stashing.
+
+Installed as `:before' advice on `magit-stash-both'.  If the working
+tree has any untracked files, prompt with `y-or-n-p'.  Answering `y'
+runs `git add' on every untracked file (so the subsequent stash
+captures them via the index); answering `n' leaves them alone and the
+stash proceeds as normal."
+              (when-let ((untracked (magit-untracked-files)))
+                (when (y-or-n-p
+                       (format "Stage %d untracked file%s before stashing? "
+                               (length untracked)
+                               (if (= 1 (length untracked)) "" "s")))
+                  (magit-with-toplevel
+                    (magit-stage-1 nil untracked)))))
+            (advice-add 'magit-stash-both :before
+                        #'jordon-magit-stash-stage-untracked-maybe)
             (after (:magit-blame)
               (setq magit-blame-heading-format "%-20a %A %s")
               (setq magit-blame-time-format "%m/%d/%Y"))
@@ -594,11 +614,6 @@
     :defer t
     :config
     (setq helm-etags-fuzzy-match nil))
-  :ensure t)
-
-(use-package helm-ag
-  :chords ((" a" . helm-do-ag))
-  :defer t
   :ensure t)
 
 (use-package imenu-anywhere
@@ -679,8 +694,11 @@
   :defer t
   :ensure t)
 
+(use-package vue-ts-mode
+  :vc (:url "https://github.com/8uff3r/vue-ts-mode"))
+
 (use-package web-mode
-  :mode ("\\.\\(html\\|hbs\\|vue\\|erb\\|tsx\\)$" . web-mode)
+  :mode ("\\.\\(html\\|hbs\\|erb\\|tsx\\)$" . web-mode)
   :config
   (progn
     (add-hook 'web-mode-hook
@@ -809,10 +827,6 @@
             (after (:js-mode) (add-to-list 'ac-modes 'js-mode))
             (after (:ruby-mode) (add-to-list 'ac-modes 'ruby-mode))
             (ac-config-default))
-  :ensure t)
-
-(use-package bundler
-  :defer t
   :ensure t)
 
 (use-package yaml-mode
@@ -1089,10 +1103,6 @@
   :ensure t)
 
 (use-package markdown-mode
-  :defer t
-  :ensure t)
-
-(use-package twittering-mode
   :defer t
   :ensure t)
 

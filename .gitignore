@@ -60,3 +60,7 @@ var/*
 /network-security.data
 /transient
 /.lsp-session-v1
+/.cache/
+/projects
+/tree-sitter/
+/agent/
