@@ -98,11 +98,7 @@
 
 ;; system specific
 (user-config
-  ("eeloo"
-   (:everyone
-    (after (:smex)
-      (setq smex-flex-matching nil))))
-  ("jordonm2"
+  ("nomad"
    (:everyone
     (bind-chord
      "m5"
@@ -110,13 +106,13 @@
        (interactive)
        (print (md5 (current-buffer)))))
     (ignore-errors
-      (set-face-attribute 'default nil :font "Cousine")
-      (set-face-attribute 'default nil :height 125))
+      (set-face-attribute 'default nil :font "Envy Code R")
+      (set-face-attribute 'default nil :height 135))
     (when (guip)
       (global-unset-key (kbd "s-t")))
     (setq-default scroll-margin 5)
     (setq-default scroll-step 1))
-   ("jordonbiondo"
+   ("jordon"
     (fset 'yes-or-no-p 'y-or-n-p)
     (setq initial-scratch-message "\n;; Welcome Back\n\n")
     (when (file-exists-p "~/.work.el") (load-library "~/.work.el"))))
@@ -314,13 +310,94 @@
   :config (progn (auto-insert-mode t)
                  (setq auto-insert-prompt "insert %s? ")))
 
-(use-package ido
-  :chords ((" b" . ido-switch-buffer)
-           (" f" . ido-find-file))
-  :config (progn
-            (ido-everywhere t)
-            (ido-mode t))
-  :defer 1)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Minibuffer completion stack: vertico + prescient + marginalia +
+;; consult + embark.  Prescient gives flx-style subsequence fuzzy
+;; matching plus MRU/frequency-based ranking on top of vertico, for
+;; an ido-vertical + flx-ido feel.
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package vertico
+  :ensure t
+  :init (vertico-mode 1)
+  :config
+  (setq vertico-cycle t
+        vertico-resize t
+        vertico-count 15)
+  (define-key vertico-map (kbd "C-s") #'vertico-next)
+  (define-key vertico-map (kbd "C-r") #'vertico-previous)
+  (use-package vertico-directory
+    :after vertico
+    :bind (:map vertico-map
+                ("RET"   . vertico-directory-enter)
+                ("DEL"   . vertico-directory-delete-char)
+                ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)))
+
+(use-package prescient
+  :ensure t
+  :init
+  (setq prescient-filter-method '(literal regexp initialism fuzzy)
+        prescient-sort-length-enable t
+        prescient-sort-full-matches-first t)
+  :config
+  (prescient-persist-mode 1)
+  (setq completion-styles '(prescient basic)
+        completion-category-defaults nil
+        completion-category-overrides
+        '((file (styles basic partial-completion)))))
+
+(use-package vertico-prescient
+  :ensure t
+  :after (vertico prescient)
+  :init (vertico-prescient-mode 1))
+
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode 1))
+
+(use-package savehist
+  :init (savehist-mode 1))
+
+(use-package consult
+  :ensure t
+  :bind (("C-s"     . consult-line)
+         ("C-x b"   . consult-buffer)
+         ("M-y"     . consult-yank-pop)
+         ("M-g i"   . consult-imenu)
+         ("M-g M-i" . consult-imenu-multi)
+         ("M-g f"   . consult-flymake)
+         ("M-s r"   . consult-ripgrep)
+         ("M-s g"   . consult-grep))
+  :chords ((" b" . consult-buffer)
+           (" f" . find-file)
+           ("io" . execute-extended-command)
+           ("jo" . consult-imenu)
+           ("hf" . consult-ripgrep))
+  :config
+  (setq consult-narrow-key "<")
+  (defun jordon-imenu-show-used-packages ()
+    "Add `(use-package foo ...)' forms to `imenu-generic-expression'.
+Preserved from the old `imenu-anywhere' setup so `consult-imenu' lists
+`use-package' entries in this `init.el'."
+    (add-to-list 'imenu-generic-expression
+                 '("Used Packages"
+                   "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
+  (add-late-hook '((lisp-mode lisp-mode-hook)
+                   (emacs-lisp-mode emacs-lisp-mode-hook)
+                   (lisp-interaction-mode lisp-interaction-mode-hook))
+                 'jordon-imenu-show-used-packages))
+
+(use-package embark
+  :ensure t
+  :bind (("C-." . embark-act)
+         ("M-." . embark-dwim)
+         ("C-h B" . embark-bindings)))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package erc
   :defer t
@@ -556,7 +633,6 @@ stash proceeds as normal."
               (setq magit-log-format-graph-function
                     'magit-log-format-unicode-graph))
             (setq magit-status-buffer-switch-function 'switch-to-buffer
-                  magit-completing-read-function 'magit-ido-completing-read
                   magit-revert-buffers 1
                   magit-push-always-verify nil))
   :ensure t)
@@ -592,46 +668,6 @@ stash proceeds as normal."
 
 (use-package gh
   :defer t
-  :ensure t)
-
-(use-package helm
-  :defer t
-  :bind (("M-x" . helm-M-x)
-         ("C-c M-x" . execute-extended-command))
-  :chords (("io" . helm-M-x)
-           ("jo" . helm-etags-select))
-  :config
-  (progn
-    (setq helm-completion-style 'emacs)
-    (setq completion-styles '(flex))
-    (require 'helm-command)
-    (setq helm-M-x-fuzzy-match t))
-  :init
-  (use-package helm-grep
-    :defer t
-    :chords ("hf" . helm-do-grep))
-  (use-package helm-tags
-    :defer t
-    :config
-    (setq helm-etags-fuzzy-match nil))
-  :ensure t)
-
-(use-package imenu-anywhere
-  :defer t
-  ;;:chords ("jo" . helm-imenu-anywhere)
-  :config (progn
-            (setq helm-imenu-fuzzy-match t)
-            (use-package cl)
-            (defun jordon-imenu-show-used-packages ()
-              (add-to-list 'imenu-generic-expression
-                           '("Used Packages"
-                             "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
-            (add-late-hook '((lisp-mode lisp-mode-hook)
-                             (emacs-lisp-mode emacs-lisp-mode-hook)
-                             (lisp-interaction-mode lisp-interaction-mode-hook))
-                           'jordon-imenu-show-used-packages)
-            (defadvice imenu-anywhere--goto-function (after pulse-the-line activate)
-              (pulse-momentary-highlight-one-line (point))))
   :ensure t)
 
 (use-package rainbow-mode
@@ -690,6 +726,10 @@ stash proceeds as normal."
          ("C-c ;" . undo-tree-visualize))
   :ensure t)
 
+(use-package agent-shell
+  :defer t
+  :ensure t)
+
 (use-package google-this
   :defer t
   :ensure t)
@@ -711,7 +751,7 @@ stash proceeds as normal."
               (defun jordon-web-mode-setup ()
                 (let ((offset
                        (if (and (buffer-file-name)
-                                (string-match-p  "\.\\(hbs\\|vue\\|erb\\|ts\\|tsx\\|js\\|jsx\\)$" (buffer-file-name)))
+                                (string-match-p  "\.\\(hbs\\|erb\\|ts\\|tsx\\|js\\|jsx\\)$" (buffer-file-name)))
                            2
                          4)))
                   (setq web-mode-code-indent-offset offset
@@ -882,15 +922,6 @@ stash proceeds as normal."
   :defer t
   :ensure t)
 
-;; (use-package ensime
-;;   :commands (ensime-mode)
-;;   :init (add-hook 'scala-mode-hook
-;;                   (defun jordon-maybe-ensime-mode ()
-;;                     (when (equal (projectile-project-type) 'sbt)
-;;                       (ensime-mode t))))
-;;   :defer t
-;;   :ensure t)
-
 (use-package json-mode
   :defer t
   :ensure t)
@@ -1042,18 +1073,6 @@ stash proceeds as normal."
   :defer t
   :ensure t)
 
-(use-package js2-refactor
-  :defer t
-  :commands (js2r-add-keybindings-with-prefix)
-  :init (after :js2-mode
-          (js2r-add-keybindings-with-prefix "C-c u")
-          (add-hook 'js2-mode-hook 'js2-refactor-mode))
-  :ensure t)
-
-(use-package ac-js2
-  :defer t
-  :ensure t)
-
 (use-package slime
   :defer t
   :config
@@ -1106,25 +1125,6 @@ stash proceeds as normal."
   :defer t
   :ensure t)
 
-(use-package flx-ido
-  :defer t
-  :init (after (:ido)
-          (unless (systemp "eeloo" "pi")
-            (flx-ido-mode t)))
-  :ensure t)
-
-(use-package ido-vertical-mode
-  :defer t
-  :init (after (:ido)
-          (ido-vertical-mode t))
-  :ensure t)
-
-(use-package ido-completing-read+
-  :defer t
-  :init (after (:ido)
-          (ido-ubiquitous-mode t))
-  :ensure t)
-
 (use-package dockerfile-mode
   :defer t
   :ensure )
@@ -1147,7 +1147,15 @@ stash proceeds as normal."
 
 (use-package lsp-mode
   :commands (lsp lsp-mode)
+  :init (progn
+          (setq gc-cons-threshold 100000000)
+          (setq read-process-output-max (* 1024 1024)))
   :ensure t)
+
+(use-package lsp-ui
+  :ensure t
+  :defer t)
+
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; other
@@ -1159,5 +1167,3 @@ stash proceeds as normal."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
-(put 'downcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
